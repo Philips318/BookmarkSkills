@@ -1,0 +1,17 @@
+#GitHub CopilotSDK Cookbook - Java
+
+这个文件夹提供了一些简短实用的方法，用于在Java中使用GitHub CopilotSDK。每个配方都很简洁，可复制粘贴，并指向更完整的示例和测试。所有示例都可以直接使用[JBang]（https://www.jbang.dev/）运行。
+
+# #食谱- [Ralph Loop](ralph-loop.md)：构建具有每次迭代新鲜上下文的自主AI编码循环，planning/building模式和背压。
+—[错误处理](error-handling.md)：优雅地处理错误，包括连接失败、超时和清理。
+—[Multiple Sessions](multiple-sessions.md)：同时管理多个独立会话。
+-[管理本地文件](managing-local-files.md)：使用人工智能分组策略通过元数据组织文件。
+-[公关可视化](pr-visualization.md)：生成交互式公关年龄图表使用GitHub MCP服务器。
+—[persistent Sessions](persisting-sessions.md)：保存和恢复会话。
+—[无障碍报告](accessibility-report.md)：使用剧作家MCP服务器生成WCAG无障碍报告。
+
+# #贡献
+
+通过在此文件夹中创建markdown文件并将其链接到上面来添加新配方。遵循[CONTRIBUTING.md]（../../../CONTRIBUTING.md）中的存储库指导。
+
+# #状态这些食谱是完整的，实用的例子，可以直接使用或改编为您自己的项目。

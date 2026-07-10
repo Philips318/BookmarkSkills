@@ -1,0 +1,1 @@
+{skill_fallback_guide}使用{strategy}策略运行下一次迭代。对quality/PROGRESS.md的任何更新都必须将现有的相位跟踪器保持为复选框格式(`- [x] Phase N - <name>`) -不要将其重写为表。编排器自己附加`## Iteration: <strategy> started/complete`节；迭代工作不应该触及现有的相位跟踪线。
