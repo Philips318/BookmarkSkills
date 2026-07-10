@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philips.CT.Host.ImageDisplay.Inf", "..\ExtInf\ImageDisplay\Philips.CT.Host.ImageDisplay.Inf.csproj", "{3268DB42-A997-4DAF-AF66-54724081E90D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philips.CT.Host.ImageDisplay.Impl", "ImageDisplay\Philips.CT.Host.ImageDisplay.Impl.csproj", "{8B67DFC9-77EB-40BB-88D3-2CE9BE4B9DD8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ImageDisplay", "ImageDisplay", "{F00102D1-BB9F-4B32-B496-5E496602DC14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philips.CT.Host.ImageDisplay.Test", "ImageDisplay\Test\Philips.CT.Host.ImageDisplay.Test.csproj", "{FE5C4E30-F7DD-47D1-BA09-58AEA7125929}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ModuleTests", "ModuleTests", "{B344C9CD-74D8-43F8-822F-1D029F924C65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philips.CT.Host.ImageDisplay.ModuleTests", "ModuleTests\WwWcReset\Philips.CT.Host.ImageDisplay.ModuleTests.csproj", "{8033251C-B83F-479B-86E7-9BF3235E6106}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Philips.CT.Host.ImageDisplay.App", "ImageDisplayApp\Philips.CT.Host.ImageDisplay.App.csproj", "{E6833B6C-EA88-47B9-9FBF-FCA4A9F8BC4C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3268DB42-A997-4DAF-AF66-54724081E90D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3268DB42-A997-4DAF-AF66-54724081E90D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3268DB42-A997-4DAF-AF66-54724081E90D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3268DB42-A997-4DAF-AF66-54724081E90D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B67DFC9-77EB-40BB-88D3-2CE9BE4B9DD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B67DFC9-77EB-40BB-88D3-2CE9BE4B9DD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B67DFC9-77EB-40BB-88D3-2CE9BE4B9DD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B67DFC9-77EB-40BB-88D3-2CE9BE4B9DD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE5C4E30-F7DD-47D1-BA09-58AEA7125929}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE5C4E30-F7DD-47D1-BA09-58AEA7125929}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE5C4E30-F7DD-47D1-BA09-58AEA7125929}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE5C4E30-F7DD-47D1-BA09-58AEA7125929}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8033251C-B83F-479B-86E7-9BF3235E6106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8033251C-B83F-479B-86E7-9BF3235E6106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8033251C-B83F-479B-86E7-9BF3235E6106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8033251C-B83F-479B-86E7-9BF3235E6106}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6833B6C-EA88-47B9-9FBF-FCA4A9F8BC4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6833B6C-EA88-47B9-9FBF-FCA4A9F8BC4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6833B6C-EA88-47B9-9FBF-FCA4A9F8BC4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6833B6C-EA88-47B9-9FBF-FCA4A9F8BC4C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FE5C4E30-F7DD-47D1-BA09-58AEA7125929} = {F00102D1-BB9F-4B32-B496-5E496602DC14}
+		{8033251C-B83F-479B-86E7-9BF3235E6106} = {B344C9CD-74D8-43F8-822F-1D029F924C65}
+	EndGlobalSection
+EndGlobal

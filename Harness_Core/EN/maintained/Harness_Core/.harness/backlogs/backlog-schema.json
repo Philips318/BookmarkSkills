@@ -1,0 +1,115 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Harness Backlog",
+  "description": "Schema for AI Dev Harness backlog files stored in .harness/backlogs/",
+  "type": "object",
+  "required": ["slug", "title", "type", "status", "priority", "created", "updated", "tasks"],
+  "additionalProperties": false,
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "URL-safe identifier, e.g. add-position-display"
+    },
+    "title": { "type": "string" },
+    "type": { "type": "string", "enum": ["bug", "feature", "improvement", "chore"] },
+    "status": { "type": "string", "enum": ["pending", "in_progress", "complete"] },
+    "priority": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Processing order when multiple backlogs exist. 1 = highest priority."
+    },
+    "context": { "type": "string" },
+    "created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the backlog was created"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of the last modification to this backlog"
+    },
+    "requirements_doc": {
+      "type": "string",
+      "description": "Path to analyst requirements document, e.g. .harness/requirements/slug-requirements.md"
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "type", "status", "spec_file", "demo_required", "acceptance_criteria", "depends_on"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["infrastructure", "feature", "bug", "chore"],
+            "description": "infrastructure = demo gate skipped, coverage threshold applies; feature = demo gate required"
+          },
+          "status": { "type": "string", "enum": ["pending", "in_progress", "complete", "blocked"] },
+          "started_at": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "ISO 8601 timestamp when task moved to in_progress. Null until started."
+          },
+          "completed_at": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "ISO 8601 timestamp when orchestrator marked task complete. Null until done."
+          },
+          "spec_file": { "type": "string", "description": "Relative path to Gherkin feature file" },
+          "demo_required": { "type": "boolean" },
+          "demo_scenario": {
+            "type": "string",
+            "description": "Exact Gherkin scenario name for @feature-demonstrator. Required when demo_required=true."
+          },
+          "demo_entry_point": {
+            "type": "string",
+            "description": "Relative path to application executable. Required when demo_required=true."
+          },
+          "demo_launch_args": {
+            "type": "string",
+            "description": "Command-line arguments to launch app in simulator/deterministic mode."
+          },
+          "coverage_threshold": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Minimum code coverage %. Required when demo_required=false (infrastructure tasks)."
+          },
+          "acceptance_criteria": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" },
+            "description": "Exact Scenario: names from the feature file. These are the immutable contract."
+          },
+          "design_note": {
+            "type": "string",
+            "description": "Architectural guidance for @developer. Must reference specific ADR file(s)."
+          },
+          "files_likely_affected": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "depends_on": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Task IDs that must be complete before this task can start."
+          }
+        },
+        "if": {
+          "properties": { "demo_required": { "const": true } }
+        },
+        "then": {
+          "required": ["demo_scenario", "demo_entry_point"]
+        },
+        "else": {
+          "required": ["coverage_threshold"]
+        }
+      }
+    }
+  }
+}

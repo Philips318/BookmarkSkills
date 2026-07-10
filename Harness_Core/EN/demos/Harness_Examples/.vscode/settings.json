@@ -1,0 +1,14 @@
+{
+  "chat.subagents.allowInvocationsFromSubagents": true,
+  "github.copilot.chat.codeGeneration.instructions": [
+    { "file": ".github/instructions/source-code.instructions.md" },
+    { "file": ".github/instructions/harness-state.instructions.md" },
+    { "file": ".github/instructions/build-ci.instructions.md" },
+    { "file": ".github/instructions/gherkin.instructions.md" },
+    { "file": ".github/instructions/agents.instructions.md" }
+  ],
+  "github.copilot.chat.reviewSelection.instructions": [
+    { "file": ".github/instructions/source-code.instructions.md" },
+    { "file": ".github/instructions/harness-state.instructions.md" }
+  ]
+}

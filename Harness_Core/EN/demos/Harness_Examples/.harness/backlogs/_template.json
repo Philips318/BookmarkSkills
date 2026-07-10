@@ -1,0 +1,58 @@
+{
+  "slug": "your-backlog-slug",
+  "title": "Human-readable backlog title",
+  "type": "feature",
+  "status": "pending",
+  "priority": 1,
+  "context": "Background information and constraints. Reference requirements doc and key ADRs.",
+  "created": "2026-01-01T00:00:00Z",
+  "updated": "2026-01-01T00:00:00Z",
+  "requirements_doc": ".harness/requirements/your-backlog-slug-requirements.md",
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Infrastructure: DI container and base service wiring",
+      "type": "infrastructure",
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "spec_file": ".harness/specs/your-backlog-slug/task-1-infrastructure.feature",
+      "demo_required": false,
+      "coverage_threshold": 90,
+      "acceptance_criteria": [
+        "Scenario: DI container resolves all registered services without error"
+      ],
+      "design_note": "See ADR-001 for DI framework choice and registration approach. All services registered in CompositionRoot.cs.",
+      "files_likely_affected": [
+        "Src/CompositionRoot.cs",
+        "Src/ModuleTests/StepDefinitions/InfrastructureSteps.cs"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "2",
+      "title": "Show live device value on main panel",
+      "type": "feature",
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "spec_file": ".harness/specs/your-backlog-slug/task-2-live-value-display.feature",
+      "demo_required": true,
+      "demo_scenario": "Scenario: Live device value updates on main panel",
+      "demo_entry_point": "Src/CT.App/bin/Debug/CT.App.exe",
+      "demo_launch_args": "--simulator --seed=demo",
+      "acceptance_criteria": [
+        "Scenario: Live device value updates on main panel",
+        "Scenario: Panel shows last known value when device disconnects"
+      ],
+      "design_note": "Subscribe to IValuePublisher events per ADR-002. ViewModel uses INotifyPropertyChanged. AutomationId 'ValueDisplay' must be set on the display label.",
+      "files_likely_affected": [
+        "Src/UI/MainPanel.xaml",
+        "Src/UI/MainPanel.xaml.cs",
+        "Src/Application/ValueService.cs",
+        "Src/ModuleTests/StepDefinitions/LiveValueDisplaySteps.cs"
+      ],
+      "depends_on": ["1"]
+    }
+  ]
+}

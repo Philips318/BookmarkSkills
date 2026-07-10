@@ -1,0 +1,103 @@
+{
+  "format": 1,
+  "restore": {
+    "Y:\\harness demo\\CT_AI_Harness\\demos\\Harness_Examples\\Src\\VerificationTests\\ww-wc-reset\\Task2\\Philips.CT.Host.ImageDisplay.Verification.Task2.csproj": {}
+  },
+  "projects": {
+    "Y:\\harness demo\\CT_AI_Harness\\demos\\Harness_Examples\\Src\\VerificationTests\\ww-wc-reset\\Task2\\Philips.CT.Host.ImageDisplay.Verification.Task2.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "Y:\\harness demo\\CT_AI_Harness\\demos\\Harness_Examples\\Src\\VerificationTests\\ww-wc-reset\\Task2\\Philips.CT.Host.ImageDisplay.Verification.Task2.csproj",
+        "projectName": "Philips.CT.Host.ImageDisplay.Verification.Task2",
+        "projectPath": "Y:\\harness demo\\CT_AI_Harness\\demos\\Harness_Examples\\Src\\VerificationTests\\ww-wc-reset\\Task2\\Philips.CT.Host.ImageDisplay.Verification.Task2.csproj",
+        "packagesPath": "C:\\Users\\320251582\\.nuget\\packages\\",
+        "outputPath": "Y:\\harness demo\\CT_AI_Harness\\demos\\Harness_Examples\\Src\\VerificationTests\\ww-wc-reset\\Task2\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\320251582\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0-windows"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\320251582\\.nuget\\packages": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget": {},
+          "https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget": {},
+          "https://svn-01.ta.philips.com/svn/icap-platform/trunk/ManagedServices/UADE/Common/Source/Segmentation.Implementation": {}
+        },
+        "frameworks": {
+          "net8.0-windows7.0": {
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
+      },
+      "frameworks": {
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
+          "dependencies": {
+            "FlaUI.UIA3": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.8.0, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[3.14.0, )"
+            },
+            "NUnit.Analyzers": {
+              "target": "Package",
+              "version": "[3.9.0, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

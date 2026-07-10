@@ -1,0 +1,107 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {
+      "Philips.CT.Host.ImageDisplay.Inf/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/Philips.CT.Host.ImageDisplay.Inf.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Philips.CT.Host.ImageDisplay.Inf.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Philips.CT.Host.ImageDisplay.Inf/1.0.0": {
+      "type": "project",
+      "path": "../../ExtInf/ImageDisplay/Philips.CT.Host.ImageDisplay.Inf.csproj",
+      "msbuildProject": "../../ExtInf/ImageDisplay/Philips.CT.Host.ImageDisplay.Inf.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "Philips.CT.Host.ImageDisplay.Inf >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\320251582\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "Y:\\harness demo\\CT_AI_Harness\\demos\\Harness_Examples\\Src\\ImageDisplay\\Philips.CT.Host.ImageDisplay.Impl.csproj",
+      "projectName": "Philips.CT.Host.ImageDisplay.Impl",
+      "projectPath": "Y:\\harness demo\\CT_AI_Harness\\demos\\Harness_Examples\\Src\\ImageDisplay\\Philips.CT.Host.ImageDisplay.Impl.csproj",
+      "packagesPath": "C:\\Users\\320251582\\.nuget\\packages\\",
+      "outputPath": "Y:\\harness demo\\CT_AI_Harness\\demos\\Harness_Examples\\Src\\ImageDisplay\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\320251582\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Users\\320251582\\.nuget\\packages": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget": {},
+        "https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget": {},
+        "https://svn-01.ta.philips.com/svn/icap-platform/trunk/ManagedServices/UADE/Common/Source/Segmentation.Implementation": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {
+            "Y:\\harness demo\\CT_AI_Harness\\demos\\Harness_Examples\\ExtInf\\ImageDisplay\\Philips.CT.Host.ImageDisplay.Inf.csproj": {
+              "projectPath": "Y:\\harness demo\\CT_AI_Harness\\demos\\Harness_Examples\\ExtInf\\ImageDisplay\\Philips.CT.Host.ImageDisplay.Inf.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "allWarningsAsErrors": true,
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.100"
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

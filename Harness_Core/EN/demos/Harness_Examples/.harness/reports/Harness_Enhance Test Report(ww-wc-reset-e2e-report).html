@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harness E2E 实验报告 — WW/WC Reset to Default</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2029; --panel2:#222b36; --ink:#e6edf3; --muted:#9aa7b4;
+    --line:#2d3742; --accent:#4aa3ff; --green:#3fb950; --amber:#d29922; --red:#f85149;
+    --chip:#132b40;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI",Roboto,"Microsoft YaHei",system-ui,sans-serif;line-height:1.6;font-size:15px}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 24px 80px}
+  header.hero{background:linear-gradient(135deg,#12233b,#0f1419);border:1px solid var(--line);
+    border-radius:14px;padding:28px 32px;margin-bottom:28px}
+  h1{margin:0 0 6px;font-size:26px}
+  h2{margin:38px 0 14px;font-size:20px;border-left:4px solid var(--accent);padding-left:12px}
+  h3{margin:24px 0 10px;font-size:16px;color:#cdd9e5}
+  .sub{color:var(--muted);font-size:14px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .chip{background:var(--chip);border:1px solid var(--line);color:#bcd;padding:3px 10px;border-radius:20px;font-size:12.5px}
+  .lead{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 24px;margin:18px 0}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;background:var(--panel);
+    border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--panel2);color:#cdd9e5;font-weight:600}
+  tr:last-child td{border-bottom:none}
+  code{background:#0b0f14;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12.5px;color:#e3b341}
+  .pass{color:var(--green);font-weight:600}
+  .warn{color:var(--amber);font-weight:600}
+  .fail{color:var(--red);font-weight:600}
+  .gates{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .gate{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .gate .g{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .gate .s{font-size:20px;margin-top:6px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi .v{font-size:24px;font-weight:700;color:#fff}
+  .kpi .l{font-size:12px;color:var(--muted);margin-top:2px}
+  .flow{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px;
+    font-family:Consolas,"Cascadia Code",monospace;font-size:13px;color:#bcd;overflow-x:auto;white-space:pre}
+  .defect{border-left:4px solid var(--red)}
+  .callout{background:#1a1210;border:1px solid #5a2d22;border-radius:10px;padding:14px 18px;margin:16px 0}
+  .callout.good{background:#0f1c12;border-color:#27502f}
+  footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+  a{color:var(--accent)}
+  /* language switcher */
+  .langbar{position:fixed;top:16px;right:18px;z-index:50;display:flex;gap:0;
+    background:var(--panel2);border:1px solid var(--line);border-radius:22px;padding:3px;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+  .langbtn{border:0;background:transparent;color:var(--muted);font-size:13px;font-weight:600;
+    padding:5px 14px;border-radius:20px;cursor:pointer;transition:.15s}
+  .langbtn.active{background:var(--accent);color:#04121f}
+  .langbtn:hover:not(.active){color:var(--ink)}
+  [hidden]{display:none !important}
+</style>
+</head>
+<body>
+
+<div class="langbar" role="group" aria-label="Language switch">
+  <button id="btn-zh" class="langbtn active" type="button">中文</button>
+  <button id="btn-en" class="langbtn" type="button">EN</button>
+</div>
+
+<!-- ==================== 中文 ==================== -->
+<div class="wrap" id="doc-zh">
+
+  <header class="hero">
+    <h1>Harness End-to-End 实验报告</h1>
+    <div class="sub">Feature：<strong>WW/WC Reset to Default</strong>（CT 图像窗宽/窗位一键复位）　·　仓库 <code>Harness_Enhance</code>　·　2026-07-02</div>
+    <div class="meta">
+      <span class="chip">IEC 62304 Class B</span>
+      <span class="chip">WPF / MVVM · .NET 8</span>
+      <span class="chip">Reqnroll BDD</span>
+      <span class="chip">FlaUI 黑盒验收</span>
+      <span class="chip">AI Dev Harness</span>
+    </div>
+  </header>
+
+  <div class="lead">
+    <strong>一句话结论：</strong>从"空 harness + 一句话需求"到"可运行、可演示、通过三道门禁、并带黑盒 UI 验收测试"的 CT 医疗软件功能，
+    <strong>端到端主流程全部跑通</strong>。全程 3 道 Gate 全部通过；期间
+    <strong>Gate 2 抓到 2 个"测试全绿却仍存在"的缺陷、Gate 3 现场演示又抓到 1 个所有自动化测试都漏掉的 UI 缺陷</strong>——
+    这三处正是本实验最有价值的证据，印证了"生成/评估分离 + 独立黑盒测试 + 人工现场演示"机制的作用。
+  </div>
+
+  <div class="gates">
+    <div class="gate"><div class="g">Gate 1 · 组合评审</div><div class="s pass">✅ APPROVED</div><div class="sub">需求/架构/Backlog/Gherkin</div></div>
+    <div class="gate"><div class="g">Gate 2 · 质量门禁</div><div class="s pass">✅ PASS</div><div class="sub">dev-evaluator（隔离上下文）</div></div>
+    <div class="gate"><div class="g">Gate 3 · 功能演示</div><div class="s pass">✅ APPROVED</div><div class="sub">用户为裁判</div></div>
+  </div>
+
+  <h2>1. 完整流程</h2>
+  <div class="flow">Phase 0 Orientation ─▶ Phase 1 需求接入 ─▶ Phase 2 规划(analyst / architect / product-owner)
+   ─▶ [GATE 1] ─▶ Phase 3 执行环(developer ×4 任务, evaluator 逐任务) ─▶ [GATE 2]
+   ─▶ Phase 4 Backlog 完成 ─▶ Phase 5 WPF 宿主 + Demo(feature-demonstrator) ─▶ [GATE 3]
+   ─▶ Phase 6 交付后加固(test-designer FlaUI 验收 + 工具链 + 报告)</div>
+
+  <table>
+    <thead><tr><th>#</th><th>步骤</th><th>角色</th><th>交付物</th><th>结果</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>Orientation</td><td>orchestrator</td><td>确认 harness 为空（无 Src/、Backlog 仅模板）</td><td>诚实报告"无任务"</td></tr>
+      <tr><td>2a</td><td>需求分析</td><td>@analyst</td><td>requirements 文档（FR-01~07, NFR-01~05, Class B）；SwRS.md</td><td class="pass">✅</td></tr>
+      <tr><td>2b</td><td>架构</td><td>@sw-architect</td><td>ADR-001（7 决策）+ 组件图 + 时序图；SSDS.md</td><td class="pass">✅</td></tr>
+      <tr><td>2c</td><td>计划</td><td>@product-owner</td><td>Backlog（4 任务）+ 4 Gherkin feature（17 scenarios）</td><td class="pass">✅</td></tr>
+      <tr><td><strong>G1</strong></td><td><strong>组合评审</strong></td><td>user</td><td>批准；OQ-01=Class B、OQ-02=per-viewport</td><td class="pass">✅ APPROVED</td></tr>
+      <tr><td>3.1</td><td>T01 基础设施</td><td>@developer → @dev-evaluator</td><td>全新 ExtInf/(7) + Src/ImageDisplay/ + 测试工程 + .sln</td><td class="warn">FAIL×1 → 修复 → complete</td></tr>
+      <tr><td>3.2</td><td>T02 复位主流程</td><td>@developer</td><td>ViewModel/Command/Model/Notifier + 单测 + BDD</td><td class="pass">✅ complete</td></tr>
+      <tr><td>3.3</td><td>T03 回退</td><td>@developer</td><td>WindowLevelDefaults + 回退分支 + 测试</td><td class="pass">✅ complete</td></tr>
+      <tr><td>3.4</td><td>T04 撤销</td><td>@developer → @dev-evaluator</td><td>WindowLevelChangeAction + UndoService(深度20) + Undo/Redo</td><td class="warn">FAIL×1(3 findings) → 修复 → PASS</td></tr>
+      <tr><td><strong>G2</strong></td><td><strong>质量门禁</strong></td><td>@dev-evaluator（隔离）</td><td>85 单测 + 17 模块，0 fail/skip</td><td class="pass">✅ PASS</td></tr>
+      <tr><td>5</td><td>WPF 宿主 + Demo</td><td>@orchestrator + @feature-demonstrator</td><td>Src/ImageDisplayApp/(7) + 18 张演示截图</td><td class="warn">Demo 发现 Undo 缺陷 → 修复 → 复演通过</td></tr>
+      <tr><td><strong>G3</strong></td><td><strong>功能演示</strong></td><td>user</td><td>审阅证据后批准</td><td class="pass">✅ APPROVED</td></tr>
+      <tr><td>6</td><td>交付后加固</td><td>@test-designer + @orchestrator</td><td>Src/VerificationTests/（12 FlaUI 验收）+ dotCover/ReSharper</td><td class="pass">✅ 12/12 pass</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. 三处关键缺陷（本实验最有价值的证据）</h2>
+  <table>
+    <thead><tr><th>#</th><th>阶段</th><th>缺陷</th><th>为何测试没抓到</th><th>修复</th></tr></thead>
+    <tbody>
+      <tr><td>A</td><td>Gate 2 · T01</td><td><code>DicomDisplayTags</code> 各字段缺 DICOM 标准引用（违反 NFR-05）</td><td>属文档/合规规则，功能测试不覆盖</td><td>补 PS3.3 §C.7.6.3.1.5 引用</td></tr>
+      <tr class="defect"><td>B</td><td>Gate 2 · T04</td><td><code>IsSeriesLoaded</code> 由 <code>HasValidDefaultWindowLevel</code> 派生 → <strong>无 DICOM 标签的序列被误判"未加载"，复位按钮被禁用</strong>（与 FR-01/04/07 冲突）</td><td>单测/BDD 直接调 <code>CanExecute()</code>，未覆盖"加载但无标签"这条真实路径</td><td>新增显式 <code>IsSeriesLoaded</code> 契约 + 2 回归测试</td></tr>
+      <tr class="defect"><td>C</td><td><strong>Gate 3 · 现场演示</strong></td><td>复位后 <strong>Undo 按钮不激活</strong>（自定义 <code>DelegateCommand</code> 在 UI 无关库中无法挂 WPF <code>CommandManager.RequerySuggested</code>，复位路径未触发 <code>CanExecuteChanged</code>）</td><td><strong>单测/BDD 全绿</strong> —— 它们直接调 <code>CanExecute(null)</code>，绕过 WPF 事件驱动的重查询语义</td><td>从 WW/WC setter 统一 <code>RefreshUndoRedoState()</code> + 2 回归单测 + FlaUI 回归兜底</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <strong>核心结论：</strong>缺陷 <strong>C</strong> 是所有既有自动化测试都漏掉、<strong>只有"人工现场 demo"才暴露</strong>的。
+    这直接证明了 harness 中 Gate 3（现场演示）与随后补的 FlaUI 黑盒验收层不可或缺。
+  </div>
+
+  <h2>3. 度量数据</h2>
+  <div class="kpis">
+    <div class="kpi"><div class="v">114</div><div class="l">自动化测试总数（单测85 + 模块17 + FlaUI12）</div></div>
+    <div class="kpi"><div class="v pass">0</div><div class="l">失败 / 跳过 / 编译警告</div></div>
+    <div class="kpi"><div class="v">90.6%</div><div class="l">生产代码行覆盖 (coverlet · 85 单测; 分支 85%)</div></div>
+    <div class="kpi"><div class="v">17</div><div class="l">Gherkin 验收场景</div></div>
+    <div class="kpi"><div class="v warn">2</div><div class="l">Gate 2 拒绝次数（均修复后 PASS）</div></div>
+    <div class="kpi"><div class="v warn">1</div><div class="l">现场 demo 抓到的额外缺陷</div></div>
+    <div class="kpi"><div class="v">16</div><div class="l">生产 .cs（ExtInf 7 + Src 9）</div></div>
+    <div class="kpi"><div class="v">18</div><div class="l">Demo 证据截图</div></div>
+  </div>
+
+  <h2>4. 需要改进的 Point（团队反馈重点）</h2>
+  <table>
+    <thead><tr><th>#</th><th>问题</th><th>影响</th><th>建议</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>UI 集成缺陷漏到 demo 才发现</strong></td><td>命令可用性/按钮激活类 bug 单测测不到</td><td><span class="pass">已补 FlaUI 黑盒验收层</span>；建议纳入 Gate 2（developer∥test-designer 并行）</td></tr>
+      <tr><td>2</td><td><strong>Gate 2 测试盲区</strong>：直接调 <code>CanExecute()</code> 绕过 WPF requery</td><td>事件驱动可用性变更测不到</td><td>增加 <code>CanExecuteChanged</code> 通知契约单测（本次已加 2 个）</td></tr>
+      <tr><td>3</td><td><strong>门禁脚本与 dotCover 打包不匹配</strong></td><td><code>Run-QualityGate.cmd</code> 调 <code>dotnet dotcover test</code>，但 CommandLineTools 暴露独立 <code>dotCover cover/report</code></td><td>调和 <code>Build/*.cmd</code> 与 CommandLineTools 包（或装 <code>dotnet-dotcover</code> 集成变体）</td></tr>
+      <tr><td>4</td><td><strong>Reqnroll 陷阱耗时</strong></td><td>步骤裸 <code>/</code> 被当 Cucumber 择一算符 → 静默跳过；提交生成的 <code>*.feature.cs</code> 致双重编译</td><td>加 <code>.gitignore *.feature.cs</code> + step 文本 lint（强制 <code>ExpressionType.RegularExpression</code>）</td></tr>
+      <tr><td>5</td><td><strong>Orchestrator 直接改代码修复</strong></td><td>略偏"生成/评估分离"纯粹性</td><td>关键修复回抛 @developer + 重跑 @dev-evaluator</td></tr>
+      <tr><td>6</td><td><strong>环境工具缺失（部分已补）</strong></td><td>曾无 dotCover/ReSharper（覆盖率仅定性）、无 ffmpeg（无视频）</td><td><span class="pass">已装 dotCover + ReSharper</span>；ffmpeg 待装以录像</td></tr>
+      <tr><td>7</td><td><strong>QMS 审计轨未完全闭环</strong></td><td>SDD/MVP/MVProcedure 部分章节曾被标记未填</td><td>补齐或显式标注 N/A 至 QMS checker 全绿</td></tr>
+      <tr><td>8</td><td><strong>规划期 demo_entry_point 失真</strong></td><td>原 Backlog 指向类库里不存在的 .exe</td><td>规划期即决定是否需要可运行宿主</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. 亮点（机制有效性验证）</h2>
+  <div class="callout good">
+    <ol style="margin:0;padding-left:20px">
+      <li><strong>生成/评估分离有效</strong>：隔离的 @dev-evaluator 读代码抓到缺陷 B（功能一致性）。</li>
+      <li><strong>人工现场 demo 不可替代</strong>：Gate 3 抓到缺陷 C —— 所有自动化测试全绿仍存在。</li>
+      <li><strong>黑盒验收层闭环</strong>：@test-designer 从规格独立编写 12 个 FlaUI 测试，含针对缺陷 C 的回归兜底。</li>
+      <li><strong>根因纪律</strong>：Reqnroll Cucumber-expression 问题被彻底根因定位并写入长期记忆，而非绕过。</li>
+      <li><strong>全程可追溯</strong>：FR → ADR → Backlog → Gherkin → 单测/BDD/FlaUI → Demo 证据链完整；baseline 全程绿色。</li>
+    </ol>
+  </div>
+
+  <h2>6. 交付物索引</h2>
+  <table>
+    <tbody>
+      <tr><th>需求</th><td><code>.harness/requirements/ww-wc-reset-requirements.md</code></td></tr>
+      <tr><th>架构</th><td><code>.harness/architecture/adr/ADR-001-ww-wc-reset-design.md</code> + <code>diagrams/</code></td></tr>
+      <tr><th>Backlog / 规格</th><td><code>.harness/backlogs/ww-wc-reset.json</code> · <code>.harness/specs/ww-wc-reset/*.feature</code></td></tr>
+      <tr><th>生产代码</th><td><code>ExtInf/ImageDisplay/</code> · <code>Src/ImageDisplay/</code></td></tr>
+      <tr><th>WPF 宿主</th><td><code>Src/ImageDisplayApp/</code>（<code>--simulator --seed=demo [--no-dicom-ww]</code>）</td></tr>
+      <tr><th>单测 / BDD</th><td><code>Src/ImageDisplay/Test/</code> · <code>Src/ModuleTests/WwWcReset/</code></td></tr>
+      <tr><th>FlaUI 验收</th><td><code>Src/VerificationTests/</code>（12 tests）</td></tr>
+      <tr><th>Demo 证据</th><td><code>.harness/demo_evidence/ww-wc-reset/</code>（18 张）</td></tr>
+      <tr><th>进度日志</th><td><code>.harness/progress.md</code>（单一事实来源）</td></tr>
+    </tbody>
+  </table>
+
+  <footer>
+    自动生成于 AI Dev Harness 端到端流程　·　报告：<code>.harness/reports/ww-wc-reset-e2e-report.html</code>（同目录含 <code>.md</code> 版本）
+  </footer>
+
+</div>
+
+<!-- ==================== English ==================== -->
+<div class="wrap" id="doc-en" hidden>
+
+  <header class="hero">
+    <h1>Harness End-to-End Experiment Report</h1>
+    <div class="sub">Feature: <strong>WW/WC Reset to Default</strong> (CT one-click Window/Level reset)　·　Repo <code>Harness_Enhance</code>　·　2026-07-02</div>
+    <div class="meta">
+      <span class="chip">IEC 62304 Class B</span>
+      <span class="chip">WPF / MVVM · .NET 8</span>
+      <span class="chip">Reqnroll BDD</span>
+      <span class="chip">FlaUI black-box acceptance</span>
+      <span class="chip">AI Dev Harness</span>
+    </div>
+  </header>
+
+  <div class="lead">
+    <strong>One-line conclusion:</strong> From "an empty harness + a one-sentence requirement" to a runnable, demonstrable CT medical-software feature that passed three gates and is backed by black-box UI acceptance tests, the
+    <strong>end-to-end pipeline ran to completion</strong>. All 3 gates passed; along the way
+    <strong>Gate 2 caught 2 defects that existed despite every test being green, and the Gate 3 live demo caught 1 UI defect that all automated tests missed</strong> —
+    these three findings are the most valuable evidence of the experiment, validating the "separate generation from evaluation + independent black-box testing + human live demo" mechanism.
+  </div>
+
+  <div class="gates">
+    <div class="gate"><div class="g">Gate 1 · Combined Review</div><div class="s pass">✅ APPROVED</div><div class="sub">Requirements / Arch / Backlog / Gherkin</div></div>
+    <div class="gate"><div class="g">Gate 2 · Quality Gate</div><div class="s pass">✅ PASS</div><div class="sub">dev-evaluator (isolated context)</div></div>
+    <div class="gate"><div class="g">Gate 3 · Feature Demo</div><div class="s pass">✅ APPROVED</div><div class="sub">User is the gate</div></div>
+  </div>
+
+  <h2>1. End-to-End Flow</h2>
+  <div class="flow">Phase 0 Orientation ─▶ Phase 1 Intake ─▶ Phase 2 Planning (analyst / architect / product-owner)
+   ─▶ [GATE 1] ─▶ Phase 3 Execution loop (developer ×4 tasks, evaluator per task) ─▶ [GATE 2]
+   ─▶ Phase 4 Backlog complete ─▶ Phase 5 WPF host + Demo (feature-demonstrator) ─▶ [GATE 3]
+   ─▶ Phase 6 Post-delivery hardening (test-designer FlaUI + tooling + report)</div>
+
+  <table>
+    <thead><tr><th>#</th><th>Step</th><th>Role</th><th>Deliverable</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>Orientation</td><td>orchestrator</td><td>Confirmed the harness was empty (no Src/, backlog is template only)</td><td>Honestly reported "no task"</td></tr>
+      <tr><td>2a</td><td>Requirements</td><td>@analyst</td><td>Requirements doc (FR-01–07, NFR-01–05, Class B); SwRS.md</td><td class="pass">✅</td></tr>
+      <tr><td>2b</td><td>Architecture</td><td>@sw-architect</td><td>ADR-001 (7 decisions) + component & sequence diagrams; SSDS.md</td><td class="pass">✅</td></tr>
+      <tr><td>2c</td><td>Planning</td><td>@product-owner</td><td>Backlog (4 tasks) + 4 Gherkin features (17 scenarios)</td><td class="pass">✅</td></tr>
+      <tr><td><strong>G1</strong></td><td><strong>Combined Review</strong></td><td>user</td><td>Approved; OQ-01 = Class B, OQ-02 = per-viewport</td><td class="pass">✅ APPROVED</td></tr>
+      <tr><td>3.1</td><td>T01 Infrastructure</td><td>@developer → @dev-evaluator</td><td>Greenfield ExtInf/(7) + Src/ImageDisplay/ + test projects + .sln</td><td class="warn">FAIL×1 → fixed → complete</td></tr>
+      <tr><td>3.2</td><td>T02 Reset happy path</td><td>@developer</td><td>ViewModel/Command/Model/Notifier + unit + BDD</td><td class="pass">✅ complete</td></tr>
+      <tr><td>3.3</td><td>T03 Fallback</td><td>@developer</td><td>WindowLevelDefaults + fallback branch + tests</td><td class="pass">✅ complete</td></tr>
+      <tr><td>3.4</td><td>T04 Undo</td><td>@developer → @dev-evaluator</td><td>WindowLevelChangeAction + UndoService (depth 20) + Undo/Redo</td><td class="warn">FAIL×1 (3 findings) → fixed → PASS</td></tr>
+      <tr><td><strong>G2</strong></td><td><strong>Quality Gate</strong></td><td>@dev-evaluator (isolated)</td><td>85 unit + 17 module, 0 fail/skip</td><td class="pass">✅ PASS</td></tr>
+      <tr><td>5</td><td>WPF host + Demo</td><td>@orchestrator + @feature-demonstrator</td><td>Src/ImageDisplayApp/(7) + 18 demo screenshots</td><td class="warn">Demo found Undo defect → fixed → re-demo passed</td></tr>
+      <tr><td><strong>G3</strong></td><td><strong>Feature Demo</strong></td><td>user</td><td>Approved after reviewing evidence</td><td class="pass">✅ APPROVED</td></tr>
+      <tr><td>6</td><td>Post-delivery hardening</td><td>@test-designer + @orchestrator</td><td>Src/VerificationTests/ (12 FlaUI acceptance) + dotCover/ReSharper</td><td class="pass">✅ 12/12 pass</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. Three Key Defects (the most valuable evidence)</h2>
+  <table>
+    <thead><tr><th>#</th><th>Stage</th><th>Defect</th><th>Why tests missed it</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td>A</td><td>Gate 2 · T01</td><td><code>DicomDisplayTags</code> fields lacked DICOM standard references (violates NFR-05)</td><td>A documentation/compliance rule; functional tests don't cover it</td><td>Added PS3.3 §C.7.6.3.1.5 references</td></tr>
+      <tr class="defect"><td>B</td><td>Gate 2 · T04</td><td><code>IsSeriesLoaded</code> was derived from <code>HasValidDefaultWindowLevel</code> → <strong>a series without DICOM tags was wrongly treated as "not loaded", disabling the Reset button</strong> (conflicts with FR-01/04/07)</td><td>Unit/BDD call <code>CanExecute()</code> directly; the "loaded but tag-less" real path was uncovered</td><td>Added an explicit <code>IsSeriesLoaded</code> contract + 2 regression tests</td></tr>
+      <tr class="defect"><td>C</td><td><strong>Gate 3 · Live Demo</strong></td><td>After reset the <strong>Undo button did not enable</strong> (a custom <code>DelegateCommand</code> in the UI-agnostic library cannot hook WPF <code>CommandManager.RequerySuggested</code>; the reset path never raised <code>CanExecuteChanged</code>)</td><td><strong>Unit/BDD all green</strong> — they call <code>CanExecute(null)</code> directly, bypassing WPF's event-driven requery</td><td>Raise <code>RefreshUndoRedoState()</code> from the WW/WC setters + 2 regression unit tests + a FlaUI regression backstop</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <strong>Key takeaway:</strong> Defect <strong>C</strong> was missed by every existing automated test and was <strong>exposed only by the human live demo</strong>.
+    This directly proves that the harness's Gate 3 (live demonstration) and the FlaUI black-box acceptance layer added afterward are indispensable.
+  </div>
+
+  <h2>3. Metrics</h2>
+  <div class="kpis">
+    <div class="kpi"><div class="v">114</div><div class="l">Total automated tests (unit 85 + module 17 + FlaUI 12)</div></div>
+    <div class="kpi"><div class="v pass">0</div><div class="l">Failures / skips / build warnings</div></div>
+    <div class="kpi"><div class="v">90.6%</div><div class="l">Production line coverage (coverlet · 85 unit; branch 85%)</div></div>
+    <div class="kpi"><div class="v">17</div><div class="l">Gherkin acceptance scenarios</div></div>
+    <div class="kpi"><div class="v warn">2</div><div class="l">Gate 2 rejections (all fixed → PASS)</div></div>
+    <div class="kpi"><div class="v warn">1</div><div class="l">Extra defect caught by the live demo</div></div>
+    <div class="kpi"><div class="v">16</div><div class="l">Production .cs files (ExtInf 7 + Src 9)</div></div>
+    <div class="kpi"><div class="v">18</div><div class="l">Demo evidence screenshots</div></div>
+  </div>
+
+  <h2>4. Improvement Points (team feedback)</h2>
+  <table>
+    <thead><tr><th>#</th><th>Issue</th><th>Impact</th><th>Recommendation</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>UI-integration defect leaked to the demo</strong></td><td>Command-enablement / button-activation bugs aren't caught by unit tests</td><td><span class="pass">FlaUI black-box acceptance layer added</span>; fold it into Gate 2 (developer ∥ test-designer in parallel)</td></tr>
+      <tr><td>2</td><td><strong>Gate 2 test blind spot</strong>: calling <code>CanExecute()</code> directly bypasses WPF requery</td><td>Event-driven enablement changes go untested</td><td>Add a <code>CanExecuteChanged</code> notification-contract unit test (2 added this round)</td></tr>
+      <tr><td>3</td><td><strong>Gate script vs dotCover packaging mismatch</strong></td><td><code>Run-QualityGate.cmd</code> calls <code>dotnet dotcover test</code>, but CommandLineTools exposes a standalone <code>dotCover cover/report</code></td><td>Reconcile <code>Build/*.cmd</code> with the CommandLineTools package (or install the <code>dotnet-dotcover</code> integration variant)</td></tr>
+      <tr><td>4</td><td><strong>Reqnroll pitfalls cost time</strong></td><td>A bare <code>/</code> in step text is a Cucumber alternation operator → silent skip; committing generated <code>*.feature.cs</code> double-compiles scenarios</td><td>Add <code>.gitignore *.feature.cs</code> + a step-text lint (force <code>ExpressionType.RegularExpression</code>)</td></tr>
+      <tr><td>5</td><td><strong>Orchestrator applied fixes directly</strong></td><td>Slightly dilutes the "separate generation from evaluation" purity</td><td>Route key fixes back to @developer + re-run @dev-evaluator</td></tr>
+      <tr><td>6</td><td><strong>Missing environment tooling (partly resolved)</strong></td><td>Previously no dotCover/ReSharper (coverage only qualitative), no ffmpeg (no video)</td><td><span class="pass">dotCover + ReSharper installed</span>; ffmpeg pending for recording</td></tr>
+      <tr><td>7</td><td><strong>QMS audit trail not fully closed</strong></td><td>Some SDD/MVP/MVProcedure sections were flagged incomplete</td><td>Populate or mark N/A until the QMS checker is fully green</td></tr>
+      <tr><td>8</td><td><strong>Planning-time demo_entry_point was wrong</strong></td><td>Original backlog pointed to a non-existent .exe inside a class library</td><td>Decide during planning whether a runnable host is required</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Highlights (mechanism effectiveness)</h2>
+  <div class="callout good">
+    <ol style="margin:0;padding-left:20px">
+      <li><strong>Generation/evaluation separation works</strong>: the isolated @dev-evaluator read the code and caught defect B (functional coherence).</li>
+      <li><strong>Human live demo is irreplaceable</strong>: Gate 3 caught defect C — present even with all automated tests green.</li>
+      <li><strong>Black-box acceptance layer closed the loop</strong>: @test-designer authored 12 FlaUI tests from the spec alone, including a regression backstop for defect C.</li>
+      <li><strong>Root-cause discipline</strong>: the Reqnroll Cucumber-expression issue was fully root-caused and written to long-term memory, not worked around.</li>
+      <li><strong>Full traceability</strong>: FR → ADR → Backlog → Gherkin → unit/BDD/FlaUI → demo evidence; the baseline stayed green throughout.</li>
+    </ol>
+  </div>
+
+  <h2>6. Deliverables Index</h2>
+  <table>
+    <tbody>
+      <tr><th>Requirements</th><td><code>.harness/requirements/ww-wc-reset-requirements.md</code></td></tr>
+      <tr><th>Architecture</th><td><code>.harness/architecture/adr/ADR-001-ww-wc-reset-design.md</code> + <code>diagrams/</code></td></tr>
+      <tr><th>Backlog / Specs</th><td><code>.harness/backlogs/ww-wc-reset.json</code> · <code>.harness/specs/ww-wc-reset/*.feature</code></td></tr>
+      <tr><th>Production code</th><td><code>ExtInf/ImageDisplay/</code> · <code>Src/ImageDisplay/</code></td></tr>
+      <tr><th>WPF host</th><td><code>Src/ImageDisplayApp/</code> (<code>--simulator --seed=demo [--no-dicom-ww]</code>)</td></tr>
+      <tr><th>Unit / BDD</th><td><code>Src/ImageDisplay/Test/</code> · <code>Src/ModuleTests/WwWcReset/</code></td></tr>
+      <tr><th>FlaUI acceptance</th><td><code>Src/VerificationTests/</code> (12 tests)</td></tr>
+      <tr><th>Demo evidence</th><td><code>.harness/demo_evidence/ww-wc-reset/</code> (18 images)</td></tr>
+      <tr><th>Progress log</th><td><code>.harness/progress.md</code> (single source of truth)</td></tr>
+    </tbody>
+  </table>
+
+  <footer>
+    Auto-generated by the AI Dev Harness end-to-end pipeline　·　Report: <code>.harness/reports/ww-wc-reset-e2e-report.html</code> (a <code>.md</code> version is in the same folder)
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var zh=document.getElementById('doc-zh'), en=document.getElementById('doc-en');
+    var bz=document.getElementById('btn-zh'), be=document.getElementById('btn-en');
+    function setLang(l){
+      var isEn = (l==='en');
+      zh.hidden=isEn; en.hidden=!isEn;
+      bz.classList.toggle('active', !isEn);
+      be.classList.toggle('active', isEn);
+      document.documentElement.lang = isEn ? 'en' : 'zh-CN';
+      try{ localStorage.setItem('report-lang', l); }catch(e){}
+    }
+    bz.addEventListener('click', function(){ setLang('zh'); });
+    be.addEventListener('click', function(){ setLang('en'); });
+    var saved;
+    try{ saved = localStorage.getItem('report-lang'); }catch(e){}
+    setLang(saved==='en' ? 'en' : 'zh');
+  })();
+</script>
+
+</body>
+</html>

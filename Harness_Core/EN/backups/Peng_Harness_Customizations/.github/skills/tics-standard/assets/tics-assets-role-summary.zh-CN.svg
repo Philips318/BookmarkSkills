@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1760" height="1390" viewBox="0 0 1760 1390" role="img" aria-labelledby="title desc">
+  <title id="title">TICS 资产作用与使用方式总表</title>
+  <desc id="desc">总结 Skill 文件、仓库级自动指令、三个 reference 文件、以及交付前 prompt 的作用、生效方式和使用方式。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eef2ff"/>
+    </linearGradient>
+    <style>
+      .title { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 500 16px 'Segoe UI', Arial, sans-serif; fill: #475569; }
+      .header { font: 700 20px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .file { font: 700 15px 'Consolas', 'Courier New', monospace; fill: #111827; }
+      .text { font: 14px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .tiny { font: 12px 'Segoe UI', Arial, sans-serif; fill: #64748b; }
+      .table { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; }
+      .head { fill: #dbeafe; stroke: #93c5fd; stroke-width: 1.5; }
+      .auto { fill: #e0f2fe; }
+      .manual { fill: #fef3c7; }
+      .knowledge { fill: #ecfccb; }
+      .flow { fill: #fce7f3; }
+      .divider { stroke: #cbd5e1; stroke-width: 1; }
+      .badgeText { font: 700 13px 'Segoe UI', Arial, sans-serif; fill: #1f2937; }
+      .label { font: 700 13px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .value { font: 14px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1760" height="1680" fill="url(#bg)"/>
+
+  <text x="70" y="70" class="title">TICS 资产作用与使用方式总表</text>
+  <text x="70" y="102" class="subtitle">回答三个问题：它是什么、什么时候生效、团队成员怎么使用。此版改为卡片布局，避免表格文本遮挡。</text>
+
+  <rect x="70" y="150" width="1620" height="90" rx="18" ry="18" class="table"/>
+  <text x="100" y="188" class="header">阅读顺序建议</text>
+  <text x="100" y="214" class="text">先看自动层：tics-csharp.instructions.md；再看按需层：SKILL.md 和 tics-preflight.prompt.md；最后看知识层：3 个 reference 文件。</text>
+
+  <rect x="70" y="280" width="1620" height="58" rx="14" ry="14" class="head"/>
+  <text x="100" y="316" class="header">1. 自动层：默认护栏</text>
+
+  <rect x="70" y="360" width="1620" height="210" rx="18" ry="18" class="table auto"/>
+  <text x="100" y="400" class="file">.github/instructions/</text>
+  <text x="100" y="424" class="file">tics-csharp.instructions.md</text>
+  <text x="100" y="454" class="badgeText">类型：仓库级自动指令</text>
+
+  <text x="430" y="398" class="label">主要作用</text>
+  <text x="430" y="424" class="value">给 agent 一个默认护栏，约束生成或修改 C# 时的行为。</text>
+  <text x="430" y="450" class="value">核心是 must-fix 范围、禁止项、生成约束、验证要求。</text>
+
+  <text x="430" y="490" class="label">如何生效</text>
+  <text x="430" y="516" class="value">自动生效。</text>
+  <text x="430" y="542" class="value">当 agent 处理匹配 applyTo 的 .cs 文件时，</text>
+  <text x="430" y="566" class="value">它会作为默认约束进入上下文。</text>
+
+  <text x="980" y="398" class="label">怎么使用</text>
+  <text x="980" y="424" class="value">平时不用手动调用。</text>
+  <text x="980" y="450" class="value">团队只需要维护内容，开发时它会自然参与生成。</text>
+
+  <text x="980" y="490" class="label">适合放什么内容</text>
+  <text x="980" y="516" class="value">短、稳定、必须长期遵守的规则。</text>
+  <text x="980" y="542" class="value">例如：null 安全、异常处理、one type per file、镜像更新。</text>
+
+  <rect x="70" y="610" width="1620" height="58" rx="14" ry="14" class="head"/>
+  <text x="100" y="646" class="header">2. 按需层：工作流入口与交付前自检</text>
+
+  <rect x="70" y="690" width="785" height="260" rx="18" ry="18" class="table flow"/>
+  <text x="100" y="730" class="file">.github/skills/tics-standard/</text>
+  <text x="100" y="754" class="file">SKILL.md</text>
+  <text x="100" y="784" class="badgeText">类型：按需工作流入口</text>
+
+  <text x="380" y="728" class="label">主要作用</text>
+  <text x="380" y="754" class="value">定义“遇到 TICS 问题时，agent 应按什么步骤工作”。</text>
+  <text x="380" y="780" class="value">它像流程手册，不是长规则表。</text>
+
+  <text x="380" y="820" class="label">如何生效</text>
+  <text x="380" y="846" class="value">按需触发。</text>
+  <text x="380" y="872" class="value">用户在 Chat 里选 skill，</text>
+  <text x="380" y="896" class="value">或者模型判断任务适合这个 skill 时触发。</text>
+
+  <text x="380" y="936" class="label">怎么使用</text>
+  <text x="380" y="962" class="value">适合在修 TICS、准备交付、处理规则号时使用。</text>
+  <text x="380" y="986" class="value">输入 TICS report、rule id、changed files 或具体符号都可以。</text>
+
+  <rect x="905" y="690" width="785" height="260" rx="18" ry="18" class="table manual"/>
+  <text x="935" y="730" class="file">.github/prompts/</text>
+  <text x="935" y="754" class="file">tics-preflight.prompt.md</text>
+  <text x="935" y="784" class="badgeText">类型：手动交付前检查入口</text>
+
+  <text x="1210" y="728" class="label">主要作用</text>
+  <text x="1210" y="754" class="value">把“交付前按 TICS 自检当前改动”做成一键可运行的 prompt。</text>
+  <text x="1210" y="780" class="value">重点是 findings first，默认 review-only。</text>
+
+  <text x="1210" y="820" class="label">如何生效</text>
+  <text x="1210" y="846" class="value">手动触发，不会静默自动参与每次代码生成。</text>
+
+  <text x="1210" y="886" class="label">怎么使用</text>
+  <text x="1210" y="912" class="value">通过 Chat 里的 /Prompt、Run Prompt，</text>
+  <text x="1210" y="936" class="value">或者直接打开文件后点击运行来执行。</text>
+  <text x="1210" y="962" class="value">适合提交前、PR 前、handoff 前做一次快检。</text>
+
+  <rect x="70" y="990" width="1620" height="58" rx="14" ry="14" class="head"/>
+  <text x="100" y="1026" class="header">3. 知识层：3 个 reference 文件各自做什么</text>
+
+  <rect x="70" y="1070" width="1620" height="160" rx="18" ry="18" class="table knowledge"/>
+  <text x="100" y="1110" class="file">references/common-rules.md</text>
+  <text x="100" y="1136" class="badgeText">作用：沉淀仓库里最常见、最先检查的 TICS 处理模式。</text>
+  <text x="100" y="1160" class="value">内容：20@480、7@105、7@107、异常日志、镜像更新、验证模式。</text>
+
+  <text x="600" y="1110" class="file">references/philips-csharp-checked-level1-7.md</text>
+  <text x="600" y="1136" class="badgeText">作用：说明为什么默认 level 1-7 是 must-fix 范围。</text>
+  <text x="600" y="1160" class="value">内容：规则级别统计、level 1-7 列表、默认优先级政策说明。</text>
+
+  <text x="1130" y="1110" class="file">references/which-file-to-edit.md</text>
+  <text x="1130" y="1136" class="badgeText">作用：维护这套资产时，决定新规则该放 instruction、skill、reference 还是 prompt。</text>
+  <text x="1130" y="1160" class="value">内容：落点决策、文件类型区别、维护经验、何时才应该上 hook。</text>
+
+  <text x="100" y="1200" class="label">如何生效</text>
+  <text x="170" y="1200" class="value">reference 通常不单独自动触发，而是被 skill、prompt 或维护人员读取后发挥作用。</text>
+
+  <text x="100" y="1234" class="label">怎么使用</text>
+  <text x="170" y="1234" class="value">修具体问题先看 common-rules；定 must-fix 范围看 level1-7 摘要；扩展团队规则看 which-file-to-edit。</text>
+
+  <rect x="70" y="1270" width="1620" height="78" rx="16" ry="16" class="table"/>
+  <text x="100" y="1310" class="header">一句话记忆法</text>
+  <text x="100" y="1338" class="text">instruction = 默认护栏；skill = 修复流程；reference = 详细知识；prompt = 手动预检入口。</text>
+
+
+</svg>

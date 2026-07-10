@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="1040" viewBox="0 0 1680 1040" role="img" aria-labelledby="title desc">
+  <title id="title">TICS 资产生效与使用流程图</title>
+  <desc id="desc">说明在编辑 C#、修复 TICS、以及交付前检查这三类场景中，instructions、skill、references 和 prompt 分别如何被触发和使用。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eff6ff"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#475569"/>
+    </marker>
+    <style>
+      .title { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .subtitle { font: 500 16px 'Segoe UI', Arial, sans-serif; fill: #475569; }
+      .h { font: 700 20px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .path { font: 700 15px 'Consolas', 'Courier New', monospace; fill: #111827; }
+      .text { font: 14px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .tiny { font: 12px 'Segoe UI', Arial, sans-serif; fill: #64748b; }
+      .card { stroke: #cbd5e1; stroke-width: 1.5; rx: 18; ry: 18; }
+      .line { stroke: #475569; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .dashed { stroke: #94a3b8; stroke-width: 2; stroke-dasharray: 8 6; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1680" height="1040" fill="url(#bg)"/>
+
+  <text x="70" y="70" class="title">TICS 资产生效与使用流程图</text>
+  <text x="70" y="102" class="subtitle">看清三条主线：日常写代码时怎么生效，修 TICS 时怎么触发，交付前怎么检查</text>
+
+  <rect x="70" y="150" width="420" height="120" class="card" fill="#ffffff"/>
+  <text x="100" y="190" class="h">场景 A：正在修改 C# 文件</text>
+  <text x="100" y="220" class="text">触发条件：agent 正在读写匹配 .cs 的文件。</text>
+  <text x="100" y="246" class="text">目标：让默认生成结果尽量先符合 TICS，再减少返工。</text>
+
+  <rect x="620" y="150" width="420" height="120" class="card" fill="#ffffff"/>
+  <text x="650" y="190" class="h">场景 B：明确在修 TICS 或准备交付</text>
+  <text x="650" y="220" class="text">触发条件：用户给出 TICS report、rule id、changed files。</text>
+  <text x="650" y="246" class="text">目标：按固定流程做 review、修复、验证和收尾说明。</text>
+
+  <rect x="1170" y="150" width="420" height="120" class="card" fill="#ffffff"/>
+  <text x="1200" y="190" class="h">场景 C：提交前想快速自检</text>
+  <text x="1200" y="220" class="text">触发条件：手动运行 prompt。</text>
+  <text x="1200" y="246" class="text">目标：先出 findings，确认当前改动是否有明显 TICS 风险。</text>
+
+  <rect x="100" y="360" width="360" height="180" class="card" fill="#dbeafe"/>
+  <text x="130" y="402" class="h">自动加载</text>
+  <text x="130" y="432" class="path">tics-csharp.instructions.md</text>
+  <text x="130" y="462" class="text">通过 applyTo: **/*.cs 自动进入上下文。</text>
+  <text x="130" y="488" class="text">它不需要手动点选，也不是 slash command。</text>
+  <text x="130" y="514" class="text">影响的是生成约束、默认禁止项、验证要求。</text>
+
+  <rect x="650" y="360" width="360" height="180" class="card" fill="#dcfce7"/>
+  <text x="680" y="402" class="h">按需触发</text>
+  <text x="680" y="432" class="path">skills/tics-standard/SKILL.md</text>
+  <text x="680" y="462" class="text">适合在 Chat 中选择 skill，或给出明确 TICS 任务。</text>
+  <text x="680" y="488" class="text">它定义工作顺序：缩小范围、形成假设、修复、验证、报告。</text>
+  <text x="680" y="514" class="text">skill 会进一步引用 reference 文件来辅助判断。</text>
+
+  <rect x="1200" y="360" width="360" height="180" class="card" fill="#fef3c7"/>
+  <text x="1230" y="402" class="h">手动运行</text>
+  <text x="1230" y="432" class="path">prompts/tics-preflight.prompt.md</text>
+  <text x="1230" y="462" class="text">使用方式：Chat 输入 /TICS Preflight，或 Run Prompt。</text>
+  <text x="1230" y="488" class="text">默认 review-only，不会直接改代码。</text>
+  <text x="1230" y="514" class="text">重点输出 findings、风险和验证缺口。</text>
+
+  <rect x="420" y="650" width="840" height="220" class="card" fill="#ffffff"/>
+  <text x="450" y="692" class="h">支撑知识层：references/*.md</text>
+  <text x="450" y="724" class="text">common-rules.md：仓库里最常见的 TICS 处理模式，优先拿来复用。</text>
+  <text x="450" y="752" class="text">philips-csharp-checked-level1-7.md：说明为什么默认 level 1-7 是 must-fix 范围。</text>
+  <text x="450" y="780" class="text">which-file-to-edit.md：维护这套定制资产时，帮助决定新规则应该放到哪个文件。</text>
+  <text x="450" y="820" class="text">这些 reference 通常不单独自动执行，而是被 skill、prompt 或维护人员读取后发挥作用。</text>
+
+  <rect x="70" y="920" width="1520" height="70" class="card" fill="#ffffff"/>
+  <text x="100" y="962" class="h">团队可操作结论</text>
+  <text x="400" y="962" class="text">日常写 C#：默认受 instructions 约束</text>
+  <text x="820" y="962" class="text">修 TICS：优先用 skill</text>
+  <text x="1110" y="962" class="text">交付前自检：手动跑 prompt</text>
+  <text x="1390" y="962" class="text">扩规则：查 which-file-to-edit</text>
+
+  <path d="M280 270 L280 340" class="line"/>
+  <path d="M830 270 L830 340" class="line"/>
+  <path d="M1380 270 L1380 340" class="line"/>
+
+  <path d="M830 540 L830 620" class="line"/>
+  <path d="M1380 540 L1220 620" class="dashed"/>
+  <path d="M280 540 L460 620" class="dashed"/>
+
+  <text x="70" y="1018" class="tiny">记忆法：自动规则靠 instructions，任务流程靠 skill，详细知识靠 references，交付前快检靠 prompt。</text>
+</svg>

@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Philips.CT.Host.ImageDisplay.Impl/1.0.0": {
+        "dependencies": {
+          "Philips.CT.Host.ImageDisplay.Inf": "1.0.0"
+        },
+        "runtime": {
+          "Philips.CT.Host.ImageDisplay.Impl.dll": {}
+        }
+      },
+      "Philips.CT.Host.ImageDisplay.Inf/1.0.0": {
+        "runtime": {
+          "Philips.CT.Host.ImageDisplay.Inf.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Philips.CT.Host.ImageDisplay.Impl/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Philips.CT.Host.ImageDisplay.Inf/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

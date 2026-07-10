@@ -1,0 +1,1077 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="598db323-7e5d-4750-8af0-2e851d570f55" name="310091518@YY539580 2026-07-02 14:22:04" runUser="CODE1\310091518" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-07-02T14:22:04.3584440+08:00" queuing="2026-07-02T14:22:04.3584441+08:00" start="2026-07-02T14:22:03.4290653+08:00" finish="2026-07-02T14:22:04.4344832+08:00" />
+  <TestSettings name="default" id="96a1cf68-8b79-46d8-a44d-b5fc25c3a94c">
+    <Deployment runDeploymentRoot="310091518_YY539580_2026-07-02_14_22_04" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="53137cb8-2017-42fa-a8e1-29f776492131" testId="894d4a33-4e7e-463c-9dd5-e141d5dfd0c9" testName="WarningIsLoggedWhenFallbackValuesAreUsed" computerName="YY539580" duration="00:00:00.0017580" startTime="2026-07-02T14:22:04.3434397+08:00" endTime="2026-07-02T14:22:04.3451979+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="53137cb8-2017-42fa-a8e1-29f776492131">
+      <Output>
+        <StdOut>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded without DICOM windowing tags&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithoutDicomWindowingTags() (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then a warning-level log entry is recorded for the missing DICOM defaults&#xD;
+-&gt; done: Task3Steps.ThenWarningLevelLogEntryIsRecorded() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="784035ff-c0db-438e-a55a-f67d1d7aa730" testId="1261ee9b-5022-9734-8347-cfc3a5b9986a" testName="ResetButtonIsDisabledWhenNoSeriesIsLoaded" computerName="YY539580" duration="00:00:00.0024320" startTime="2026-07-02T14:22:04.3021966+08:00" endTime="2026-07-02T14:22:04.3046283+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="784035ff-c0db-438e-a55a-f67d1d7aa730">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given no CT series is loaded in the active viewport&#xD;
+-&gt; done: Task2Steps.GivenNoSeriesLoaded() (0.0s)&#xD;
+When the operator views the image display panel&#xD;
+-&gt; done: Task2Steps.WhenOperatorViewsPanel() (0.0s)&#xD;
+Then the ResetWindowLevelButton is disabled&#xD;
+-&gt; done: Task2Steps.ThenResetButtonIsDisabled() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0442fe63-1045-40f5-8007-456e80661401" testId="9f1f7696-dfcd-2c19-edbb-a3eed8109c06" testName="KeyboardShortcutTriggersReset" computerName="YY539580" duration="00:00:00.0033350" startTime="2026-07-02T14:22:04.2988470+08:00" endTime="2026-07-02T14:22:04.3021823+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0442fe63-1045-40f5-8007-456e80661401">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator presses Ctrl+Shift+W&#xD;
+-&gt; done: Task2Steps.WhenOperatorPressesKeyboardShortcut() (0.0s)&#xD;
+Then the Window Width is 1500&#xD;
+-&gt; done: Task2Steps.ThenWindowWidthIs(1500) (0.0s)&#xD;
+And the Window Center is -600&#xD;
+-&gt; done: Task2Steps.ThenWindowCenterIs(-600) (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="715596b6-170b-4810-9c88-94469eb53293" testId="c3171668-bc8e-173a-5394-631026072cda" testName="UndoIsUnavailableWhenNoResetHasBeenPerformed" computerName="YY539580" duration="00:00:00.0098140" startTime="2026-07-02T14:22:04.3149709+08:00" endTime="2026-07-02T14:22:04.3247850+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="715596b6-170b-4810-9c88-94469eb53293">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task4Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given no Window/Level changes have been made&#xD;
+-&gt; done: Task4Steps.GivenNoWindowLevelChangesMade() (0.0s)&#xD;
+When the operator checks the Undo availability&#xD;
+-&gt; done: Task4Steps.WhenOperatorChecksUndoAvailability() (0.0s)&#xD;
+Then the Undo function for Window/Level changes is not available&#xD;
+-&gt; done: Task4Steps.ThenUndoIsNotAvailable() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c632a003-f312-4144-b766-3fec01618501" testId="0a985713-3eb3-4cfc-4d7b-7fbe67f406c9" testName="KeyboardShortcutTriggersReset" computerName="YY539580" duration="00:00:00.0014950" startTime="2026-07-02T14:22:04.3523430+08:00" endTime="2026-07-02T14:22:04.3538383+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c632a003-f312-4144-b766-3fec01618501">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator presses Ctrl+Shift+W&#xD;
+-&gt; done: Task2Steps.WhenOperatorPressesKeyboardShortcut() (0.0s)&#xD;
+Then the Window Width is 1500&#xD;
+-&gt; done: Task2Steps.ThenWindowWidthIs(1500) (0.0s)&#xD;
+And the Window Center is -600&#xD;
+-&gt; done: Task2Steps.ThenWindowCenterIs(-600) (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="07d5d487-1a9d-4b31-a0e4-f3f00325bca9" testId="b68ff109-e4ff-894b-a507-56e9c6bb781b" testName="NegativeWindowWidthIsRejected" computerName="YY539580" duration="00:00:00.0316760" startTime="2026-07-02T14:22:04.1932542+08:00" endTime="2026-07-02T14:22:04.2249288+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="07d5d487-1a9d-4b31-a0e4-f3f00325bca9">
+      <Output>
+        <StdOut>Given a Window Width of -100 and a Window Center of 40&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthAndCenter(-100, 40) (0.0s)&#xD;
+When a WindowLevel is created with those values&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValues() (0.0s)&#xD;
+Then the creation fails with a validation error&#xD;
+-&gt; done: Task1Steps.ThenTheCreationFailsWithAValidationError() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="76e83205-d21a-43dd-8b8a-05b430fe2341" testId="992649fc-2e3f-3a7b-f659-ceaf11db1fd1" testName="FallbackAppliedWhenDICOMWindowWidthIsNegative" computerName="YY539580" duration="00:00:00.0131760" startTime="2026-07-02T14:22:04.2441859+08:00" endTime="2026-07-02T14:22:04.2573612+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="76e83205-d21a-43dd-8b8a-05b430fe2341">
+      <Output>
+        <StdOut>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded with a DICOM Window Width of -100&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithInvalidDicomWindowWidth(-100) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 400&#xD;
+-&gt; done: Task3Steps.ThenWindowWidthIs(400) (0.0s)&#xD;
+And the Window Center is 40&#xD;
+-&gt; done: Task3Steps.ThenWindowCenterIs(40) (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="16d94ff1-0eca-4f4d-8cd9-89789faf0b80" testId="c6c84630-045f-5d48-a025-387c8deeb5ca" testName="UndoRestoresThePreviousWindowWidthAndWindowCenter" computerName="YY539580" duration="00:00:00.0022470" startTime="2026-07-02T14:22:04.3248127+08:00" endTime="2026-07-02T14:22:04.3270598+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="16d94ff1-0eca-4f4d-8cd9-89789faf0b80">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task4Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task4Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+And the operator has activated the ResetWindowLevelButton&#xD;
+-&gt; done: Task4Steps.GivenOperatorActivatedResetButton() (0.0s)&#xD;
+When the operator invokes Undo&#xD;
+-&gt; done: Task4Steps.WhenOperatorInvokesUndo() (0.0s)&#xD;
+Then the Window Width is 800&#xD;
+-&gt; done: Task4Steps.ThenWindowWidthIs(800) (0.0s)&#xD;
+And the Window Center is -200&#xD;
+-&gt; done: Task4Steps.ThenWindowCenterIs(-200) (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3ada5e5a-e2e8-463e-9e9b-ded2c0c09f6e" testId="306e724e-674d-7c30-149c-b78c9a6bd5e1" testName="FallbackValuesAppliedWhenDICOMWindowingTagsAreAbsent" computerName="YY539580" duration="00:00:00.0018940" startTime="2026-07-02T14:22:04.3415183+08:00" endTime="2026-07-02T14:22:04.3434128+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3ada5e5a-e2e8-463e-9e9b-ded2c0c09f6e">
+      <Output>
+        <StdOut>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded without DICOM windowing tags&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithoutDicomWindowingTags() (0.0s)&#xD;
+And the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task3Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 400&#xD;
+-&gt; done: Task3Steps.ThenWindowWidthIs(400) (0.0s)&#xD;
+And the Window Center is 40&#xD;
+-&gt; done: Task3Steps.ThenWindowCenterIs(40) (0.0s)&#xD;
+And the confirmation message indicates that fallback defaults were used&#xD;
+-&gt; done: Task3Steps.ThenConfirmationMessageIndicatesFallbackDefaultsWereUsed() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c974a95a-b78a-4cb2-99fa-c757122debea" testId="34085d9d-2381-998e-1c46-fa91fcc1dffc" testName="ValidWindowWidthAndCenterCreateAWindowLevel" computerName="YY539580" duration="00:00:00.0008250" startTime="2026-07-02T14:22:04.3321750+08:00" endTime="2026-07-02T14:22:04.3329998+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c974a95a-b78a-4cb2-99fa-c757122debea">
+      <Output>
+        <StdOut>Given a Window Width of 400 and a Window Center of 40&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+When a WindowLevel is created with those values&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValues() (0.0s)&#xD;
+Then the WindowLevel has Width 400 and Center 40&#xD;
+-&gt; done: Task1Steps.ThenTheWindowLevelHasWidthAndCenter(400, 40) (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5fb9e56d-20a7-4fc7-bc63-c93fe60073a5" testId="9090a6fd-9812-de48-d5d6-da0f899bc897" testName="RedoReappliesTheResetAfterAnUndo" computerName="YY539580" duration="00:00:00.0040610" startTime="2026-07-02T14:22:04.3572488+08:00" endTime="2026-07-02T14:22:04.3613082+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5fb9e56d-20a7-4fc7-bc63-c93fe60073a5">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task4Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task4Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+And the operator has activated the ResetWindowLevelButton&#xD;
+-&gt; done: Task4Steps.GivenOperatorActivatedResetButton() (0.0s)&#xD;
+And the operator has invoked Undo&#xD;
+-&gt; done: Task4Steps.GivenOperatorInvokedUndo() (0.0s)&#xD;
+When the operator invokes Redo&#xD;
+-&gt; done: Task4Steps.WhenOperatorInvokesRedo() (0.0s)&#xD;
+Then the Window Width is 1500&#xD;
+-&gt; done: Task4Steps.ThenWindowWidthIs(1500) (0.0s)&#xD;
+And the Window Center is -600&#xD;
+-&gt; done: Task4Steps.ThenWindowCenterIs(-600) (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a043666a-f235-47fc-bc4e-a04abb55ad8a" testId="48060d73-5f76-c761-924f-4a3699f596d9" testName="ResetRestoresDICOMDefaultWindowWidthAndWindowCenter" computerName="YY539580" duration="00:00:00.0015720" startTime="2026-07-02T14:22:04.3549536+08:00" endTime="2026-07-02T14:22:04.3565259+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a043666a-f235-47fc-bc4e-a04abb55ad8a">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task2Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 1500&#xD;
+-&gt; done: Task2Steps.ThenWindowWidthIs(1500) (0.0s)&#xD;
+And the Window Center is -600&#xD;
+-&gt; done: Task2Steps.ThenWindowCenterIs(-600) (0.0s)&#xD;
+And a confirmation message is displayed in the status bar&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageIsDisplayed() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="922f0c35-a900-451f-ad11-3aca9bc4aa91" testId="84d64f1d-c4a1-d411-51fd-243fabef195c" testName="ConfirmationMessageIncludesTheDICOMPresetName" computerName="YY539580" duration="00:00:00.0040270" startTime="2026-07-02T14:22:04.2947986+08:00" endTime="2026-07-02T14:22:04.2988252+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="922f0c35-a900-451f-ad11-3aca9bc4aa91">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the CT series includes a preset name "Lung" for the default window&#xD;
+-&gt; done: Task2Steps.GivenSeriesIncludesPresetName("Lung") (0.0s)&#xD;
+And the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task2Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the confirmation message includes the text "Lung"&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageIncludesText("Lung") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="aa5446a3-e429-4592-96fe-2b51a2f9ba8a" testId="a6e45ad5-4131-1110-80cb-1be988dc4843" testName="DICOMDisplayTagConstantsMapToCorrectTagNumbers" computerName="YY539580" duration="00:00:00.0029560" startTime="2026-07-02T14:22:04.3279310+08:00" endTime="2026-07-02T14:22:04.3308870+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aa5446a3-e429-4592-96fe-2b51a2f9ba8a">
+      <Output>
+        <StdOut>Given the DICOM display tag constants&#xD;
+-&gt; done: Task1Steps.GivenTheDicomDisplayTagConstants() (0.0s)&#xD;
+Then the WindowCenter constant maps to DICOM tag 0028,1050&#xD;
+-&gt; done: Task1Steps.ThenTheWindowCenterConstantMapsToDicomTag00281050() (0.0s)&#xD;
+And the WindowWidth constant maps to DICOM tag 0028,1051&#xD;
+-&gt; done: Task1Steps.ThenTheWindowWidthConstantMapsToDicomTag00281051() (0.0s)&#xD;
+And the WindowCenterWidthExplanation constant maps to DICOM tag 0028,1055&#xD;
+-&gt; done: Task1Steps.ThenTheWindowCenterWidthExplanationConstantMapsToDicomTag00281055() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="90d545fa-2eba-409d-9521-3795f606bdf0" testId="23429e60-1f24-e414-8938-2a3fa821ed95" testName="ConfirmationMessageAuto_Dismisses" computerName="YY539580" duration="00:00:00.0124480" startTime="2026-07-02T14:22:04.2823048+08:00" endTime="2026-07-02T14:22:04.2947520+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="90d545fa-2eba-409d-9521-3795f606bdf0">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task2Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then a confirmation message is displayed in the status bar&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageIsDisplayed() (0.0s)&#xD;
+And the confirmation message disappears automatically within 3 seconds&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageDisappearsWithin3Seconds() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="76e1849b-9b23-46e5-9940-b571e7a526a3" testId="cb7ff03c-e473-020b-cbaf-8d416f0b2a35" testName="UndoIsUnavailableWhenNoResetHasBeenPerformed" computerName="YY539580" duration="00:00:00.0016210" startTime="2026-07-02T14:22:04.3613402+08:00" endTime="2026-07-02T14:22:04.3629610+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="76e1849b-9b23-46e5-9940-b571e7a526a3">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task4Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given no Window/Level changes have been made&#xD;
+-&gt; done: Task4Steps.GivenNoWindowLevelChangesMade() (0.0s)&#xD;
+When the operator checks the Undo availability&#xD;
+-&gt; done: Task4Steps.WhenOperatorChecksUndoAvailability() (0.0s)&#xD;
+Then the Undo function for Window/Level changes is not available&#xD;
+-&gt; done: Task4Steps.ThenUndoIsNotAvailable() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6f6d1b71-f10a-4b6c-8734-495a78203b79" testId="aebbba0f-0297-fe9a-295d-0acac16e2217" testName="FallbackValuesAppliedWhenDICOMWindowingTagsAreAbsent" computerName="YY539580" duration="00:00:00.0046110" startTime="2026-07-02T14:22:04.2737786+08:00" endTime="2026-07-02T14:22:04.2783888+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6f6d1b71-f10a-4b6c-8734-495a78203b79">
+      <Output>
+        <StdOut>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded without DICOM windowing tags&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithoutDicomWindowingTags() (0.0s)&#xD;
+And the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task3Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 400&#xD;
+-&gt; done: Task3Steps.ThenWindowWidthIs(400) (0.0s)&#xD;
+And the Window Center is 40&#xD;
+-&gt; done: Task3Steps.ThenWindowCenterIs(40) (0.0s)&#xD;
+And the confirmation message indicates that fallback defaults were used&#xD;
+-&gt; done: Task3Steps.ThenConfirmationMessageIndicatesFallbackDefaultsWereUsed() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="98a9e176-75ca-46c0-8d55-8913e5805733" testId="fde737bc-ef60-6187-19fe-b104167a066e" testName="ZeroWindowWidthIsRejected" computerName="YY539580" duration="00:00:00.0012700" startTime="2026-07-02T14:22:04.3346268+08:00" endTime="2026-07-02T14:22:04.3358967+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="98a9e176-75ca-46c0-8d55-8913e5805733">
+      <Output>
+        <StdOut>Given a Window Width of 0 and a Window Center of 40&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthAndCenter(0, 40) (0.0s)&#xD;
+When a WindowLevel is created with those values&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValues() (0.0s)&#xD;
+Then the creation fails with a validation error&#xD;
+-&gt; done: Task1Steps.ThenTheCreationFailsWithAValidationError() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f4cfebac-5c4a-4c51-9172-2c352cc8eaef" testId="6b01eba9-2bb6-00aa-41ce-3886d1c8645d" testName="WindowLevelPreservesTheDICOMPresetName" computerName="YY539580" duration="00:00:00.0053460" startTime="2026-07-02T14:22:04.2321951+08:00" endTime="2026-07-02T14:22:04.2375413+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f4cfebac-5c4a-4c51-9172-2c352cc8eaef">
+      <Output>
+        <StdOut>Given a Window Width of 400 and a Window Center of 40 with preset name "Soft Tissue"&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthCenterAndPresetName(400, 40, "Soft Tissue") (0.0s)&#xD;
+When a WindowLevel is created with those values and preset name&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValuesAndPresetName() (0.0s)&#xD;
+Then the WindowLevel preset name is "Soft Tissue"&#xD;
+-&gt; done: Task1Steps.ThenTheWindowLevelPresetNameIs("Soft Tissue") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="80620594-8162-4511-9206-94c425b494a6" testId="fd025f40-0423-2ba5-b1c1-568e7abbee56" testName="ConfirmationMessageAuto_Dismisses" computerName="YY539580" duration="00:00:00.0045140" startTime="2026-07-02T14:22:04.3460312+08:00" endTime="2026-07-02T14:22:04.3505448+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="80620594-8162-4511-9206-94c425b494a6">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task2Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then a confirmation message is displayed in the status bar&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageIsDisplayed() (0.0s)&#xD;
+And the confirmation message disappears automatically within 3 seconds&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageDisappearsWithin3Seconds() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ea43990e-9287-45db-ad63-bb3da7932a2f" testId="9bd621d9-abde-5d99-a3c9-a4621f05794d" testName="FallbackAppliedWhenDICOMWindowWidthIsZero" computerName="YY539580" duration="00:00:00.0163330" startTime="2026-07-02T14:22:04.2574035+08:00" endTime="2026-07-02T14:22:04.2737364+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ea43990e-9287-45db-ad63-bb3da7932a2f">
+      <Output>
+        <StdOut>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded with a DICOM Window Width of 0&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithInvalidDicomWindowWidth(0) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 400&#xD;
+-&gt; done: Task3Steps.ThenWindowWidthIs(400) (0.0s)&#xD;
+And the Window Center is 40&#xD;
+-&gt; done: Task3Steps.ThenWindowCenterIs(40) (0.0s)&#xD;
+And the confirmation message indicates an invalid DICOM value was encountered&#xD;
+-&gt; done: Task3Steps.ThenConfirmationMessageIndicatesInvalidDicomValue() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c08185d8-1e1a-4e04-9d19-914089f8e395" testId="4b927405-c320-5690-3d0e-38d307a0a6e0" testName="DICOMDisplayTagConstantsMapToCorrectTagNumbers" computerName="YY539580" duration="00:00:00.0581960" startTime="2026-07-02T14:22:04.1339523+08:00" endTime="2026-07-02T14:22:04.1920926+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c08185d8-1e1a-4e04-9d19-914089f8e395">
+      <Output>
+        <StdOut>Given the DICOM display tag constants&#xD;
+-&gt; done: Task1Steps.GivenTheDicomDisplayTagConstants() (0.0s)&#xD;
+Then the WindowCenter constant maps to DICOM tag 0028,1050&#xD;
+-&gt; done: Task1Steps.ThenTheWindowCenterConstantMapsToDicomTag00281050() (0.0s)&#xD;
+And the WindowWidth constant maps to DICOM tag 0028,1051&#xD;
+-&gt; done: Task1Steps.ThenTheWindowWidthConstantMapsToDicomTag00281051() (0.0s)&#xD;
+And the WindowCenterWidthExplanation constant maps to DICOM tag 0028,1055&#xD;
+-&gt; done: Task1Steps.ThenTheWindowCenterWidthExplanationConstantMapsToDicomTag00281055() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="dcd0a805-427f-4d69-b668-e853f4dd7641" testId="81d07c67-3ce6-e1ae-1658-85bb9a02869d" testName="ResetRestoresDICOMDefaultWindowWidthAndWindowCenter" computerName="YY539580" duration="00:00:00.0025780" startTime="2026-07-02T14:22:04.3046432+08:00" endTime="2026-07-02T14:22:04.3072210+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dcd0a805-427f-4d69-b668-e853f4dd7641">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task2Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 1500&#xD;
+-&gt; done: Task2Steps.ThenWindowWidthIs(1500) (0.0s)&#xD;
+And the Window Center is -600&#xD;
+-&gt; done: Task2Steps.ThenWindowCenterIs(-600) (0.0s)&#xD;
+And a confirmation message is displayed in the status bar&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageIsDisplayed() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="df79c5a9-7155-4f05-96e2-14d7f00052bb" testId="86656701-c70d-914b-dcc1-112aca6f4aa1" testName="ValidWindowWidthAndCenterCreateAWindowLevel" computerName="YY539580" duration="00:00:00.0071740" startTime="2026-07-02T14:22:04.2249920+08:00" endTime="2026-07-02T14:22:04.2321658+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="df79c5a9-7155-4f05-96e2-14d7f00052bb">
+      <Output>
+        <StdOut>Given a Window Width of 400 and a Window Center of 40&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+When a WindowLevel is created with those values&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValues() (0.0s)&#xD;
+Then the WindowLevel has Width 400 and Center 40&#xD;
+-&gt; done: Task1Steps.ThenTheWindowLevelHasWidthAndCenter(400, 40) (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b12adf48-7cfb-4502-9939-68959d45c140" testId="62fd7486-3d8c-35a6-8e3e-926de0378969" testName="WarningIsLoggedWhenFallbackValuesAreUsed" computerName="YY539580" duration="00:00:00.0029460" startTime="2026-07-02T14:22:04.2784211+08:00" endTime="2026-07-02T14:22:04.2813667+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b12adf48-7cfb-4502-9939-68959d45c140">
+      <Output>
+        <StdOut>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded without DICOM windowing tags&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithoutDicomWindowingTags() (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then a warning-level log entry is recorded for the missing DICOM defaults&#xD;
+-&gt; done: Task3Steps.ThenWarningLevelLogEntryIsRecorded() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b2e11e5f-a82d-4d61-a20c-3d882983d4ed" testId="c66b8cb4-1aa9-2c92-cfe6-1f48add9ddfb" testName="ZeroWindowWidthIsRejected" computerName="YY539580" duration="00:00:00.0012500" startTime="2026-07-02T14:22:04.2376023+08:00" endTime="2026-07-02T14:22:04.2388527+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b2e11e5f-a82d-4d61-a20c-3d882983d4ed">
+      <Output>
+        <StdOut>Given a Window Width of 0 and a Window Center of 40&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthAndCenter(0, 40) (0.0s)&#xD;
+When a WindowLevel is created with those values&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValues() (0.0s)&#xD;
+Then the creation fails with a validation error&#xD;
+-&gt; done: Task1Steps.ThenTheCreationFailsWithAValidationError() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="27359c57-b812-4974-a2bb-5d2399a3352e" testId="1e30ddf2-ebcc-4e0d-7d19-7eb902e5dfea" testName="ConfirmationMessageIncludesTheDICOMPresetName" computerName="YY539580" duration="00:00:00.0017460" startTime="2026-07-02T14:22:04.3505756+08:00" endTime="2026-07-02T14:22:04.3523211+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="27359c57-b812-4974-a2bb-5d2399a3352e">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the CT series includes a preset name "Lung" for the default window&#xD;
+-&gt; done: Task2Steps.GivenSeriesIncludesPresetName("Lung") (0.0s)&#xD;
+And the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task2Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the confirmation message includes the text "Lung"&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageIncludesText("Lung") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="da446376-6ae5-4806-9601-b71c14140721" testId="b1fd9da0-27ee-1524-e0fe-82be8956bf69" testName="RedoReappliesTheResetAfterAnUndo" computerName="YY539580" duration="00:00:00.0067640" startTime="2026-07-02T14:22:04.3081844+08:00" endTime="2026-07-02T14:22:04.3149480+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da446376-6ae5-4806-9601-b71c14140721">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task4Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task4Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+And the operator has activated the ResetWindowLevelButton&#xD;
+-&gt; done: Task4Steps.GivenOperatorActivatedResetButton() (0.0s)&#xD;
+And the operator has invoked Undo&#xD;
+-&gt; done: Task4Steps.GivenOperatorInvokedUndo() (0.0s)&#xD;
+When the operator invokes Redo&#xD;
+-&gt; done: Task4Steps.WhenOperatorInvokesRedo() (0.0s)&#xD;
+Then the Window Width is 1500&#xD;
+-&gt; done: Task4Steps.ThenWindowWidthIs(1500) (0.0s)&#xD;
+And the Window Center is -600&#xD;
+-&gt; done: Task4Steps.ThenWindowCenterIs(-600) (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="58d15504-5297-4b94-87db-85fc6a0356a4" testId="5e038bae-7185-df10-a8d6-a159a85b803e" testName="WindowLevelPreservesTheDICOMPresetName" computerName="YY539580" duration="00:00:00.0015860" startTime="2026-07-02T14:22:04.3330211+08:00" endTime="2026-07-02T14:22:04.3346068+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="58d15504-5297-4b94-87db-85fc6a0356a4">
+      <Output>
+        <StdOut>Given a Window Width of 400 and a Window Center of 40 with preset name "Soft Tissue"&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthCenterAndPresetName(400, 40, "Soft Tissue") (0.0s)&#xD;
+When a WindowLevel is created with those values and preset name&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValuesAndPresetName() (0.0s)&#xD;
+Then the WindowLevel preset name is "Soft Tissue"&#xD;
+-&gt; done: Task1Steps.ThenTheWindowLevelPresetNameIs("Soft Tissue") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8673ea43-8f95-479f-824f-d3e2b3a6c547" testId="c2155a6d-e164-3b97-856f-2d020a90abbc" testName="FallbackAppliedWhenDICOMWindowWidthIsZero" computerName="YY539580" duration="00:00:00.0018970" startTime="2026-07-02T14:22:04.3395843+08:00" endTime="2026-07-02T14:22:04.3414809+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8673ea43-8f95-479f-824f-d3e2b3a6c547">
+      <Output>
+        <StdOut>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded with a DICOM Window Width of 0&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithInvalidDicomWindowWidth(0) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 400&#xD;
+-&gt; done: Task3Steps.ThenWindowWidthIs(400) (0.0s)&#xD;
+And the Window Center is 40&#xD;
+-&gt; done: Task3Steps.ThenWindowCenterIs(40) (0.0s)&#xD;
+And the confirmation message indicates an invalid DICOM value was encountered&#xD;
+-&gt; done: Task3Steps.ThenConfirmationMessageIndicatesInvalidDicomValue() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e6cef12a-2adf-4d9a-a0f7-1ed03da16833" testId="9aa2e550-e3cd-f560-9478-a514b4537c97" testName="FallbackAppliedWhenDICOMWindowWidthIsNegative" computerName="YY539580" duration="00:00:00.0030780" startTime="2026-07-02T14:22:04.3364836+08:00" endTime="2026-07-02T14:22:04.3395620+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e6cef12a-2adf-4d9a-a0f7-1ed03da16833">
+      <Output>
+        <StdOut>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded with a DICOM Window Width of -100&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithInvalidDicomWindowWidth(-100) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 400&#xD;
+-&gt; done: Task3Steps.ThenWindowWidthIs(400) (0.0s)&#xD;
+And the Window Center is 40&#xD;
+-&gt; done: Task3Steps.ThenWindowCenterIs(40) (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d75323e2-d362-4f87-a74d-df9d871991f8" testId="3d4d659d-f081-0206-8918-5027712a94fa" testName="UndoRestoresThePreviousWindowWidthAndWindowCenter" computerName="YY539580" duration="00:00:00.0015640" startTime="2026-07-02T14:22:04.3629826+08:00" endTime="2026-07-02T14:22:04.3645468+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d75323e2-d362-4f87-a74d-df9d871991f8">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task4Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task4Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+And the operator has activated the ResetWindowLevelButton&#xD;
+-&gt; done: Task4Steps.GivenOperatorActivatedResetButton() (0.0s)&#xD;
+When the operator invokes Undo&#xD;
+-&gt; done: Task4Steps.WhenOperatorInvokesUndo() (0.0s)&#xD;
+Then the Window Width is 800&#xD;
+-&gt; done: Task4Steps.ThenWindowWidthIs(800) (0.0s)&#xD;
+And the Window Center is -200&#xD;
+-&gt; done: Task4Steps.ThenWindowCenterIs(-200) (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="365dd8ff-0e4b-4452-ace8-99fb3b1fd146" testId="af690bbe-6b34-f101-d58b-940e0326e102" testName="ResetButtonIsDisabledWhenNoSeriesIsLoaded" computerName="YY539580" duration="00:00:00.0010820" startTime="2026-07-02T14:22:04.3538543+08:00" endTime="2026-07-02T14:22:04.3549367+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="365dd8ff-0e4b-4452-ace8-99fb3b1fd146">
+      <Output>
+        <StdOut>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given no CT series is loaded in the active viewport&#xD;
+-&gt; done: Task2Steps.GivenNoSeriesLoaded() (0.0s)&#xD;
+When the operator views the image display panel&#xD;
+-&gt; done: Task2Steps.WhenOperatorViewsPanel() (0.0s)&#xD;
+Then the ResetWindowLevelButton is disabled&#xD;
+-&gt; done: Task2Steps.ThenResetButtonIsDisabled() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="381ede95-785e-4655-8de7-100a0052753b" testId="911456e2-b6ba-9f95-6442-801b27b70ad3" testName="NegativeWindowWidthIsRejected" computerName="YY539580" duration="00:00:00.0012500" startTime="2026-07-02T14:22:04.3309119+08:00" endTime="2026-07-02T14:22:04.3321619+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="381ede95-785e-4655-8de7-100a0052753b">
+      <Output>
+        <StdOut>Given a Window Width of -100 and a Window Center of 40&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthAndCenter(-100, 40) (0.0s)&#xD;
+When a WindowLevel is created with those values&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValues() (0.0s)&#xD;
+Then the creation fails with a validation error&#xD;
+-&gt; done: Task1Steps.ThenTheCreationFailsWithAValidationError() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="ResetButtonIsDisabledWhenNoSeriesIsLoaded" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="af690bbe-6b34-f101-d58b-940e0326e102">
+      <Execution id="365dd8ff-0e4b-4452-ace8-99fb3b1fd146" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.ResetWindowLevelToDICOMDefaultFeature" name="ResetButtonIsDisabledWhenNoSeriesIsLoaded" />
+    </UnitTest>
+    <UnitTest name="UndoIsUnavailableWhenNoResetHasBeenPerformed" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="cb7ff03c-e473-020b-cbaf-8d416f0b2a35">
+      <Execution id="76e1849b-9b23-46e5-9940-b571e7a526a3" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.UndoSupportForWindowLevelResetFeature" name="UndoIsUnavailableWhenNoResetHasBeenPerformed" />
+    </UnitTest>
+    <UnitTest name="ResetRestoresDICOMDefaultWindowWidthAndWindowCenter" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="48060d73-5f76-c761-924f-4a3699f596d9">
+      <Execution id="a043666a-f235-47fc-bc4e-a04abb55ad8a" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.ResetWindowLevelToDICOMDefaultFeature" name="ResetRestoresDICOMDefaultWindowWidthAndWindowCenter" />
+    </UnitTest>
+    <UnitTest name="UndoRestoresThePreviousWindowWidthAndWindowCenter" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="c6c84630-045f-5d48-a025-387c8deeb5ca">
+      <Execution id="16d94ff1-0eca-4f4d-8cd9-89789faf0b80" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.UndoSupportForWindowLevelResetFeature" name="UndoRestoresThePreviousWindowWidthAndWindowCenter" />
+    </UnitTest>
+    <UnitTest name="KeyboardShortcutTriggersReset" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="0a985713-3eb3-4cfc-4d7b-7fbe67f406c9">
+      <Execution id="c632a003-f312-4144-b766-3fec01618501" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.ResetWindowLevelToDICOMDefaultFeature" name="KeyboardShortcutTriggersReset" />
+    </UnitTest>
+    <UnitTest name="DICOMDisplayTagConstantsMapToCorrectTagNumbers" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="a6e45ad5-4131-1110-80cb-1be988dc4843">
+      <Execution id="aa5446a3-e429-4592-96fe-2b51a2f9ba8a" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.DomainModelAndInterfaceContractsForWWWCResetFeature" name="DICOMDisplayTagConstantsMapToCorrectTagNumbers" />
+    </UnitTest>
+    <UnitTest name="FallbackValuesAppliedWhenDICOMWindowingTagsAreAbsent" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="306e724e-674d-7c30-149c-b78c9a6bd5e1">
+      <Execution id="3ada5e5a-e2e8-463e-9e9b-ded2c0c09f6e" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.FallbackWhenDICOMDefaultWindowLevelIsUnavailableFeature" name="FallbackValuesAppliedWhenDICOMWindowingTagsAreAbsent" />
+    </UnitTest>
+    <UnitTest name="ZeroWindowWidthIsRejected" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="c66b8cb4-1aa9-2c92-cfe6-1f48add9ddfb">
+      <Execution id="b2e11e5f-a82d-4d61-a20c-3d882983d4ed" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.DomainModelAndInterfaceContractsForWWWCResetFeature" name="ZeroWindowWidthIsRejected" />
+    </UnitTest>
+    <UnitTest name="ConfirmationMessageAuto_Dismisses" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="23429e60-1f24-e414-8938-2a3fa821ed95">
+      <Execution id="90d545fa-2eba-409d-9521-3795f606bdf0" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.ResetWindowLevelToDICOMDefaultFeature" name="ConfirmationMessageAuto_Dismisses" />
+    </UnitTest>
+    <UnitTest name="FallbackAppliedWhenDICOMWindowWidthIsNegative" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="9aa2e550-e3cd-f560-9478-a514b4537c97">
+      <Execution id="e6cef12a-2adf-4d9a-a0f7-1ed03da16833" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.FallbackWhenDICOMDefaultWindowLevelIsUnavailableFeature" name="FallbackAppliedWhenDICOMWindowWidthIsNegative" />
+    </UnitTest>
+    <UnitTest name="NegativeWindowWidthIsRejected" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="911456e2-b6ba-9f95-6442-801b27b70ad3">
+      <Execution id="381ede95-785e-4655-8de7-100a0052753b" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.DomainModelAndInterfaceContractsForWWWCResetFeature" name="NegativeWindowWidthIsRejected" />
+    </UnitTest>
+    <UnitTest name="WindowLevelPreservesTheDICOMPresetName" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="6b01eba9-2bb6-00aa-41ce-3886d1c8645d">
+      <Execution id="f4cfebac-5c4a-4c51-9172-2c352cc8eaef" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.DomainModelAndInterfaceContractsForWWWCResetFeature" name="WindowLevelPreservesTheDICOMPresetName" />
+    </UnitTest>
+    <UnitTest name="FallbackAppliedWhenDICOMWindowWidthIsNegative" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="992649fc-2e3f-3a7b-f659-ceaf11db1fd1">
+      <Execution id="76e83205-d21a-43dd-8b8a-05b430fe2341" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.FallbackWhenDICOMDefaultWindowLevelIsUnavailableFeature" name="FallbackAppliedWhenDICOMWindowWidthIsNegative" />
+    </UnitTest>
+    <UnitTest name="FallbackValuesAppliedWhenDICOMWindowingTagsAreAbsent" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="aebbba0f-0297-fe9a-295d-0acac16e2217">
+      <Execution id="6f6d1b71-f10a-4b6c-8734-495a78203b79" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.FallbackWhenDICOMDefaultWindowLevelIsUnavailableFeature" name="FallbackValuesAppliedWhenDICOMWindowingTagsAreAbsent" />
+    </UnitTest>
+    <UnitTest name="ValidWindowWidthAndCenterCreateAWindowLevel" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="34085d9d-2381-998e-1c46-fa91fcc1dffc">
+      <Execution id="c974a95a-b78a-4cb2-99fa-c757122debea" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.DomainModelAndInterfaceContractsForWWWCResetFeature" name="ValidWindowWidthAndCenterCreateAWindowLevel" />
+    </UnitTest>
+    <UnitTest name="NegativeWindowWidthIsRejected" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="b68ff109-e4ff-894b-a507-56e9c6bb781b">
+      <Execution id="07d5d487-1a9d-4b31-a0e4-f3f00325bca9" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.DomainModelAndInterfaceContractsForWWWCResetFeature" name="NegativeWindowWidthIsRejected" />
+    </UnitTest>
+    <UnitTest name="UndoRestoresThePreviousWindowWidthAndWindowCenter" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="3d4d659d-f081-0206-8918-5027712a94fa">
+      <Execution id="d75323e2-d362-4f87-a74d-df9d871991f8" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.UndoSupportForWindowLevelResetFeature" name="UndoRestoresThePreviousWindowWidthAndWindowCenter" />
+    </UnitTest>
+    <UnitTest name="UndoIsUnavailableWhenNoResetHasBeenPerformed" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="c3171668-bc8e-173a-5394-631026072cda">
+      <Execution id="715596b6-170b-4810-9c88-94469eb53293" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.UndoSupportForWindowLevelResetFeature" name="UndoIsUnavailableWhenNoResetHasBeenPerformed" />
+    </UnitTest>
+    <UnitTest name="FallbackAppliedWhenDICOMWindowWidthIsZero" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="c2155a6d-e164-3b97-856f-2d020a90abbc">
+      <Execution id="8673ea43-8f95-479f-824f-d3e2b3a6c547" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.FallbackWhenDICOMDefaultWindowLevelIsUnavailableFeature" name="FallbackAppliedWhenDICOMWindowWidthIsZero" />
+    </UnitTest>
+    <UnitTest name="RedoReappliesTheResetAfterAnUndo" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="b1fd9da0-27ee-1524-e0fe-82be8956bf69">
+      <Execution id="da446376-6ae5-4806-9601-b71c14140721" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.UndoSupportForWindowLevelResetFeature" name="RedoReappliesTheResetAfterAnUndo" />
+    </UnitTest>
+    <UnitTest name="DICOMDisplayTagConstantsMapToCorrectTagNumbers" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="4b927405-c320-5690-3d0e-38d307a0a6e0">
+      <Execution id="c08185d8-1e1a-4e04-9d19-914089f8e395" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.DomainModelAndInterfaceContractsForWWWCResetFeature" name="DICOMDisplayTagConstantsMapToCorrectTagNumbers" />
+    </UnitTest>
+    <UnitTest name="RedoReappliesTheResetAfterAnUndo" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="9090a6fd-9812-de48-d5d6-da0f899bc897">
+      <Execution id="5fb9e56d-20a7-4fc7-bc63-c93fe60073a5" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.UndoSupportForWindowLevelResetFeature" name="RedoReappliesTheResetAfterAnUndo" />
+    </UnitTest>
+    <UnitTest name="ResetButtonIsDisabledWhenNoSeriesIsLoaded" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="1261ee9b-5022-9734-8347-cfc3a5b9986a">
+      <Execution id="784035ff-c0db-438e-a55a-f67d1d7aa730" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.ResetWindowLevelToDICOMDefaultFeature" name="ResetButtonIsDisabledWhenNoSeriesIsLoaded" />
+    </UnitTest>
+    <UnitTest name="WarningIsLoggedWhenFallbackValuesAreUsed" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="62fd7486-3d8c-35a6-8e3e-926de0378969">
+      <Execution id="b12adf48-7cfb-4502-9939-68959d45c140" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.FallbackWhenDICOMDefaultWindowLevelIsUnavailableFeature" name="WarningIsLoggedWhenFallbackValuesAreUsed" />
+    </UnitTest>
+    <UnitTest name="ZeroWindowWidthIsRejected" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="fde737bc-ef60-6187-19fe-b104167a066e">
+      <Execution id="98a9e176-75ca-46c0-8d55-8913e5805733" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.DomainModelAndInterfaceContractsForWWWCResetFeature" name="ZeroWindowWidthIsRejected" />
+    </UnitTest>
+    <UnitTest name="KeyboardShortcutTriggersReset" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="9f1f7696-dfcd-2c19-edbb-a3eed8109c06">
+      <Execution id="0442fe63-1045-40f5-8007-456e80661401" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.ResetWindowLevelToDICOMDefaultFeature" name="KeyboardShortcutTriggersReset" />
+    </UnitTest>
+    <UnitTest name="ValidWindowWidthAndCenterCreateAWindowLevel" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="86656701-c70d-914b-dcc1-112aca6f4aa1">
+      <Execution id="df79c5a9-7155-4f05-96e2-14d7f00052bb" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.DomainModelAndInterfaceContractsForWWWCResetFeature" name="ValidWindowWidthAndCenterCreateAWindowLevel" />
+    </UnitTest>
+    <UnitTest name="ConfirmationMessageIncludesTheDICOMPresetName" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="84d64f1d-c4a1-d411-51fd-243fabef195c">
+      <Execution id="922f0c35-a900-451f-ad11-3aca9bc4aa91" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.ResetWindowLevelToDICOMDefaultFeature" name="ConfirmationMessageIncludesTheDICOMPresetName" />
+    </UnitTest>
+    <UnitTest name="ResetRestoresDICOMDefaultWindowWidthAndWindowCenter" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="81d07c67-3ce6-e1ae-1658-85bb9a02869d">
+      <Execution id="dcd0a805-427f-4d69-b668-e853f4dd7641" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.ResetWindowLevelToDICOMDefaultFeature" name="ResetRestoresDICOMDefaultWindowWidthAndWindowCenter" />
+    </UnitTest>
+    <UnitTest name="FallbackAppliedWhenDICOMWindowWidthIsZero" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="9bd621d9-abde-5d99-a3c9-a4621f05794d">
+      <Execution id="ea43990e-9287-45db-ad63-bb3da7932a2f" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Bin.Debug.Net8_0.Features.FallbackWhenDICOMDefaultWindowLevelIsUnavailableFeature" name="FallbackAppliedWhenDICOMWindowWidthIsZero" />
+    </UnitTest>
+    <UnitTest name="WarningIsLoggedWhenFallbackValuesAreUsed" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="894d4a33-4e7e-463c-9dd5-e141d5dfd0c9">
+      <Execution id="53137cb8-2017-42fa-a8e1-29f776492131" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.FallbackWhenDICOMDefaultWindowLevelIsUnavailableFeature" name="WarningIsLoggedWhenFallbackValuesAreUsed" />
+    </UnitTest>
+    <UnitTest name="WindowLevelPreservesTheDICOMPresetName" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="5e038bae-7185-df10-a8d6-a159a85b803e">
+      <Execution id="58d15504-5297-4b94-87db-85fc6a0356a4" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.DomainModelAndInterfaceContractsForWWWCResetFeature" name="WindowLevelPreservesTheDICOMPresetName" />
+    </UnitTest>
+    <UnitTest name="ConfirmationMessageIncludesTheDICOMPresetName" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="1e30ddf2-ebcc-4e0d-7d19-7eb902e5dfea">
+      <Execution id="27359c57-b812-4974-a2bb-5d2399a3352e" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.ResetWindowLevelToDICOMDefaultFeature" name="ConfirmationMessageIncludesTheDICOMPresetName" />
+    </UnitTest>
+    <UnitTest name="ConfirmationMessageAuto_Dismisses" storage="c:\work\code\git_code\harness_enhance\src\moduletests\wwwcreset\bin\debug\net8.0\philips.ct.host.imagedisplay.moduletests.dll" id="fd025f40-0423-2ba5-b1c1-568e7abbee56">
+      <Execution id="80620594-8162-4511-9206-94c425b494a6" />
+      <TestMethod codeBase="C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="Philips.CT.Host.ImageDisplay.ModuleTests.Features.ResetWindowLevelToDICOMDefaultFeature" name="ConfirmationMessageAuto_Dismisses" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="894d4a33-4e7e-463c-9dd5-e141d5dfd0c9" executionId="53137cb8-2017-42fa-a8e1-29f776492131" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1261ee9b-5022-9734-8347-cfc3a5b9986a" executionId="784035ff-c0db-438e-a55a-f67d1d7aa730" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9f1f7696-dfcd-2c19-edbb-a3eed8109c06" executionId="0442fe63-1045-40f5-8007-456e80661401" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c3171668-bc8e-173a-5394-631026072cda" executionId="715596b6-170b-4810-9c88-94469eb53293" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0a985713-3eb3-4cfc-4d7b-7fbe67f406c9" executionId="c632a003-f312-4144-b766-3fec01618501" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b68ff109-e4ff-894b-a507-56e9c6bb781b" executionId="07d5d487-1a9d-4b31-a0e4-f3f00325bca9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="992649fc-2e3f-3a7b-f659-ceaf11db1fd1" executionId="76e83205-d21a-43dd-8b8a-05b430fe2341" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c6c84630-045f-5d48-a025-387c8deeb5ca" executionId="16d94ff1-0eca-4f4d-8cd9-89789faf0b80" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="306e724e-674d-7c30-149c-b78c9a6bd5e1" executionId="3ada5e5a-e2e8-463e-9e9b-ded2c0c09f6e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="34085d9d-2381-998e-1c46-fa91fcc1dffc" executionId="c974a95a-b78a-4cb2-99fa-c757122debea" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9090a6fd-9812-de48-d5d6-da0f899bc897" executionId="5fb9e56d-20a7-4fc7-bc63-c93fe60073a5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="48060d73-5f76-c761-924f-4a3699f596d9" executionId="a043666a-f235-47fc-bc4e-a04abb55ad8a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="84d64f1d-c4a1-d411-51fd-243fabef195c" executionId="922f0c35-a900-451f-ad11-3aca9bc4aa91" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a6e45ad5-4131-1110-80cb-1be988dc4843" executionId="aa5446a3-e429-4592-96fe-2b51a2f9ba8a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="23429e60-1f24-e414-8938-2a3fa821ed95" executionId="90d545fa-2eba-409d-9521-3795f606bdf0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cb7ff03c-e473-020b-cbaf-8d416f0b2a35" executionId="76e1849b-9b23-46e5-9940-b571e7a526a3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="aebbba0f-0297-fe9a-295d-0acac16e2217" executionId="6f6d1b71-f10a-4b6c-8734-495a78203b79" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fde737bc-ef60-6187-19fe-b104167a066e" executionId="98a9e176-75ca-46c0-8d55-8913e5805733" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6b01eba9-2bb6-00aa-41ce-3886d1c8645d" executionId="f4cfebac-5c4a-4c51-9172-2c352cc8eaef" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fd025f40-0423-2ba5-b1c1-568e7abbee56" executionId="80620594-8162-4511-9206-94c425b494a6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9bd621d9-abde-5d99-a3c9-a4621f05794d" executionId="ea43990e-9287-45db-ad63-bb3da7932a2f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4b927405-c320-5690-3d0e-38d307a0a6e0" executionId="c08185d8-1e1a-4e04-9d19-914089f8e395" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="81d07c67-3ce6-e1ae-1658-85bb9a02869d" executionId="dcd0a805-427f-4d69-b668-e853f4dd7641" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="86656701-c70d-914b-dcc1-112aca6f4aa1" executionId="df79c5a9-7155-4f05-96e2-14d7f00052bb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="62fd7486-3d8c-35a6-8e3e-926de0378969" executionId="b12adf48-7cfb-4502-9939-68959d45c140" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c66b8cb4-1aa9-2c92-cfe6-1f48add9ddfb" executionId="b2e11e5f-a82d-4d61-a20c-3d882983d4ed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1e30ddf2-ebcc-4e0d-7d19-7eb902e5dfea" executionId="27359c57-b812-4974-a2bb-5d2399a3352e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b1fd9da0-27ee-1524-e0fe-82be8956bf69" executionId="da446376-6ae5-4806-9601-b71c14140721" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5e038bae-7185-df10-a8d6-a159a85b803e" executionId="58d15504-5297-4b94-87db-85fc6a0356a4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c2155a6d-e164-3b97-856f-2d020a90abbc" executionId="8673ea43-8f95-479f-824f-d3e2b3a6c547" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9aa2e550-e3cd-f560-9478-a514b4537c97" executionId="e6cef12a-2adf-4d9a-a0f7-1ed03da16833" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3d4d659d-f081-0206-8918-5027712a94fa" executionId="d75323e2-d362-4f87-a74d-df9d871991f8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="af690bbe-6b34-f101-d58b-940e0326e102" executionId="365dd8ff-0e4b-4452-ace8-99fb3b1fd146" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="911456e2-b6ba-9f95-6442-801b27b70ad3" executionId="381ede95-785e-4655-8de7-100a0052753b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="34" executed="34" passed="34" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.5.0.0: Test execution started&#xD;
+Running all tests in C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll&#xD;
+   NUnit3TestExecutor discovered 34 of 34 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 4.5.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.2143229+08:00">
+        <Text>Given the DICOM display tag constants&#xD;
+-&gt; done: Task1Steps.GivenTheDicomDisplayTagConstants() (0.0s)&#xD;
+Then the WindowCenter constant maps to DICOM tag 0028,1050&#xD;
+-&gt; done: Task1Steps.ThenTheWindowCenterConstantMapsToDicomTag00281050() (0.0s)&#xD;
+And the WindowWidth constant maps to DICOM tag 0028,1051&#xD;
+-&gt; done: Task1Steps.ThenTheWindowWidthConstantMapsToDicomTag00281051() (0.0s)&#xD;
+And the WindowCenterWidthExplanation constant maps to DICOM tag 0028,1055&#xD;
+-&gt; done: Task1Steps.ThenTheWindowCenterWidthExplanationConstantMapsToDicomTag00281055() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.2267283+08:00">
+        <Text>Given a Window Width of -100 and a Window Center of 40&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthAndCenter(-100, 40) (0.0s)&#xD;
+When a WindowLevel is created with those values&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValues() (0.0s)&#xD;
+Then the creation fails with a validation error&#xD;
+-&gt; done: Task1Steps.ThenTheCreationFailsWithAValidationError() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.2334881+08:00">
+        <Text>Given a Window Width of 400 and a Window Center of 40&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+When a WindowLevel is created with those values&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValues() (0.0s)&#xD;
+Then the WindowLevel has Width 400 and Center 40&#xD;
+-&gt; done: Task1Steps.ThenTheWindowLevelHasWidthAndCenter(400, 40) (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.2385589+08:00">
+        <Text>Given a Window Width of 400 and a Window Center of 40 with preset name "Soft Tissue"&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthCenterAndPresetName(400, 40, "Soft Tissue") (0.0s)&#xD;
+When a WindowLevel is created with those values and preset name&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValuesAndPresetName() (0.0s)&#xD;
+Then the WindowLevel preset name is "Soft Tissue"&#xD;
+-&gt; done: Task1Steps.ThenTheWindowLevelPresetNameIs("Soft Tissue") (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.2393673+08:00">
+        <Text>Given a Window Width of 0 and a Window Center of 40&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthAndCenter(0, 40) (0.0s)&#xD;
+When a WindowLevel is created with those values&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValues() (0.0s)&#xD;
+Then the creation fails with a validation error&#xD;
+-&gt; done: Task1Steps.ThenTheCreationFailsWithAValidationError() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.2583891+08:00">
+        <Text>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded with a DICOM Window Width of -100&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithInvalidDicomWindowWidth(-100) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 400&#xD;
+-&gt; done: Task3Steps.ThenWindowWidthIs(400) (0.0s)&#xD;
+And the Window Center is 40&#xD;
+-&gt; done: Task3Steps.ThenWindowCenterIs(40) (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.2745693+08:00">
+        <Text>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded with a DICOM Window Width of 0&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithInvalidDicomWindowWidth(0) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 400&#xD;
+-&gt; done: Task3Steps.ThenWindowWidthIs(400) (0.0s)&#xD;
+And the Window Center is 40&#xD;
+-&gt; done: Task3Steps.ThenWindowCenterIs(40) (0.0s)&#xD;
+And the confirmation message indicates an invalid DICOM value was encountered&#xD;
+-&gt; done: Task3Steps.ThenConfirmationMessageIndicatesInvalidDicomValue() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.2791607+08:00">
+        <Text>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded without DICOM windowing tags&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithoutDicomWindowingTags() (0.0s)&#xD;
+And the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task3Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 400&#xD;
+-&gt; done: Task3Steps.ThenWindowWidthIs(400) (0.0s)&#xD;
+And the Window Center is 40&#xD;
+-&gt; done: Task3Steps.ThenWindowCenterIs(40) (0.0s)&#xD;
+And the confirmation message indicates that fallback defaults were used&#xD;
+-&gt; done: Task3Steps.ThenConfirmationMessageIndicatesFallbackDefaultsWereUsed() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.2819273+08:00">
+        <Text>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded without DICOM windowing tags&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithoutDicomWindowingTags() (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then a warning-level log entry is recorded for the missing DICOM defaults&#xD;
+-&gt; done: Task3Steps.ThenWarningLevelLogEntryIsRecorded() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3641581+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task2Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then a confirmation message is displayed in the status bar&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageIsDisplayed() (0.0s)&#xD;
+And the confirmation message disappears automatically within 3 seconds&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageDisappearsWithin3Seconds() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3643146+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the CT series includes a preset name "Lung" for the default window&#xD;
+-&gt; done: Task2Steps.GivenSeriesIncludesPresetName("Lung") (0.0s)&#xD;
+And the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task2Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the confirmation message includes the text "Lung"&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageIncludesText("Lung") (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3643994+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator presses Ctrl+Shift+W&#xD;
+-&gt; done: Task2Steps.WhenOperatorPressesKeyboardShortcut() (0.0s)&#xD;
+Then the Window Width is 1500&#xD;
+-&gt; done: Task2Steps.ThenWindowWidthIs(1500) (0.0s)&#xD;
+And the Window Center is -600&#xD;
+-&gt; done: Task2Steps.ThenWindowCenterIs(-600) (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3645004+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given no CT series is loaded in the active viewport&#xD;
+-&gt; done: Task2Steps.GivenNoSeriesLoaded() (0.0s)&#xD;
+When the operator views the image display panel&#xD;
+-&gt; done: Task2Steps.WhenOperatorViewsPanel() (0.0s)&#xD;
+Then the ResetWindowLevelButton is disabled&#xD;
+-&gt; done: Task2Steps.ThenResetButtonIsDisabled() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3645764+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task2Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 1500&#xD;
+-&gt; done: Task2Steps.ThenWindowWidthIs(1500) (0.0s)&#xD;
+And the Window Center is -600&#xD;
+-&gt; done: Task2Steps.ThenWindowCenterIs(-600) (0.0s)&#xD;
+And a confirmation message is displayed in the status bar&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageIsDisplayed() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3646635+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task4Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task4Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+And the operator has activated the ResetWindowLevelButton&#xD;
+-&gt; done: Task4Steps.GivenOperatorActivatedResetButton() (0.0s)&#xD;
+And the operator has invoked Undo&#xD;
+-&gt; done: Task4Steps.GivenOperatorInvokedUndo() (0.0s)&#xD;
+When the operator invokes Redo&#xD;
+-&gt; done: Task4Steps.WhenOperatorInvokesRedo() (0.0s)&#xD;
+Then the Window Width is 1500&#xD;
+-&gt; done: Task4Steps.ThenWindowWidthIs(1500) (0.0s)&#xD;
+And the Window Center is -600&#xD;
+-&gt; done: Task4Steps.ThenWindowCenterIs(-600) (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3647643+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task4Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given no Window/Level changes have been made&#xD;
+-&gt; done: Task4Steps.GivenNoWindowLevelChangesMade() (0.0s)&#xD;
+When the operator checks the Undo availability&#xD;
+-&gt; done: Task4Steps.WhenOperatorChecksUndoAvailability() (0.0s)&#xD;
+Then the Undo function for Window/Level changes is not available&#xD;
+-&gt; done: Task4Steps.ThenUndoIsNotAvailable() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3648611+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task4Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task4Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+And the operator has activated the ResetWindowLevelButton&#xD;
+-&gt; done: Task4Steps.GivenOperatorActivatedResetButton() (0.0s)&#xD;
+When the operator invokes Undo&#xD;
+-&gt; done: Task4Steps.WhenOperatorInvokesUndo() (0.0s)&#xD;
+Then the Window Width is 800&#xD;
+-&gt; done: Task4Steps.ThenWindowWidthIs(800) (0.0s)&#xD;
+And the Window Center is -200&#xD;
+-&gt; done: Task4Steps.ThenWindowCenterIs(-200) (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3649502+08:00">
+        <Text>Given the DICOM display tag constants&#xD;
+-&gt; done: Task1Steps.GivenTheDicomDisplayTagConstants() (0.0s)&#xD;
+Then the WindowCenter constant maps to DICOM tag 0028,1050&#xD;
+-&gt; done: Task1Steps.ThenTheWindowCenterConstantMapsToDicomTag00281050() (0.0s)&#xD;
+And the WindowWidth constant maps to DICOM tag 0028,1051&#xD;
+-&gt; done: Task1Steps.ThenTheWindowWidthConstantMapsToDicomTag00281051() (0.0s)&#xD;
+And the WindowCenterWidthExplanation constant maps to DICOM tag 0028,1055&#xD;
+-&gt; done: Task1Steps.ThenTheWindowCenterWidthExplanationConstantMapsToDicomTag00281055() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3655783+08:00">
+        <Text>Given a Window Width of -100 and a Window Center of 40&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthAndCenter(-100, 40) (0.0s)&#xD;
+When a WindowLevel is created with those values&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValues() (0.0s)&#xD;
+Then the creation fails with a validation error&#xD;
+-&gt; done: Task1Steps.ThenTheCreationFailsWithAValidationError() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3656968+08:00">
+        <Text>Given a Window Width of 400 and a Window Center of 40&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+When a WindowLevel is created with those values&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValues() (0.0s)&#xD;
+Then the WindowLevel has Width 400 and Center 40&#xD;
+-&gt; done: Task1Steps.ThenTheWindowLevelHasWidthAndCenter(400, 40) (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3657748+08:00">
+        <Text>Given a Window Width of 400 and a Window Center of 40 with preset name "Soft Tissue"&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthCenterAndPresetName(400, 40, "Soft Tissue") (0.0s)&#xD;
+When a WindowLevel is created with those values and preset name&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValuesAndPresetName() (0.0s)&#xD;
+Then the WindowLevel preset name is "Soft Tissue"&#xD;
+-&gt; done: Task1Steps.ThenTheWindowLevelPresetNameIs("Soft Tissue") (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3658523+08:00">
+        <Text>Given a Window Width of 0 and a Window Center of 40&#xD;
+-&gt; done: Task1Steps.GivenAWindowWidthAndCenter(0, 40) (0.0s)&#xD;
+When a WindowLevel is created with those values&#xD;
+-&gt; done: Task1Steps.WhenAWindowLevelIsCreatedWithThoseValues() (0.0s)&#xD;
+Then the creation fails with a validation error&#xD;
+-&gt; done: Task1Steps.ThenTheCreationFailsWithAValidationError() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3659226+08:00">
+        <Text>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded with a DICOM Window Width of -100&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithInvalidDicomWindowWidth(-100) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 400&#xD;
+-&gt; done: Task3Steps.ThenWindowWidthIs(400) (0.0s)&#xD;
+And the Window Center is 40&#xD;
+-&gt; done: Task3Steps.ThenWindowCenterIs(40) (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3659921+08:00">
+        <Text>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded with a DICOM Window Width of 0&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithInvalidDicomWindowWidth(0) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 400&#xD;
+-&gt; done: Task3Steps.ThenWindowWidthIs(400) (0.0s)&#xD;
+And the Window Center is 40&#xD;
+-&gt; done: Task3Steps.ThenWindowCenterIs(40) (0.0s)&#xD;
+And the confirmation message indicates an invalid DICOM value was encountered&#xD;
+-&gt; done: Task3Steps.ThenConfirmationMessageIndicatesInvalidDicomValue() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3660621+08:00">
+        <Text>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded without DICOM windowing tags&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithoutDicomWindowingTags() (0.0s)&#xD;
+And the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task3Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 400&#xD;
+-&gt; done: Task3Steps.ThenWindowWidthIs(400) (0.0s)&#xD;
+And the Window Center is 40&#xD;
+-&gt; done: Task3Steps.ThenWindowCenterIs(40) (0.0s)&#xD;
+And the confirmation message indicates that fallback defaults were used&#xD;
+-&gt; done: Task3Steps.ThenConfirmationMessageIndicatesFallbackDefaultsWereUsed() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3661590+08:00">
+        <Text>Given the configured fallback Window Width is 400 and Window Center is 40&#xD;
+-&gt; done: Task3Steps.GivenConfiguredFallbackWindowWidthAndCenter(400, 40) (0.0s)&#xD;
+Given a CT series is loaded without DICOM windowing tags&#xD;
+-&gt; done: Task3Steps.GivenSeriesLoadedWithoutDicomWindowingTags() (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task3Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then a warning-level log entry is recorded for the missing DICOM defaults&#xD;
+-&gt; done: Task3Steps.ThenWarningLevelLogEntryIsRecorded() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3662298+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task2Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then a confirmation message is displayed in the status bar&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageIsDisplayed() (0.0s)&#xD;
+And the confirmation message disappears automatically within 3 seconds&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageDisappearsWithin3Seconds() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3665751+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the CT series includes a preset name "Lung" for the default window&#xD;
+-&gt; done: Task2Steps.GivenSeriesIncludesPresetName("Lung") (0.0s)&#xD;
+And the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task2Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the confirmation message includes the text "Lung"&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageIncludesText("Lung") (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3666569+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator presses Ctrl+Shift+W&#xD;
+-&gt; done: Task2Steps.WhenOperatorPressesKeyboardShortcut() (0.0s)&#xD;
+Then the Window Width is 1500&#xD;
+-&gt; done: Task2Steps.ThenWindowWidthIs(1500) (0.0s)&#xD;
+And the Window Center is -600&#xD;
+-&gt; done: Task2Steps.ThenWindowCenterIs(-600) (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3667321+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given no CT series is loaded in the active viewport&#xD;
+-&gt; done: Task2Steps.GivenNoSeriesLoaded() (0.0s)&#xD;
+When the operator views the image display panel&#xD;
+-&gt; done: Task2Steps.WhenOperatorViewsPanel() (0.0s)&#xD;
+Then the ResetWindowLevelButton is disabled&#xD;
+-&gt; done: Task2Steps.ThenResetButtonIsDisabled() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3668390+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task2Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task2Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+When the operator activates the ResetWindowLevelButton&#xD;
+-&gt; done: Task2Steps.WhenOperatorActivatesResetButton() (0.0s)&#xD;
+Then the Window Width is 1500&#xD;
+-&gt; done: Task2Steps.ThenWindowWidthIs(1500) (0.0s)&#xD;
+And the Window Center is -600&#xD;
+-&gt; done: Task2Steps.ThenWindowCenterIs(-600) (0.0s)&#xD;
+And a confirmation message is displayed in the status bar&#xD;
+-&gt; done: Task2Steps.ThenConfirmationMessageIsDisplayed() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3669072+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task4Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task4Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+And the operator has activated the ResetWindowLevelButton&#xD;
+-&gt; done: Task4Steps.GivenOperatorActivatedResetButton() (0.0s)&#xD;
+And the operator has invoked Undo&#xD;
+-&gt; done: Task4Steps.GivenOperatorInvokedUndo() (0.0s)&#xD;
+When the operator invokes Redo&#xD;
+-&gt; done: Task4Steps.WhenOperatorInvokesRedo() (0.0s)&#xD;
+Then the Window Width is 1500&#xD;
+-&gt; done: Task4Steps.ThenWindowWidthIs(1500) (0.0s)&#xD;
+And the Window Center is -600&#xD;
+-&gt; done: Task4Steps.ThenWindowCenterIs(-600) (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3669766+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task4Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given no Window/Level changes have been made&#xD;
+-&gt; done: Task4Steps.GivenNoWindowLevelChangesMade() (0.0s)&#xD;
+When the operator checks the Undo availability&#xD;
+-&gt; done: Task4Steps.WhenOperatorChecksUndoAvailability() (0.0s)&#xD;
+Then the Undo function for Window/Level changes is not available&#xD;
+-&gt; done: Task4Steps.ThenUndoIsNotAvailable() (0.0s)&#xD;
+</Text>
+      </RunInfo>
+      <RunInfo computerName="YY539580" outcome="Warning" timestamp="2026-07-02T14:22:04.3670551+08:00">
+        <Text>Given a CT series is loaded with DICOM default WW 1500 and WC -600&#xD;
+-&gt; done: Task4Steps.GivenSeriesLoadedWithDicomDefaults(1500, -600) (0.0s)&#xD;
+Given the current Window Width is 800 and Window Center is -200&#xD;
+-&gt; done: Task4Steps.GivenCurrentWindowWidthAndCenter(800, -200) (0.0s)&#xD;
+And the operator has activated the ResetWindowLevelButton&#xD;
+-&gt; done: Task4Steps.GivenOperatorActivatedResetButton() (0.0s)&#xD;
+When the operator invokes Undo&#xD;
+-&gt; done: Task4Steps.WhenOperatorInvokesUndo() (0.0s)&#xD;
+Then the Window Width is 800&#xD;
+-&gt; done: Task4Steps.ThenWindowWidthIs(800) (0.0s)&#xD;
+And the Window Center is -200&#xD;
+-&gt; done: Task4Steps.ThenWindowCenterIs(-200) (0.0s)&#xD;
+</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

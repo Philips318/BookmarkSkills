@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Review 报告 — {{REVIEW_SCOPE}}</title>
+<style>
+  :root {
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #d7deea;
+    --pass-bg: #e8f7ee;  --pass-text: #11653a;
+    --warn-bg: #fff4de;  --warn-text: #8a5a00;
+    --fail-bg: #fde8e8;  --fail-text: #a11a1a;
+    --na-bg: #eef2f7;    --na-text: #475569;
+    --accent: #0f4c81;
+    --code-bg: #f1f5f9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: linear-gradient(180deg, #eef3f9 0%, var(--bg) 100%);
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 24px 48px; }
+
+  /* ===== Hero ===== */
+  .hero {
+    background: linear-gradient(135deg, #133c63 0%, #0f4c81 55%, #3d7fb5 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 28px 32px;
+    box-shadow: 0 18px 36px rgba(15, 76, 129, 0.18);
+  }
+  .hero h1 { margin: 0 0 8px; font-size: 30px; line-height: 1.2; }
+  .hero p { margin: 6px 0; opacity: 0.95; }
+  .meta-pills { display: flex; flex-wrap: wrap; gap: 10px 14px; margin-top: 14px; font-size: 14px; }
+  .meta-pills span {
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 999px;
+    padding: 6px 12px;
+  }
+  .verdict-banner {
+    display: flex; align-items: center; gap: 18px;
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+  .verdict-badge {
+    font-size: 28px; font-weight: 800; text-transform: uppercase;
+    padding: 6px 22px; border-radius: 12px;
+  }
+  .verdict-pass  { background: rgba(34,197,94,0.25); color: #bbf7d0; }
+  .verdict-warn  { background: rgba(234,179,8,0.25); color: #fef08a; }
+  .verdict-fail  { background: rgba(239,68,68,0.25); color: #fecaca; }
+  .verdict-counts { display: flex; gap: 12px; font-size: 14px; }
+  .verdict-counts span { padding: 4px 10px; border-radius: 6px; font-weight: 600; }
+  .vc-pass { background: rgba(34,197,94,0.2); color: #bbf7d0; }
+  .vc-warn { background: rgba(234,179,8,0.2); color: #fef08a; }
+  .vc-fail { background: rgba(239,68,68,0.2); color: #fecaca; }
+
+  /* ===== Section ===== */
+  .section {
+    margin-top: 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 24px 26px;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+  }
+  .section h2 { margin: 0 0 14px; font-size: 22px; color: var(--accent); }
+  .section h3 { margin: 22px 0 10px; font-size: 18px; color: #153b5d; }
+
+  /* ===== Status Badges ===== */
+  .status {
+    display: inline-block; min-width: 74px; text-align: center;
+    border-radius: 999px; padding: 5px 10px;
+    font-weight: 600; font-size: 13px;
+  }
+  .pass { background: var(--pass-bg); color: var(--pass-text); }
+  .warn { background: var(--warn-bg); color: var(--warn-text); }
+  .fail { background: var(--fail-bg); color: var(--fail-text); }
+  .na   { background: var(--na-bg);   color: var(--na-text); }
+
+  /* ===== Tables ===== */
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+  th, td { border: 1px solid var(--border); padding: 12px 10px; vertical-align: top; text-align: left; }
+  th { background: #edf3fb; color: #143754; cursor: pointer; user-select: none; }
+
+  /* ===== Grid / Cards ===== */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card {
+    border: 1px solid var(--border); border-radius: 14px;
+    background: #fbfdff; padding: 16px;
+  }
+  .card strong { display: block; margin-bottom: 6px; color: var(--accent); }
+
+  /* ===== Finding Blocks ===== */
+  .finding {
+    border-left: 6px solid var(--fail-text);
+    background: #fff6f6;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+  .finding.medium { border-left-color: #c97a00; background: #fffaf0; }
+  .finding.low    { border-left-color: #44729d; background: #f7fbff; }
+  .finding.pass-f { border-left-color: var(--pass-text); background: #f3fdf5; }
+  .finding h4 { margin: 0 0 6px; font-size: 16px; color: var(--text); }
+  .finding p, .finding li { margin: 6px 0; }
+  .finding .file-ref { font-family: Consolas, monospace; color: var(--accent); font-size: 13px; }
+
+  /* ===== Root Cause / Feature Summary boxes ===== */
+  .cause-box, .feature-box {
+    border-radius: 14px; padding: 18px 20px; margin-bottom: 16px;
+  }
+  .cause-box {
+    background: linear-gradient(135deg, #fef3f2 0%, #fff8f7 100%);
+    border: 1px solid #fecaca;
+  }
+  .cause-box h3 { color: #a11a1a; margin: 0 0 10px; font-size: 17px; }
+  .cause-box .oneliner {
+    background: #fee2e2; border-radius: 8px; padding: 10px 14px;
+    margin-top: 12px; font-weight: 600; font-size: 14px; color: #991b1b;
+  }
+  .feature-box {
+    background: linear-gradient(135deg, #f0fdf4 0%, #f8fffe 100%);
+    border: 1px solid #bbf7d0;
+  }
+  .feature-box h3 { color: var(--pass-text); margin: 0 0 10px; font-size: 17px; }
+  .feature-box .feat-item {
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 6px 0; border-bottom: 1px solid #d1fae5;
+  }
+  .feature-box .feat-item:last-child { border-bottom: none; }
+  .feat-check { color: var(--pass-text); font-weight: 700; flex-shrink: 0; }
+
+  /* ===== Diff Blocks ===== */
+  .mono { font-family: Consolas, "Courier New", monospace; background: var(--code-bg); border-radius: 8px; padding: 2px 6px; }
+  pre {
+    margin: 10px 0 0; background: #0f172a; color: #e5eefb;
+    padding: 16px; border-radius: 14px; overflow-x: auto;
+    font-size: 13px; line-height: 1.45;
+  }
+  .diff-line { display: block; white-space: pre; }
+  .diff-meta { color: #93c5fd; }
+  .diff-hunk { color: #fde68a; }
+  .diff-add  { color: #bbf7d0; background: rgba(34,197,94,0.12); }
+  .diff-del  { color: #fecaca; background: rgba(239,68,68,0.12); }
+  .diff-ctx  { color: #e5eefb; }
+
+  /* ===== Commit Message ===== */
+  .commit-block { position: relative; }
+  .commit-block pre { margin: 0; }
+  .copy-btn {
+    position: absolute; top: 12px; right: 12px;
+    background: #334155; border: 1px solid #475569; color: #94a3b8;
+    padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { color: #60a5fa; border-color: #60a5fa; }
+
+  /* ===== Residual Risks ===== */
+  .risk-list { list-style: none; padding: 0; margin: 0; }
+  .risk-list li {
+    padding: 10px 16px; margin-bottom: 8px;
+    border-radius: 10px; background: #fffbeb;
+    border-left: 5px solid #eab308; font-size: 14px;
+  }
+
+  /* ===== Test Plan / Actions ===== */
+  .plan-list { list-style: none; padding: 0; margin: 0; }
+  .plan-list li {
+    padding: 10px 16px; margin-bottom: 8px;
+    border-radius: 10px; border-left: 5px solid;
+    font-size: 14px; background: #fbfdff;
+  }
+  .plan-list .p0 { border-left-color: var(--fail-text); background: #fff6f6; }
+  .plan-list .p1 { border-left-color: #c97a00; background: #fffaf0; }
+  .plan-list .p2 { border-left-color: #44729d; background: #f7fbff; }
+  .plan-label { font-weight: 700; font-size: 13px; margin-right: 8px; }
+
+  .small { color: var(--muted); font-size: 13px; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+    .verdict-banner { flex-direction: column; gap: 10px; }
+  }
+  @media print {
+    .hero { box-shadow: none; }
+    .section { box-shadow: none; }
+    .copy-btn { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero">
+    <h1>Code Review 报告 — {{REVIEW_SCOPE}}</h1>
+    <p>{{REVIEW_DESCRIPTION}}</p>
+    <p>审查方式：仅 review 当前工作区变更，不做代码修改。</p>
+    <div class="meta-pills">
+      <span>问题单：{{TICKET_ID}}</span>
+      <span>变更类型：{{CHANGE_TYPE}}</span>
+      <span>范围：{{REPO_SCOPE}}</span>
+      <span>日期：{{DATE}}</span>
+      <span>文件数：{{FILE_COUNT}}</span>
+      <span>+{{ADDITIONS}} / -{{DELETIONS}}</span>
+    </div>
+    <div class="verdict-banner">
+      <span class="verdict-badge {{VERDICT_CSS}}">{{OVERALL_VERDICT}}</span>
+      <!--
+      {{VERDICT_CSS}} = verdict-pass | verdict-warn | verdict-fail
+      {{OVERALL_VERDICT}} = PASS | WARNING | FAIL
+      -->
+      <div>
+        <div style="font-weight:600; font-size:16px;">{{VERDICT_SUBTITLE}}</div>
+        <div style="opacity:0.8; font-size:13px; margin-top:4px;">{{VERDICT_DESCRIPTION}}</div>
+      </div>
+      <div class="verdict-counts" style="margin-left:auto;">
+        <span class="vc-pass">{{PASS_COUNT}} Pass</span>
+        <span class="vc-warn">{{WARNING_COUNT}} Warning</span>
+        <span class="vc-fail">{{FAIL_COUNT}} Fail</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ROOT CAUSE 总结 (Fix Completeness 时填充) ==================== -->
+  <!--
+  仅当变更类型为 fix 时生成此节。如果是 feature 变更，省略此节。
+  -->
+  <section class="section">
+    <h2>Root Cause 总结</h2>
+    <div class="cause-box">
+      <h3>根因分析</h3>
+      {{ROOT_CAUSE_PARAGRAPHS}}
+      <!--
+      Template: 填入一至多个 <p> 段落，描述问题的根因链条。例如：
+      <p>主根因是……</p>
+      <p>第二个根因是……</p>
+      <p>放大因素包括……</p>
+      -->
+      <div class="oneliner">{{ROOT_CAUSE_ONELINER}}</div>
+      <!--
+      一句话总结，例如：
+      "这是一个'超快完成路径'与'首轮 UI 进度框生命周期'相撞的时序型问题。"
+      -->
+    </div>
+  </section>
+
+  <!-- ==================== Feature 交付总结 (Feature Completeness 时填充) ==================== -->
+  <!--
+  仅当变更类型为 feat 时生成此节。如果是 fix 变更，省略此节。
+  -->
+  <section class="section">
+    <h2>Feature 交付总结</h2>
+    <div class="feature-box">
+      <h3>交付功能清单</h3>
+      {{FEATURE_DELIVERY_ITEMS}}
+      <!--
+      Template: 用 feat-item 行列出每个已交付的功能点。例如：
+      <div class="feat-item">
+        <span class="feat-check">✓</span>
+        <div>
+          <strong>MPR 方向重置按钮</strong>
+          <span class="small"> — 工具栏新增复位按钮，仅在当前方向不同于默认时启用</span>
+        </div>
+      </div>
+      <div class="feat-item">
+        <span class="feat-check">✓</span>
+        <div>
+          <strong>ResetOrientationCommand</strong>
+          <span class="small"> — MprViewModel 新增命令，Unit Test 已覆盖</span>
+        </div>
+      </div>
+      如果某功能未完成，将 ✓ 替换为 ✗ 并将 feat-check 颜色改为 var(--fail-text)。
+      -->
+      <p class="small" style="margin-top:12px;">{{FEATURE_SUMMARY_NOTE}}</p>
+      <!--
+      例如："共交付 3 项功能点，全部满足验收标准。" 或 "共 5 项功能点中有 2 项尚未完成。"
+      -->
+    </div>
+  </section>
+
+  <!-- ==================== 核心发现 ==================== -->
+  <section class="section">
+    <h2>核心发现</h2>
+    <p>{{CORE_FINDINGS_SUMMARY}}</p>
+    <!--
+    一段简要概述，说明当前 review scope 的整体状况。例如：
+    "当前 review scope 内已经没有 open code finding。残留风险主要在运行时验证和自动化回归测试缺口。"
+    -->
+  </section>
+
+  <!-- ==================== SUMMARY TABLE ==================== -->
+  <section class="section">
+    <h2>Summary Table</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>维度</th>
+          <th>状态</th>
+          <th>结论</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{SUMMARY_TABLE_ROWS}}
+        <!--
+        Template for each row:
+        <tr>
+          <td>1</td>
+          <td>Change Scope</td>
+          <td><span class="status na">N files</span></td>
+          <td>范围内共 N 个源码文件；无测试/配置文件变更。</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Fix Completeness</td>
+          <td><span class="status pass">Pass</span></td>
+          <td>根因已定位并修复，自动化回归测试已覆盖。</td>
+        </tr>
+        Status CSS classes: pass | warn | fail | na
+        -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ==================== RADAR CHART ==================== -->
+  <section class="section">
+    <h2>维度雷达图</h2>
+    <div style="display:flex; justify-content:center; padding:16px 0;">
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:420px;">
+        <!-- Background rings at 20%, 40%, 60%, 80%, 100% -->
+        <g transform="translate(200,200)" stroke="#d7deea" fill="none" stroke-width="1">
+          <polygon points="{{RING_100}}" opacity="0.4"/>
+          <polygon points="{{RING_80}}" opacity="0.35"/>
+          <polygon points="{{RING_60}}" opacity="0.3"/>
+          <polygon points="{{RING_40}}" opacity="0.25"/>
+          <polygon points="{{RING_20}}" opacity="0.2"/>
+        </g>
+        <!-- Axis lines from center to each vertex -->
+        <g transform="translate(200,200)" stroke="#c4cdd9" stroke-width="0.5">
+          {{AXIS_LINES}}
+        </g>
+        <!-- Data polygon -->
+        <g transform="translate(200,200)">
+          <polygon points="{{RADAR_POINTS}}" fill="{{RADAR_FILL_COLOR}}" fill-opacity="0.25" stroke="{{RADAR_STROKE_COLOR}}" stroke-width="2"/>
+          {{RADAR_DOTS}}
+        </g>
+        <!-- Axis labels — 8 dimensions around the polygon -->
+        <g font-family="Segoe UI" font-size="11" fill="#475569" text-anchor="middle">
+          {{RADAR_LABELS}}
+          <!--
+          8 labels positioned around the radar:
+          D1: Change Scope (top)
+          D2: Fix Completeness
+          D3: Feature Completeness
+          D4: Regression Risk
+          D5: Test Impact (bottom)
+          D6: Coding Standards
+          D7: Architecture
+          D8: Commit Log
+          -->
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==================== 各维度详细结论 ==================== -->
+  <section class="section">
+    <h2>各维度详细结论</h2>
+
+    <!-- D1. Change Scope -->
+    <h3>1. Change Scope</h3>
+    <div class="grid">
+      {{CHANGE_SCOPE_CARDS}}
+      <!--
+      Template: 3 cards — 源码文件 / 范围说明 / 影响面. Example:
+      <div class="card">
+        <strong>源码文件</strong>
+        <ul>
+          <li>DataService.cs：修改数据获取逻辑</li>
+          <li>DataModel.cs：新增字段</li>
+        </ul>
+      </div>
+      <div class="card">
+        <strong>范围说明</strong>
+        <ul>
+          <li>无 build/config 文件差异。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <strong>影响面</strong>
+        <ul>
+          <li>数据加载与渲染流水线</li>
+        </ul>
+      </div>
+      -->
+    </div>
+    <p class="small">{{CHANGE_SCOPE_NOTE}}</p>
+
+    <!-- Key diff snippets (optional) -->
+    {{KEY_DIFF_SNIPPETS}}
+    <!--
+    Template: 关键修改片段. Use diff blocks per file. Example:
+    <h3>关键修改片段</h3>
+    <div class="grid">
+      <div class="card">
+        <strong>DataService.cs</strong>
+        <p class="small">修改了数据获取逻辑，增加空值保护。</p>
+        <pre><span class="diff-line diff-meta">--- a/Src/DataService.cs</span>
+<span class="diff-line diff-meta">+++ b/Src/DataService.cs</span>
+<span class="diff-line diff-hunk">@@ null guard @@</span>
+<span class="diff-line diff-add">+    if (source == null) return;</span></pre>
+      </div>
+    </div>
+    -->
+
+    <!-- D2. Fix Completeness -->
+    <h3>2. Fix Completeness</h3>
+    {{FIX_COMPLETENESS_CONTENT}}
+    <!--
+    Template: 使用 <ul> 列出通过点和警告。
+    如果是 fix 变更，填充具体内容；如果是 feat 变更，写 "N/A。本次 review 对象是 feature 开发，不是缺陷修复。"
+    Example:
+    <ul>
+      <li><strong>通过点：</strong>修正已覆盖根因路径 A、路径 B、路径 C。</li>
+      <li><strong>警告：</strong>仍未新增自动化回归测试。</li>
+    </ul>
+    -->
+
+    <!-- D3. Feature Completeness -->
+    <h3>3. Feature Completeness</h3>
+    {{FEATURE_COMPLETENESS_CONTENT}}
+    <!--
+    Template: 使用 <ul> 列出通过点和警告。
+    如果是 feat 变更，填充具体功能验收结果；如果是 fix 变更，写 "N/A。本次 review 对象是缺陷修复，不是 feature 开发。"
+    Example:
+    <ul>
+      <li><strong>通过点：</strong>所有 3 项验收标准均满足。</li>
+      <li><strong>通过点：</strong>UI 绑定、命令、事件注册均已连接。</li>
+    </ul>
+    -->
+
+    <!-- D4. Regression Risk -->
+    <h3>4. Regression Risk</h3>
+    <p class="small">{{REGRESSION_RISK_NOTE}}</p>
+    <table>
+      <thead>
+        <tr><th>文件</th><th>位置</th><th>问题</th><th>严重级别</th><th>建议</th></tr>
+      </thead>
+      <tbody>
+        {{REGRESSION_RISK_ROWS}}
+        <!--
+        Template for each row:
+        <tr>
+          <td>DataService.cs</td>
+          <td>L42</td>
+          <td>新增的 nullable 引用未做 null 检查</td>
+          <td><span class="status fail">Critical</span></td>
+          <td>添加 null guard 或使用 null-conditional operator</td>
+        </tr>
+        如果无 open finding：
+        <tr>
+          <td>无</td><td>当前 scoped diff</td>
+          <td>当前范围内无 open 源码级回归问题。</td>
+          <td>—</td><td>按测试计划做运行时验证。</td>
+        </tr>
+        -->
+      </tbody>
+    </table>
+
+    <!-- D5. Test Impact -->
+    <h3>5. Test Impact</h3>
+    <div class="grid">
+      {{TEST_IMPACT_CARDS}}
+      <!--
+      Template: 2 cards. Example:
+      <div class="card">
+        <strong>直接影响功能</strong>
+        <ul>
+          <li>数据加载流程</li>
+          <li>渲染管线</li>
+        </ul>
+      </div>
+      <div class="card">
+        <strong>间接受影响功能</strong>
+        <ul>
+          <li>依赖 DataService 的下游模块</li>
+        </ul>
+      </div>
+      -->
+    </div>
+
+    <!-- D6. Coding Standards -->
+    <h3>6. Coding Standards</h3>
+    {{CODING_STANDARDS_CONTENT}}
+    <!--
+    Template: <ul> 列出 TICS/CodeScene 检查结果。Example:
+    <ul>
+      <li><strong>通过点：</strong>Copyright header 齐全，命名规范符合。</li>
+      <li><strong>警告：</strong>完整 TICS/CodeScene 复跑仍待完成。</li>
+    </ul>
+    -->
+
+    <!-- D7. Architecture Conformance -->
+    <h3>7. Architecture Conformance</h3>
+    {{ARCHITECTURE_CONTENT}}
+    <!--
+    Template: <ul> 列出架构检查结果。Example:
+    <ul>
+      <li><strong>通过点：</strong>未发现新的跨层依赖或项目边界破坏。</li>
+      <li><strong>通过点：</strong>依赖方向正确，无循环引用。</li>
+    </ul>
+    -->
+
+    <!-- D8. Commit Log -->
+    <h3>8. Commit Log</h3>
+    <p>{{COMMIT_LOG_NOTE}}</p>
+  </section>
+
+  <!-- ==================== 测试计划 ==================== -->
+  <section class="section">
+    <h2>测试计划</h2>
+
+    <h3>P0 — 提交前必须验证</h3>
+    <ol>
+      {{TEST_P0_ITEMS}}
+      <!-- Template: <li>验证场景描述</li> -->
+    </ol>
+
+    <h3>P1 — 合并前应验证</h3>
+    <ol>
+      {{TEST_P1_ITEMS}}
+    </ol>
+
+    <h3>P2 — 建议补充</h3>
+    <ol>
+      {{TEST_P2_ITEMS}}
+    </ol>
+  </section>
+
+  <!-- ==================== 建议 Commit Message ==================== -->
+  <section class="section">
+    <h2>建议 Commit Message</h2>
+    <div class="commit-block">
+      <button class="copy-btn" onclick="copyCommit()">Copy</button>
+      <pre id="commitMsg">{{COMMIT_MESSAGE}}</pre>
+    </div>
+    <p class="small" style="margin-top:10px;">{{COMMIT_MESSAGE_NOTE}}</p>
+  </section>
+
+  <!-- ==================== 提交前必须修复 ==================== -->
+  <section class="section">
+    <h2>提交前必须修复</h2>
+    <ul class="plan-list">
+      {{REQUIRED_ACTIONS}}
+      <!--
+      Template:
+      <li class="p0">
+        <span class="plan-label" style="color:var(--fail-text)">Must-Fix</span>
+        D4 Regression Risk: DataService.cs:42 — 新增 null 引用未做保护
+      </li>
+      <li class="p1">
+        <span class="plan-label" style="color:#c97a00">Should-Fix</span>
+        D6 Coding Standards: NewFile.cs 缺少 copyright header
+      </li>
+      如果无需修复:
+      <li class="p2" style="border-left-color:var(--pass-text); background:var(--pass-bg);">
+        <span class="plan-label" style="color:var(--pass-text)">无</span>
+        当前范围内无必须修复的阻塞项。
+      </li>
+      -->
+    </ul>
+  </section>
+
+  <!-- ==================== Residual Risks ==================== -->
+  <section class="section">
+    <h2>Residual Risks</h2>
+    <ul class="risk-list">
+      {{RESIDUAL_RISKS}}
+      <!--
+      Template for each risk:
+      <li>仍未新增自动化回归测试来覆盖关键修复路径。</li>
+      <li>完整 TICS/CodeScene 静态分析仍待交付前复跑。</li>
+      -->
+    </ul>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <div style="text-align:center; padding:28px 0 0; color:var(--muted); font-size:12px; border-top:1px solid var(--border); margin-top:32px;">
+    Code Review Report · Generated by Copilot code-review Skill · Philips CT SW
+    <br>This report is a local review snapshot. CI/TICS/CodeScene pipelines remain the source of truth.
+  </div>
+
+</div>
+
+<!-- ==================== SCRIPTS ==================== -->
+<script>
+// Sortable table columns
+let sortDir = {};
+function sortTable(th) {
+  const table = th.closest('table');
+  const idx = Array.from(th.parentNode.children).indexOf(th);
+  const tbody = table.tBodies[0];
+  const rows = Array.from(tbody.rows);
+  const key = table.id + '-' + idx;
+  const dir = sortDir[key] = !(sortDir[key] || false);
+  rows.sort((a, b) => {
+    let va = a.cells[idx].textContent.trim();
+    let vb = b.cells[idx].textContent.trim();
+    const na = parseFloat(va.replace(/[+\-]/g, '')), nb = parseFloat(vb.replace(/[+\-]/g, ''));
+    if (!isNaN(na) && !isNaN(nb)) return dir ? na - nb : nb - na;
+    return dir ? va.localeCompare(vb) : vb.localeCompare(va);
+  });
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+// Copy commit message
+function copyCommit() {
+  const text = document.getElementById('commitMsg').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+</script>
+</body>
+</html>

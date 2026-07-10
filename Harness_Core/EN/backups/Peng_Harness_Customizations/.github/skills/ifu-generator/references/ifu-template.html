@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IFU — {{FEATURE_NAME}}</title>
+<!--
+  =====================================================================
+  IFU HTML Template — Word-Compatible Styling
+  =====================================================================
+  This template mirrors the Philips CT IFU Word document styles
+  (300013585292_C_spectral_ct_Verida_Family_ifu_en-us.docx) so that
+  content can be copy-pasted from the HTML preview into the official
+  Word IFU with minimal reformatting.
+
+  Word Style Mapping:
+    H1  → Heading 1  : Trebuchet MS, 16pt, Bold
+    H2  → Heading 2  : Trebuchet MS, 12pt, Bold
+    H3  → Heading 3  : Microsoft Sans Serif, 11pt, Regular
+    H4  → Heading 4  : Trebuchet MS, 10pt, Bold  (WARNING / CAUTION label)
+    H5  → Heading 5  : Trebuchet MS, 10pt, Bold  (procedure group title)
+    H6  → Heading 6  : Microsoft Sans Serif, 10pt, Regular (sub-heading / step)
+    p   → Body Text  : Microsoft Sans Serif, 9.5pt, Regular
+    .signal-body → Heading 7 : Trebuchet MS, 9.5pt, Bold
+    ol/li → List Paragraph : Microsoft Sans Serif, 11pt, Regular
+    table td → Table Paragraph : Microsoft Sans Serif, 11pt, Regular
+    NOTE: → inline bold prefix in Body Text
+  =====================================================================
+-->
+<style>
+  :root {
+    --bg: #ffffff;
+    --nav-bg: #f8fafc;
+    --nav-border: #e2e8f0;
+    --nav-active: #0f4c81;
+    --nav-hover: #e8f0fe;
+    --text: #000000;
+    --muted: #6b7280;
+    --accent: #0f4c81;
+    --link: #2563eb;
+    --border: #d1d5db;
+    --code-bg: #f1f5f9;
+    /* Signal word colors kept subtle — Word uses plain black text */
+    --warning-bg: #fef2f2;
+    --warning-border: #c00000;
+    --warning-text: #c00000;
+    --caution-bg: #fffbeb;
+    --caution-border: #b45309;
+    --caution-text: #b45309;
+    --note-bg: #f8fafc;
+    --note-border: #6b7280;
+    --note-text: #000000;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Microsoft Sans Serif", "Segoe UI", Arial, sans-serif;
+    font-size: 9.5pt;
+    line-height: 1.5;
+    color: var(--text);
+    background: var(--bg);
+  }
+
+  /* ===== Layout: Left Nav + Right Content ===== */
+  .ifu-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ===== Left Navigation (screen only, not copied to Word) ===== */
+  .ifu-nav {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--nav-bg);
+    border-right: 1px solid var(--nav-border);
+    padding: 24px 0;
+  }
+
+  .ifu-nav-header {
+    padding: 0 20px 16px;
+    border-bottom: 1px solid var(--nav-border);
+    margin-bottom: 12px;
+  }
+
+  .ifu-nav-header h1 {
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    font-size: 14px;
+    color: var(--accent);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .ifu-nav-header .nav-subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .ifu-nav ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .ifu-nav li {
+    margin: 0;
+  }
+
+  .ifu-nav a {
+    display: block;
+    padding: 6px 20px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12px;
+    border-left: 3px solid transparent;
+    transition: all 0.15s ease;
+  }
+
+  .ifu-nav a:hover {
+    background: var(--nav-hover);
+    color: var(--accent);
+  }
+
+  .ifu-nav a.active {
+    border-left-color: var(--nav-active);
+    background: var(--nav-hover);
+    color: var(--nav-active);
+    font-weight: 600;
+  }
+
+  .ifu-nav .nav-level-1 { padding-left: 20px; font-weight: 600; font-size: 13px; }
+  .ifu-nav .nav-level-2 { padding-left: 36px; }
+  .ifu-nav .nav-level-3 { padding-left: 52px; font-size: 11px; color: var(--muted); }
+
+  /* ===== Right Content ===== */
+  .ifu-content {
+    padding: 30px 48px 60px;
+    max-width: 900px;
+  }
+
+  /* ==========================================================
+     Typography — matches IFU Word heading hierarchy
+     ========================================================== */
+
+  /* Heading 1: Trebuchet MS, 16pt, Bold — chapter title */
+  .ifu-content h1 {
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    font-size: 16pt;
+    font-weight: bold;
+    color: var(--text);
+    margin: 0 0 6pt;
+    padding-bottom: 4pt;
+    border-bottom: none;
+  }
+
+  /* Heading 2: Trebuchet MS, 12pt, Bold — section */
+  .ifu-content h2 {
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    font-size: 12pt;
+    font-weight: bold;
+    color: var(--text);
+    margin: 18pt 0 6pt;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  /* Heading 3: Microsoft Sans Serif, 11pt, Regular — sub-section */
+  .ifu-content h3 {
+    font-family: "Microsoft Sans Serif", "Segoe UI", sans-serif;
+    font-size: 11pt;
+    font-weight: normal;
+    color: var(--text);
+    margin: 6pt 0 4pt;
+  }
+
+  /* Heading 5: Trebuchet MS, 10pt, Bold — procedure group title */
+  .ifu-content h5 {
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+    color: var(--text);
+    margin: 4pt 0 2pt;
+  }
+
+  /* Body Text: Microsoft Sans Serif, 9.5pt */
+  .ifu-content p {
+    font-family: "Microsoft Sans Serif", "Segoe UI", sans-serif;
+    font-size: 9.5pt;
+    margin: 4pt 0;
+    line-height: 1.5;
+  }
+
+  /* ===== Warning / Caution / Note — Word-compatible ===== */
+  /*
+    In Word:
+      Signal word ("WARNING" / "CAUTION") → Heading 4: Trebuchet MS 10pt Bold
+      Signal body text                    → Heading 7: Trebuchet MS 9.5pt Bold
+      "NOTE:" is an inline bold prefix in Body Text
+  */
+  .ifu-signal {
+    margin: 10pt 0;
+    padding: 8pt 12pt;
+    border-left: 4px solid;
+  }
+
+  /* Signal label — matches Heading 4 */
+  .ifu-signal .signal-label {
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 2pt;
+  }
+
+  /* Signal body — matches Heading 7 */
+  .ifu-signal .signal-body,
+  .ifu-signal .signal-body p {
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    font-size: 9.5pt;
+    font-weight: bold;
+    margin: 2pt 0;
+    line-height: 1.4;
+  }
+
+  .ifu-warning {
+    background: var(--warning-bg);
+    border-left-color: var(--warning-border);
+  }
+  .ifu-warning .signal-label { color: var(--warning-text); }
+
+  .ifu-caution {
+    background: var(--caution-bg);
+    border-left-color: var(--caution-border);
+  }
+  .ifu-caution .signal-label { color: var(--caution-text); }
+
+  .ifu-note {
+    background: var(--note-bg);
+    border-left-color: var(--note-border);
+  }
+  .ifu-note .signal-label { color: var(--note-text); }
+
+  /* Inline NOTE — used within body text (no box) */
+  .ifu-note-inline {
+    font-family: "Microsoft Sans Serif", "Segoe UI", sans-serif;
+    font-size: 9.5pt;
+    margin: 4pt 0;
+  }
+  .ifu-note-inline strong {
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  }
+
+  /* ===== Procedure Steps — matches List Paragraph ===== */
+  /*
+    In Word: List Paragraph — Microsoft Sans Serif 11pt, LeftIndent ~101pt
+    Heading 6 used for numbered sub-steps: Microsoft Sans Serif 10pt
+  */
+  .ifu-procedure {
+    list-style: none;
+    padding: 0;
+    margin: 6pt 0;
+    counter-reset: step-counter;
+  }
+
+  .ifu-procedure > li {
+    counter-increment: step-counter;
+    position: relative;
+    padding: 4pt 0 4pt 28pt;
+    font-family: "Microsoft Sans Serif", "Segoe UI", sans-serif;
+    font-size: 10pt;
+    line-height: 1.5;
+    margin: 2pt 0;
+  }
+
+  .ifu-procedure > li::before {
+    content: counter(step-counter) ".";
+    position: absolute;
+    left: 0;
+    top: 4pt;
+    font-weight: bold;
+    font-size: 10pt;
+    color: var(--text);
+    min-width: 22pt;
+  }
+
+  .ifu-procedure .step-action {
+    font-family: "Microsoft Sans Serif", "Segoe UI", sans-serif;
+    font-size: 10pt;
+  }
+
+  .ifu-procedure .step-action strong {
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    color: var(--text);
+  }
+
+  .ifu-procedure .step-result {
+    display: block;
+    margin-top: 2pt;
+    padding: 3pt 8pt;
+    background: #f0fdf4;
+    border-left: 2px solid #22c55e;
+    font-family: "Microsoft Sans Serif", "Segoe UI", sans-serif;
+    font-size: 9.5pt;
+    color: var(--text);
+  }
+
+  .ifu-procedure .step-result::before {
+    content: "→ ";
+    font-weight: 700;
+  }
+
+  /* ===== Figure / Screenshot ===== */
+  .ifu-figure {
+    margin: 10pt 0;
+    text-align: center;
+  }
+
+  .ifu-figure img {
+    max-width: 100%;
+    border: 1px solid var(--border);
+  }
+
+  .ifu-figure figcaption {
+    margin-top: 4pt;
+    font-family: "Microsoft Sans Serif", "Segoe UI", sans-serif;
+    font-size: 9pt;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .ifu-figure-placeholder {
+    margin: 10pt 0;
+    padding: 16pt;
+    background: #f9fafb;
+    border: 2px dashed var(--border);
+    text-align: center;
+    color: var(--muted);
+    font-size: 9.5pt;
+  }
+
+  .ifu-figure-placeholder::before {
+    content: "📷 ";
+    font-size: 14pt;
+  }
+
+  /* ===== Tables — matches Table Paragraph ===== */
+  .ifu-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8pt 0;
+    font-family: "Microsoft Sans Serif", "Segoe UI", sans-serif;
+    font-size: 9.5pt;
+  }
+
+  .ifu-table th, .ifu-table td {
+    border: 1px solid var(--border);
+    padding: 5pt 8pt;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .ifu-table th {
+    background: #f1f5f9;
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    font-weight: bold;
+    font-size: 9.5pt;
+  }
+
+  /* ===== Prerequisites List ===== */
+  .ifu-prereq {
+    border: 1px solid var(--border);
+    padding: 8pt 12pt;
+    margin: 8pt 0;
+  }
+
+  .ifu-prereq h4 {
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+    margin: 0 0 4pt;
+  }
+
+  .ifu-prereq ul {
+    margin: 0;
+    padding-left: 18pt;
+  }
+
+  .ifu-prereq li {
+    margin: 2pt 0;
+    font-family: "Microsoft Sans Serif", "Segoe UI", sans-serif;
+    font-size: 9.5pt;
+  }
+
+  /* ===== Metadata Banner ===== */
+  .ifu-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6pt 14pt;
+    margin: 8pt 0 16pt;
+    padding: 8pt 12pt;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    font-family: "Microsoft Sans Serif", "Segoe UI", sans-serif;
+    font-size: 9pt;
+    color: var(--muted);
+  }
+
+  .ifu-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 3pt;
+  }
+
+  .ifu-meta .meta-label {
+    font-weight: bold;
+    color: var(--text);
+  }
+
+  /* ===== Keyboard Shortcut ===== */
+  kbd {
+    display: inline-block;
+    padding: 1pt 4pt;
+    font-family: Consolas, monospace;
+    font-size: 9pt;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+  }
+
+  /* ===== Troubleshooting Table ===== */
+  .ifu-troubleshoot td:first-child {
+    font-weight: bold;
+    width: 30%;
+  }
+
+  /* ===== Disclaimer ===== */
+  .ifu-disclaimer {
+    margin-top: 24pt;
+    padding: 10pt 14pt;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    font-size: 9pt;
+    color: #92400e;
+  }
+
+  /* ===== Print — hide nav, single column ===== */
+  @media print {
+    .ifu-layout { display: block; }
+    .ifu-nav { display: none; }
+    .ifu-content { padding: 20pt; max-width: 100%; }
+    .ifu-signal { break-inside: avoid; }
+    .ifu-procedure > li { break-inside: avoid; }
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .ifu-layout { grid-template-columns: 1fr; }
+    .ifu-nav { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--nav-border); }
+    .ifu-content { padding: 16pt 12pt; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ifu-layout">
+
+  <!-- ==================== LEFT NAVIGATION ==================== -->
+  <nav class="ifu-nav">
+    <div class="ifu-nav-header">
+      <h1>{{FEATURE_NAME}}</h1>
+      <div class="nav-subtitle">Instructions for Use</div>
+    </div>
+    <ul>
+      {{NAV_ITEMS}}
+      <!--
+      Template for navigation items:
+
+      <li><a href="#overview" class="nav-level-1">Overview</a></li>
+      <li><a href="#before-you-begin" class="nav-level-2">Before you begin</a></li>
+      <li><a href="#procedure-1" class="nav-level-1">Performing [Task]</a></li>
+      <li><a href="#step-by-step" class="nav-level-2">Step-by-step</a></li>
+      <li><a href="#result" class="nav-level-2">Result</a></li>
+      <li><a href="#warnings" class="nav-level-1">Warnings and precautions</a></li>
+      <li><a href="#troubleshooting" class="nav-level-1">Troubleshooting</a></li>
+      -->
+    </ul>
+  </nav>
+
+  <!-- ==================== RIGHT CONTENT ==================== -->
+  <main class="ifu-content">
+
+    <h1 id="feature-title">{{FEATURE_NAME}}</h1>
+
+    <div class="ifu-meta">
+      <span><span class="meta-label">Product:</span> {{PRODUCT_LINE}}</span>
+      <span><span class="meta-label">Requirement:</span> {{REQUIREMENT_ID}}</span>
+      <span><span class="meta-label">Version:</span> {{TARGET_RELEASE}}</span>
+      <span><span class="meta-label">Date:</span> {{DATE}}</span>
+    </div>
+
+    <!-- ===== Overview ===== -->
+    <h2 id="overview">Overview</h2>
+    <p>{{OVERVIEW_TEXT}}</p>
+    <!-- Clinical context: why and when this feature is used -->
+    <p>{{CLINICAL_CONTEXT}}</p>
+
+    <!-- ===== Before You Begin ===== -->
+    <h2 id="before-you-begin">Before you begin</h2>
+    <div class="ifu-prereq">
+      <h4>Prerequisites</h4>
+      <ul>
+        {{PREREQUISITES}}
+        <!--
+        <li>A reconstructed CT dataset is loaded in the viewer.</li>
+        <li>The Rib application is launched from the application menu.</li>
+        -->
+      </ul>
+    </div>
+
+    <!-- ===== Warnings (feature-level) ===== -->
+    {{FEATURE_WARNINGS}}
+    <!--
+    WARNING / CAUTION use block structure (matches Word Heading 4 + Heading 7):
+
+    <div class="ifu-signal ifu-warning">
+      <div class="signal-label">WARNING</div>
+      <div class="signal-body">
+        <p>Automatic rib labeling results are for reference only. Always verify label correctness before clinical decision-making.</p>
+      </div>
+    </div>
+
+    NOTE uses inline style (matches Word Body Text with bold prefix):
+
+    <p class="ifu-note-inline"><strong>NOTE:</strong> The Rib Labeling feature requires a chest CT dataset with axial slices ≤ 3 mm.</p>
+    -->
+
+    <!-- ===== Procedure ===== -->
+    <h2 id="procedure">{{PROCEDURE_TITLE}}</h2>
+
+    <ol class="ifu-procedure">
+      {{PROCEDURE_STEPS}}
+      <!--
+      Template for each step:
+
+      <li>
+        <span class="step-action"><strong>Select</strong> the dataset in the <strong>Series List</strong> panel.</span>
+        <span class="step-result">The system loads the dataset and displays it in the viewer.</span>
+      </li>
+
+      Steps with screenshots:
+      <li>
+        <span class="step-action"><strong>Click</strong> the <strong>Rib Labeling</strong> button in the toolbar.</span>
+        <figure class="ifu-figure">
+          <img src="path/to/screenshot.png" alt="Rib labeling button in toolbar" />
+          <figcaption>Figure 1: Rib labeling button location in the toolbar</figcaption>
+        </figure>
+        <span class="step-result">The system starts automatic rib detection and labeling.</span>
+      </li>
+
+      Steps with placeholder (no screenshot provided):
+      <li>
+        <span class="step-action"><strong>Click</strong> the <strong>Rib Labeling</strong> button in the toolbar.</span>
+        <div class="ifu-figure-placeholder">[INSERT SCREENSHOT: Toolbar showing the Rib Labeling button highlighted]</div>
+        <span class="step-result">The system starts automatic rib detection and labeling.</span>
+      </li>
+
+      Steps with inline warning (WARNING block BEFORE the step):
+      <li>
+        <div class="ifu-signal ifu-caution">
+          <div class="signal-label">CAUTION</div>
+          <div class="signal-body">
+            <p>Do not close the application during processing. Interrupting may cause data loss.</p>
+          </div>
+        </div>
+        <span class="step-action"><strong>Wait</strong> for the rib detection process to complete.</span>
+        <span class="step-result">A progress indicator shows the detection status.</span>
+      </li>
+
+      Inline NOTE within a step:
+      <li>
+        <span class="step-action"><strong>Adjust</strong> the window level to optimize contrast.</span>
+        <p class="ifu-note-inline"><strong>NOTE:</strong> Default window settings are suitable for most cases.</p>
+      </li>
+      -->
+    </ol>
+
+    <!-- ===== Result ===== -->
+    <h2 id="result">Result</h2>
+    <p>{{RESULT_DESCRIPTION}}</p>
+    {{RESULT_FIGURE}}
+
+    <!-- ===== Additional Procedures (optional) ===== -->
+    {{ADDITIONAL_PROCEDURES}}
+
+    <!-- ===== Troubleshooting ===== -->
+    <h2 id="troubleshooting">Troubleshooting</h2>
+    <table class="ifu-table ifu-troubleshoot">
+      <thead>
+        <tr><th>Symptom</th><th>Possible Cause</th><th>Corrective Action</th></tr>
+      </thead>
+      <tbody>
+        {{TROUBLESHOOTING_ROWS}}
+        <!--
+        <tr>
+          <td>No rib labels appear</td>
+          <td>Dataset does not meet minimum requirements (slice thickness, patient position)</td>
+          <td>Verify the dataset meets prerequisites. Retry with a compatible dataset.</td>
+        </tr>
+        -->
+      </tbody>
+    </table>
+
+    <!-- ===== Disclaimer ===== -->
+    <div class="ifu-disclaimer">
+      ⚠️ This IFU content is AI-generated draft material. All content must be reviewed and approved by the
+      Technical Documentation team and Regulatory Affairs before inclusion in official IFU documentation.
+      Clinical accuracy must be verified by domain experts.
+    </div>
+
+  </main>
+</div>
+
+<!-- ==================== SCRIPTS ==================== -->
+<script>
+// Navigation active state tracking
+document.addEventListener('DOMContentLoaded', () => {
+  const navLinks = document.querySelectorAll('.ifu-nav a');
+  const sections = document.querySelectorAll('[id]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        const activeLink = document.querySelector(`.ifu-nav a[href="#${entry.target.id}"]`);
+        if (activeLink) activeLink.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px' });
+
+  sections.forEach(section => observer.observe(section));
+});
+</script>
+</body>
+</html>

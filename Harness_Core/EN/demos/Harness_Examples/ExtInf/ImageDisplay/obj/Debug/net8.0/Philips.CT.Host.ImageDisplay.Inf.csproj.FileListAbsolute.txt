@@ -1,0 +1,13 @@
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.Inf.deps.json
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.Inf.dll
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.Inf.pdb
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.Inf.xml
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\obj\Debug\net8.0\Philips.CT.Host.ImageDisplay.Inf.GeneratedMSBuildEditorConfig.editorconfig
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\obj\Debug\net8.0\Philips.CT.Host.ImageDisplay.Inf.AssemblyInfoInputs.cache
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\obj\Debug\net8.0\Philips.CT.Host.ImageDisplay.Inf.AssemblyInfo.cs
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\obj\Debug\net8.0\Philips.CT.Host.ImageDisplay.Inf.csproj.CoreCompileInputs.cache
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\obj\Debug\net8.0\Philips.CT.Host.ImageDisplay.Inf.dll
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\obj\Debug\net8.0\refint\Philips.CT.Host.ImageDisplay.Inf.dll
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\obj\Debug\net8.0\Philips.CT.Host.ImageDisplay.Inf.xml
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\obj\Debug\net8.0\Philips.CT.Host.ImageDisplay.Inf.pdb
+C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\obj\Debug\net8.0\ref\Philips.CT.Host.ImageDisplay.Inf.dll

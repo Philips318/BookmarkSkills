@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="960" viewBox="0 0 1480 960" role="img" aria-labelledby="title desc">
+  <title id="title">TICS 定制资产总览图</title>
+  <desc id="desc">展示仓库级 Copilot TICS 定制中 instructions、skill、reference、prompt 和 asset 之间的关系，以及它们如何在团队内生效。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7fafc"/>
+      <stop offset="100%" stop-color="#edf2f7"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4a5568"/>
+    </marker>
+    <style>
+      .title { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #1a202c; }
+      .subtitle { font: 500 16px 'Segoe UI', Arial, sans-serif; fill: #4a5568; }
+      .section { font: 700 20px 'Segoe UI', Arial, sans-serif; fill: #1a202c; }
+      .path { font: 700 17px 'Consolas', 'Courier New', monospace; fill: #1f2937; }
+      .body { font: 15px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .small { font: 13px 'Segoe UI', Arial, sans-serif; fill: #475569; }
+      .legend { font: 700 14px 'Segoe UI', Arial, sans-serif; fill: #1f2937; }
+      .card { stroke: #cbd5e0; stroke-width: 1.5; rx: 20; ry: 20; }
+      .line { stroke: #4a5568; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1480" height="960" fill="url(#bg)"/>
+
+  <text x="80" y="80" class="title">TICS 定制资产总览图</text>
+  <text x="80" y="112" class="subtitle">说明仓库中的 Copilot 定制资产如何组织，以及它们如何支撑符合 TICS 的 C# 交付</text>
+
+  <rect x="80" y="160" width="1320" height="90" class="card" fill="#ffffff"/>
+  <text x="110" y="205" class="section">仓库根入口</text>
+  <text x="110" y="232" class="path">.github/</text>
+  <text x="360" y="205" class="body">团队成员打开这个仓库时，共享定制资产就从这里进入工作区上下文。</text>
+  <text x="360" y="232" class="body">instructions 负责自动约束，skill 和 prompt 负责按需任务，reference 与 assets 负责提供支撑材料。</text>
+
+  <rect x="80" y="320" width="360" height="220" class="card" fill="#e8f1ff"/>
+  <text x="110" y="360" class="section">自动生效的约束</text>
+  <text x="110" y="392" class="path">.github/instructions/tics-csharp.instructions.md</text>
+  <text x="110" y="428" class="body">对匹配文件自动加载：</text>
+  <text x="128" y="455" class="body">- 通过 applyTo 作用于 C# 编辑</text>
+  <text x="128" y="482" class="body">- 保存短而稳定的生成约束</text>
+  <text x="128" y="509" class="body">- 适合放团队默认编码规则</text>
+
+  <rect x="560" y="320" width="360" height="220" class="card" fill="#e7fff3"/>
+  <text x="590" y="360" class="section">按需触发的工作流</text>
+  <text x="590" y="392" class="path">.github/skills/tics-standard/SKILL.md</text>
+  <text x="590" y="428" class="body">用户或模型在需要 TICS 工作时触发：</text>
+  <text x="608" y="455" class="body">- 审查并修复 TICS 问题</text>
+  <text x="608" y="482" class="body">- 应用仓库约定的 TICS 工作流</text>
+  <text x="608" y="509" class="body">- 按需读取 reference 和 assets</text>
+
+  <rect x="1040" y="320" width="360" height="220" class="card" fill="#fff4e6"/>
+  <text x="1070" y="360" class="section">手动交付前自检</text>
+  <text x="1070" y="392" class="path">.github/prompts/tics-preflight.prompt.md</text>
+  <text x="1070" y="428" class="body">交付、提交或 PR 前手动运行：</text>
+  <text x="1088" y="455" class="body">- 审查当前变更的 C# 文件</text>
+  <text x="1088" y="482" class="body">- 先输出发现，再决定是否修复</text>
+  <text x="1088" y="509" class="body">- 适合作为交付前预检动作</text>
+
+  <rect x="320" y="620" width="420" height="220" class="card" fill="#ffffff"/>
+  <text x="350" y="660" class="section">详细知识库</text>
+  <text x="350" y="692" class="path">.github/skills/tics-standard/references/*.md</text>
+  <text x="350" y="728" class="body">详细规则和说明放在这里：</text>
+  <text x="368" y="755" class="body">- common-rules.md</text>
+  <text x="368" y="782" class="body">- philips-csharp-checked-level1-7.md</text>
+  <text x="368" y="809" class="body">- which-file-to-edit.md</text>
+
+  <rect x="840" y="620" width="420" height="220" class="card" fill="#ffffff"/>
+  <text x="870" y="660" class="section">可分享的资产</text>
+  <text x="870" y="692" class="path">.github/skills/tics-standard/assets/*</text>
+  <text x="870" y="728" class="body">这里放可复用的展示材料：</text>
+  <text x="888" y="755" class="body">- SVG 架构图和说明图</text>
+  <text x="888" y="782" class="body">- 新员工或团队培训材料</text>
+  <text x="888" y="809" class="body">- 内部分享时可直接复用</text>
+
+  <path d="M740 250 L740 300" class="line"/>
+  <path d="M260 250 L260 300" class="line"/>
+  <path d="M1220 250 L1220 300" class="line"/>
+  <path d="M740 540 L740 590 L530 590 L530 620" class="line"/>
+  <path d="M740 540 L740 590 L1050 590 L1050 620" class="line"/>
+
+  <rect x="80" y="880" width="180" height="34" rx="10" ry="10" fill="#e8f1ff" stroke="#cbd5e0"/>
+  <text x="103" y="902" class="legend">自动约束</text>
+  <rect x="300" y="880" width="180" height="34" rx="10" ry="10" fill="#e7fff3" stroke="#cbd5e0"/>
+  <text x="323" y="902" class="legend">按需工作流</text>
+  <rect x="520" y="880" width="180" height="34" rx="10" ry="10" fill="#fff4e6" stroke="#cbd5e0"/>
+  <text x="543" y="902" class="legend">手动预检</text>
+  <rect x="740" y="880" width="200" height="34" rx="10" ry="10" fill="#ffffff" stroke="#cbd5e0"/>
+  <text x="763" y="902" class="legend">知识与资产</text>
+
+  <text x="980" y="902" class="small">建议对团队的解释：instructions 是默认护栏，skill 是修复流程，prompt 是交付前自检入口。</text>
+</svg>

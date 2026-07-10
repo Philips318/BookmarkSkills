@@ -1,0 +1,136 @@
+{
+  "slug": "ww-wc-reset",
+  "title": "WW/WC Reset to Default",
+  "type": "feature",
+  "status": "complete",
+  "priority": 1,
+  "context": "Greenfield WPF/MVVM feature for CT image display: adds a Reset Window/Level button that restores DICOM-default WW (0028,1051) and WC (0028,1050) values. IEC 62304 Class B. The infrastructure task (1 of 4 = 25%) exceeds the 20% guideline because no ExtInf/ or Src/ tree exists yet — all interface contracts, the WindowLevel value object, and DICOM constants must be established before any vertical feature slice can build on them. File counts per task also exceed the 2–5 guideline due to greenfield creation (new files, not modifications).",
+  "created": "2026-07-02T10:00:00Z",
+  "updated": "2026-07-02T14:00:00Z",
+  "requirements_doc": ".harness/requirements/ww-wc-reset-requirements.md",
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Infrastructure: Domain model, interface contracts, and DICOM constants",
+      "type": "infrastructure",
+      "status": "complete",
+      "started_at": "2026-07-02T11:00:00Z",
+      "completed_at": "2026-07-02T11:30:00Z",
+      "spec_file": ".harness/specs/ww-wc-reset/task-1-domain-model-interfaces.feature",
+      "demo_required": false,
+      "coverage_threshold": 90,
+      "acceptance_criteria": [
+        "Scenario: Valid Window Width and Center create a WindowLevel",
+        "Scenario: Zero Window Width is rejected",
+        "Scenario: Negative Window Width is rejected",
+        "Scenario: WindowLevel preserves the DICOM preset name",
+        "Scenario: DICOM display tag constants map to correct tag numbers"
+      ],
+      "design_note": "See ADR-001 §Architectural Envelope for the ExtInf interface contracts (IImageDisplayViewModel, IDicomImageModel, IStatusNotifier, IUndoService, IUndoableAction, IWindowLevelDefaults), the WindowLevel value object with WW > 0 invariant enforced by WindowLevel.Create(), and DicomDisplayTags constants referencing DICOM PS3.3 §C.7.6.3.1.5. File: .harness/architecture/adr/ADR-001-ww-wc-reset-design.md",
+      "files_likely_affected": [
+        "ExtInf/ImageDisplay/WindowLevel.cs",
+        "ExtInf/ImageDisplay/IDicomImageModel.cs",
+        "ExtInf/ImageDisplay/IWindowLevelDefaults.cs",
+        "ExtInf/ImageDisplay/IUndoService.cs",
+        "ExtInf/ImageDisplay/IUndoableAction.cs",
+        "ExtInf/ImageDisplay/IStatusNotifier.cs",
+        "ExtInf/ImageDisplay/IImageDisplayViewModel.cs",
+        "Src/ImageDisplay/Constants/DicomDisplayTags.cs",
+        "Src/ImageDisplay/Test/WindowLevelTests.cs",
+        "Src/ImageDisplay/Test/DicomDisplayTagsTests.cs"
+      ],
+      "depends_on": []
+    },
+    {
+      "id": "2",
+      "title": "Reset Window/Level to DICOM default — happy path",
+      "type": "feature",
+      "status": "complete",
+      "started_at": "2026-07-02T11:30:00Z",
+      "completed_at": "2026-07-02T12:00:00Z",
+      "spec_file": ".harness/specs/ww-wc-reset/task-2-reset-happy-path.feature",
+      "demo_required": true,
+      "demo_scenario": "Scenario: Reset restores DICOM default Window Width and Window Center",
+      "demo_entry_point": "Src/ImageDisplayApp/bin/Debug/net8.0-windows/Philips.CT.Host.ImageDisplay.App.exe",
+      "demo_launch_args": "--simulator --seed=demo",
+      "acceptance_criteria": [
+        "Scenario: Reset restores DICOM default Window Width and Window Center",
+        "Scenario: Reset button is disabled when no series is loaded",
+        "Scenario: Confirmation message includes the DICOM preset name",
+        "Scenario: Confirmation message auto-dismisses",
+        "Scenario: Keyboard shortcut triggers reset"
+      ],
+      "design_note": "See ADR-001 §Decision items 1–4: RelayCommand pattern for ResetWindowLevelCommand (IRelayCommand), model-owned default values (DicomImageModel.DefaultWindowLevel), StatusBarNotifier for non-blocking confirmation (2 s auto-dismiss via DispatcherTimer), zero code-behind in ImageDisplayView.xaml. AutomationId 'ResetWindowLevelButton' on the button. KeyBinding for Ctrl+Shift+W. All UI strings from ImageDisplayStrings.resx. File: .harness/architecture/adr/ADR-001-ww-wc-reset-design.md",
+      "files_likely_affected": [
+        "Src/ImageDisplay/ImageDisplayViewModel.cs",
+        "Src/ImageDisplay/Commands/ResetWindowLevelCommand.cs",
+        "Src/ImageDisplay/Models/DicomImageModel.cs",
+        "Src/ImageDisplay/Services/StatusBarNotifier.cs",
+        "Src/ImageDisplay/Views/ImageDisplayView.xaml",
+        "Src/ImageDisplay/Resources/ImageDisplayStrings.resx",
+        "Src/ImageDisplay/Test/ImageDisplayViewModelTests.cs",
+        "Src/ImageDisplay/Test/ResetWindowLevelCommandTests.cs",
+        "Src/ImageDisplay/Test/DicomImageModelTests.cs",
+        "Src/ModuleTests/WwWcReset/Steps/WwWcResetSteps.cs"
+      ],
+      "depends_on": ["1"]
+    },
+    {
+      "id": "3",
+      "title": "Fallback when DICOM default Window/Level is unavailable",
+      "type": "feature",
+      "status": "complete",
+      "started_at": "2026-07-02T12:00:00Z",
+      "completed_at": "2026-07-02T12:30:00Z",
+      "spec_file": ".harness/specs/ww-wc-reset/task-3-fallback-no-defaults.feature",
+      "demo_required": true,
+      "demo_scenario": "Scenario: Fallback values applied when DICOM windowing tags are absent",
+      "demo_entry_point": "Src/ImageDisplayApp/bin/Debug/net8.0-windows/Philips.CT.Host.ImageDisplay.App.exe",
+      "demo_launch_args": "--simulator --seed=demo --no-dicom-ww",
+      "acceptance_criteria": [
+        "Scenario: Fallback values applied when DICOM windowing tags are absent",
+        "Scenario: Warning is logged when fallback values are used",
+        "Scenario: Fallback applied when DICOM Window Width is zero",
+        "Scenario: Fallback applied when DICOM Window Width is negative"
+      ],
+      "design_note": "See ADR-001 §Decision item 3: IWindowLevelDefaults configuration service reads fallback WW=400, WC=40 from application settings (configurable without rebuild per FR-04). §Decision item 6: WindowLevel.Create() rejects WW ≤ 0 at construction time (FR-07). Command logic: if IDicomImageModel.DefaultWindowLevel is null or WW ≤ 0 → use IWindowLevelDefaults.FallbackWindowLevel → log WARNING → notify user with distinct message. File: .harness/architecture/adr/ADR-001-ww-wc-reset-design.md",
+      "files_likely_affected": [
+        "Src/ImageDisplay/Commands/ResetWindowLevelCommand.cs",
+        "Src/ImageDisplay/Services/WindowLevelDefaults.cs",
+        "Src/ImageDisplay/Test/WindowLevelDefaultsTests.cs",
+        "Src/ImageDisplay/Test/ResetWindowLevelCommandTests.cs",
+        "Src/ModuleTests/WwWcReset/Steps/WwWcResetFallbackSteps.cs"
+      ],
+      "depends_on": ["2"]
+    },
+    {
+      "id": "4",
+      "title": "Undo support for Window/Level reset",
+      "type": "feature",
+      "status": "complete",
+      "started_at": "2026-07-02T12:30:00Z",
+      "completed_at": "2026-07-02T13:30:00Z",
+      "spec_file": ".harness/specs/ww-wc-reset/task-4-undo-reset.feature",
+      "demo_required": true,
+      "demo_scenario": "Scenario: Undo restores the previous Window Width and Window Center",
+      "demo_entry_point": "Src/ImageDisplayApp/bin/Debug/net8.0-windows/Philips.CT.Host.ImageDisplay.App.exe",
+      "demo_launch_args": "--simulator --seed=demo",
+      "acceptance_criteria": [
+        "Scenario: Undo restores the previous Window Width and Window Center",
+        "Scenario: Redo reapplies the reset after an undo",
+        "Scenario: Undo is unavailable when no reset has been performed"
+      ],
+      "design_note": "See ADR-001 §Decision item 5: IUndoService with Push(IUndoableAction), Undo(), Redo(). WindowLevelChangeAction captures pre-reset WW/WC in Execute() and restores in Undo(). Undo stack bounded at 20 entries. ViewModel exposes UndoCommand via InputBinding on Ctrl+Z. File: .harness/architecture/adr/ADR-001-ww-wc-reset-design.md",
+      "files_likely_affected": [
+        "Src/ImageDisplay/Models/WindowLevelChangeAction.cs",
+        "Src/ImageDisplay/Services/WindowLevelUndoService.cs",
+        "Src/ImageDisplay/Commands/ResetWindowLevelCommand.cs",
+        "Src/ImageDisplay/ImageDisplayViewModel.cs",
+        "Src/ImageDisplay/Test/WindowLevelUndoServiceTests.cs",
+        "Src/ImageDisplay/Test/WindowLevelChangeActionTests.cs",
+        "Src/ModuleTests/WwWcReset/Steps/WwWcResetUndoSteps.cs"
+      ],
+      "depends_on": ["2"]
+    }
+  ]
+}

@@ -1,0 +1,377 @@
+{
+  "version": 2,
+  "dgSpecHash": "UPL6bJjrP3E=",
+  "success": false,
+  "projectFilePath": "Y:\\harness demo\\CT_AI_Harness\\demos\\Harness_Examples\\Src\\ModuleTests\\WwWcReset\\Philips.CT.Host.ImageDisplay.ModuleTests.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\320251582\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\320251582\\.nuget\\packages\\netstandard.library\\2.0.0\\netstandard.library.2.0.0.nupkg.sha512",
+    "C:\\Users\\320251582\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\320251582\\.nuget\\packages\\nunit\\3.14.0\\nunit.3.14.0.nupkg.sha512",
+    "C:\\Users\\320251582\\.nuget\\packages\\nunit3testadapter\\4.5.0\\nunit3testadapter.4.5.0.nupkg.sha512",
+    "C:\\Users\\320251582\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512",
+    "C:\\Users\\320251582\\.nuget\\packages\\system.text.json\\8.0.5\\system.text.json.8.0.5.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Reqnroll.NUnit' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Reqnroll.NUnit'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Reqnroll.NUnit"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Reqnroll.NUnit' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Reqnroll.NUnit'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Reqnroll.NUnit"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.NET.Test.Sdk' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Microsoft.NET.Test.Sdk'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Microsoft.NET.Test.Sdk"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'NUnit.Analyzers' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='NUnit.Analyzers'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "NUnit.Analyzers"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'NUnit.Analyzers' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='NUnit.Analyzers'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "NUnit.Analyzers"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Reqnroll.NUnit' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Reqnroll.NUnit'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Reqnroll.NUnit"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Reqnroll.NUnit' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Reqnroll.NUnit'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Reqnroll.NUnit"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.NET.Test.Sdk' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Microsoft.NET.Test.Sdk'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.NET.Test.Sdk"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.TestPlatform.TestHost' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Microsoft.TestPlatform.TestHost'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.TestPlatform.TestHost"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.TestPlatform.TestHost' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Microsoft.TestPlatform.TestHost'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Microsoft.TestPlatform.TestHost"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.CodeCoverage' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Microsoft.CodeCoverage'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.CodeCoverage"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.CodeCoverage' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Microsoft.CodeCoverage'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Microsoft.CodeCoverage"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'NUnit' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='NUnit'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "NUnit"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'NUnit' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='NUnit'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "NUnit"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Reqnroll.Tools.MsBuild.Generation' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Reqnroll.Tools.MsBuild.Generation'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Reqnroll.Tools.MsBuild.Generation"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Reqnroll.Tools.MsBuild.Generation' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Reqnroll.Tools.MsBuild.Generation'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Reqnroll.Tools.MsBuild.Generation"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.TestPlatform.ObjectModel' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Microsoft.TestPlatform.ObjectModel'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.TestPlatform.ObjectModel"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.TestPlatform.ObjectModel' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Microsoft.TestPlatform.ObjectModel'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Microsoft.TestPlatform.ObjectModel"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Reqnroll' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Reqnroll'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Reqnroll"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Reqnroll' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Reqnroll'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Reqnroll"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Reqnroll.Tools.MsBuild.Generation' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Reqnroll.Tools.MsBuild.Generation'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Reqnroll.Tools.MsBuild.Generation"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Reqnroll.Tools.MsBuild.Generation' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Reqnroll.Tools.MsBuild.Generation'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Reqnroll.Tools.MsBuild.Generation"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Reqnroll' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Reqnroll'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Reqnroll"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Reqnroll' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Reqnroll'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Reqnroll"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'NuGet.Frameworks' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='NuGet.Frameworks'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "NuGet.Frameworks"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'NuGet.Frameworks' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='NuGet.Frameworks'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "NuGet.Frameworks"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.HtmlFormatter' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Cucumber.HtmlFormatter'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Cucumber.HtmlFormatter"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.HtmlFormatter' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Cucumber.HtmlFormatter'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Cucumber.HtmlFormatter"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'NuGet.Frameworks' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='NuGet.Frameworks'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "NuGet.Frameworks"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'NuGet.Frameworks' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='NuGet.Frameworks'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "NuGet.Frameworks"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.HtmlFormatter' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Cucumber.HtmlFormatter'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Cucumber.HtmlFormatter"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.HtmlFormatter' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Cucumber.HtmlFormatter'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Cucumber.HtmlFormatter"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.Extensions.DependencyModel' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Microsoft.Extensions.DependencyModel'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Microsoft.Extensions.DependencyModel"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.Extensions.DependencyModel' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Microsoft.Extensions.DependencyModel'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Microsoft.Extensions.DependencyModel"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.CucumberExpressions' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Cucumber.CucumberExpressions'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Cucumber.CucumberExpressions"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.CucumberExpressions' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Cucumber.CucumberExpressions'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Cucumber.CucumberExpressions"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.Extensions.DependencyModel' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Microsoft.Extensions.DependencyModel'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.Extensions.DependencyModel"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.Extensions.DependencyModel' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Microsoft.Extensions.DependencyModel'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.Extensions.DependencyModel"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.Messages' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Cucumber.Messages'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Cucumber.Messages"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.Messages' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Cucumber.Messages'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Cucumber.Messages"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.Messages' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Cucumber.Messages'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Cucumber.Messages"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'System.Threading.Channels' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='System.Threading.Channels'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "System.Threading.Channels"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.CucumberExpressions' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Cucumber.CucumberExpressions'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Cucumber.CucumberExpressions"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.Messages' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Cucumber.Messages'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Cucumber.Messages"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.CucumberExpressions' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Cucumber.CucumberExpressions'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Cucumber.CucumberExpressions"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'System.Threading.Channels' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='System.Threading.Channels'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "System.Threading.Channels"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.Messages' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Cucumber.Messages'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Cucumber.Messages"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.Messages' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Cucumber.Messages'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Cucumber.Messages"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.Messages' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Cucumber.Messages'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Cucumber.Messages"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Cucumber.Messages' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Cucumber.Messages'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Cucumber.Messages"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.Bcl.AsyncInterfaces' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Microsoft.Bcl.AsyncInterfaces'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.Bcl.AsyncInterfaces"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.Bcl.AsyncInterfaces' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Microsoft.Bcl.AsyncInterfaces'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Microsoft.Bcl.AsyncInterfaces"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Gherkin' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Gherkin'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Gherkin"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Gherkin' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/ct-local-nuget/FindPackagesById()?id='Gherkin'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 404 (Not Found).",
+      "libraryId": "Gherkin"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.Bcl.AsyncInterfaces' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Microsoft.Bcl.AsyncInterfaces'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Microsoft.Bcl.AsyncInterfaces"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Microsoft.Bcl.AsyncInterfaces' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Microsoft.Bcl.AsyncInterfaces'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Microsoft.Bcl.AsyncInterfaces"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Gherkin' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Gherkin'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Gherkin"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'Gherkin' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='Gherkin'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "Gherkin"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'System.Threading.Channels' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='System.Threading.Channels'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "System.Threading.Channels"
+    },
+    {
+      "code": "NU1301",
+      "level": "Error",
+      "message": "Failed to retrieve information about 'System.Threading.Channels' from remote source 'https://artifactory.pic.philips.com:8443/artifactory/api/nuget/dinxgenhost-local-nuget/FindPackagesById()?id='System.Threading.Channels'&semVerLevel=2.0.0'.\r\n  Response status code does not indicate success: 401 (Unauthorized).",
+      "libraryId": "System.Threading.Channels"
+    }
+  ]
+}

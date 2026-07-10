@@ -1,0 +1,118 @@
+{
+  "task": "1",
+  "title": "Infrastructure: Domain model, interface contracts, and DICOM constants",
+  "verdict": "fail",
+  "evaluated_at": "2026-07-02",
+  "sections": {
+    "test_execution": {
+      "verdict": "FAIL",
+      "scenarios_pass": true,
+      "verification_tests_pass": false,
+      "no_vacuous_passes": true,
+      "no_regressions": true,
+      "stored_outputs_accepted": false,
+      "tools_rerun": [
+        "Build\\Verify-Baseline.cmd",
+        "Build\\Run-QualityGate.cmd -OutputDir .harness\\tool_outputs\\ww-wc-reset_1_eval_dev",
+        "Build\\Run-CombinedCoverage.cmd -OutputDir .harness\\tool_outputs\\ww-wc-reset_1_eval",
+        "python .github/scripts/Verify-QmsStructure.py --check-content SDD MVP MVProcedure",
+        "python .github/scripts/Verify-QmsStructure.py --check-content VerificationPlan VerificationProcedure"
+      ],
+      "notes": "Stored build evidence was clean and the stored TRX showed all 5 Task 1 module scenarios passed. The stored evidence set was incomplete because it did not include coverage or ReSharper artifacts, so the evaluator reran the baseline gate and attempted the canonical quality gates. The baseline gate passed with 0 warnings, 0 errors, 16 unit tests passed, and 10 module tests passed. Independent verification tests could not run because Src\\VerificationTests\\VerificationTests.sln is absent."
+    },
+    "test_quality": {
+      "verdict": "FAIL",
+      "all_scenarios_have_verification_tests": false,
+      "asserts_are_meaningful": true,
+      "verification_project": "missing",
+      "combined_coverage_percent": 0,
+      "coverage_by_type": {
+        "unit": 0,
+        "module": 0,
+        "verification": 0
+      },
+      "notes": "The unit tests and module steps use meaningful assertions and cover the valid path, WW = 0, WW < 0, preset-name preservation, and DICOM tag values. The 90% coverage threshold could not be verified because no stored coverage report existed and Build\\Run-QualityGate.cmd failed when dotnet dotcover was unavailable in the evaluator environment. Combined coverage could not be produced because the verification solution is missing."
+    },
+    "code_quality": {
+      "verdict": "FAIL",
+      "naming_conventions": true,
+      "no_dead_code": true,
+      "security_owasp": true,
+      "notes": "Headers, namespaces, interface contracts, and WindowLevel invariant enforcement are consistent with ADR-001. DicomDisplayTags centralizes the tag literals, but the individual public field XML comments do not each cite DICOM PS3.3 §C.7.6.3.1.5 as required by ADR-001 rule 6 and NFR-05."
+    },
+    "architecture_adherence": {
+      "verdict": "PASS",
+      "layer_boundaries_respected": true,
+      "interface_contracts_used": true,
+      "approved_patterns_applied": true,
+      "adrs_checked": [
+        "ADR-001"
+      ],
+      "notes": "Task 1 stays within the approved ExtInf/Src split, exposes the required interfaces and members, and enforces the WW > 0 invariant in WindowLevel.Create()."
+    },
+    "functional_completeness": {
+      "verdict": "FAIL",
+      "all_requirements_covered": false,
+      "edge_cases_handled": true,
+      "non_functional_requirements": false,
+      "requirements_checked": [
+        "FR-02",
+        "FR-03",
+        "FR-07",
+        "NFR-05"
+      ],
+      "notes": "Task 1 behavior covers the five acceptance criteria, but completion is blocked because NFR-05 documentation is incomplete in DicomDisplayTags and the developer-maintained QMS documents SDD, MVP, and MVProcedure fail structure validation due empty required sections. VerificationPlan and VerificationProcedure are correctly skipped because their skeletons are pending."
+    },
+    "demo_readiness": {
+      "verdict": "FAIL",
+      "application_launchable": false,
+      "notes": "Task 1 is marked demo_required=false, so a UI demo was not expected. The evaluator used the coverage gate instead, but the required coverage evidence could not be produced because dotCover is unavailable and the verification solution is missing."
+    }
+  },
+  "overall": "FAIL",
+  "rework_target": "both",
+  "definition_gap": {
+    "layer": "none",
+    "rationale": ""
+  },
+  "defects": [
+    {
+      "defect_id": "ww-wc-reset_1_D01",
+      "requirement_id": "NFR-05",
+      "severity": "major",
+      "file": "Src/ImageDisplay/Constants/DicomDisplayTags.cs",
+      "line": 24,
+      "summary": "The WindowCenter, WindowWidth, and WindowCenterWidthExplanation field XML comments do not each cite DICOM PS3.3 §C.7.6.3.1.5. The class comment cites the standard, but ADR-001 rule 6 requires the field comments themselves to reference it."
+    },
+    {
+      "defect_id": "ww-wc-reset_1_D02",
+      "requirement_id": "FR-02",
+      "severity": "major",
+      "file": "Src/VerificationTests/VerificationTests.sln",
+      "summary": "The independent verification solution is missing, so Build\\Run-CombinedCoverage.cmd cannot execute and the evaluator cannot verify combined coverage or task-scoped verification tests."
+    },
+    {
+      "defect_id": "ww-wc-reset_1_D03",
+      "requirement_id": "FR-02",
+      "severity": "major",
+      "file": "docs/qms/SDD.md",
+      "summary": "Verify-QmsStructure.py --check-content SDD MVP MVProcedure fails because SDD contains empty required sections instead of real content or explicit Not Applicable markers."
+    },
+    {
+      "defect_id": "ww-wc-reset_1_D04",
+      "requirement_id": "FR-02",
+      "severity": "major",
+      "file": "docs/qms/MVP.md",
+      "summary": "Verify-QmsStructure.py --check-content SDD MVP MVProcedure fails because MVP contains empty required sections instead of real content or explicit Not Applicable markers."
+    },
+    {
+      "defect_id": "ww-wc-reset_1_D05",
+      "requirement_id": "FR-02",
+      "severity": "major",
+      "file": "docs/qms/MVProcedure.md",
+      "summary": "Verify-QmsStructure.py --check-content SDD MVP MVProcedure fails because MVProcedure contains empty required sections instead of real content or explicit Not Applicable markers."
+    }
+  ],
+  "feedback_for_developer": "1. Update Src/ImageDisplay/Constants/DicomDisplayTags.cs so each public field XML comment explicitly cites DICOM PS3.3 §C.7.6.3.1.5; the class-level citation alone does not satisfy ADR-001 rule 6 or NFR-05.\n2. Populate or explicitly mark Not Applicable the empty required sections in docs/qms/SDD.md, docs/qms/MVP.md, and docs/qms/MVProcedure.md until python .github/scripts/Verify-QmsStructure.py --check-content SDD MVP MVProcedure passes.\n3. Re-run the canonical developer quality gate after dotCover is available so coverage and ReSharper artifacts exist and the 90% threshold can be verified.",
+  "feedback_for_test_designer": "1. Create Src/VerificationTests/VerificationTests.sln and the task-scoped verification project for ww-wc-reset Task 1 so Build\\Run-CombinedCoverage.cmd can execute.\n2. Ensure the verification suite independently covers all five Task 1 acceptance scenarios."
+}

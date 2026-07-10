@@ -1,0 +1,56 @@
+﻿{
+  "task": "4",
+  "demo_scenario": "Undo restores the previous Window Width and Window Center",
+  "demonstrated_at": "2026-07-02T14:56:56",
+  "run_label": "POST-FIX RE-RUN — undo/redo defect remediated",
+  "video": null,
+  "video_note": "ffmpeg not installed; screenshots substitute (9 PNGs across all 3 demos)",
+  "evidence_root": ".harness/demo_evidence/ww-wc-reset/",
+  "demo_2_evidence": ".harness/demo_evidence/ww-wc-reset/task-2-20260702T145656/",
+  "demo_3_evidence": ".harness/demo_evidence/ww-wc-reset/task-3-20260702T145656/",
+  "demo_4_evidence": ".harness/demo_evidence/ww-wc-reset/task-4-20260702T145656/",
+  "demo_runner": ".harness/demo_runners/ww-wc-reset/task-4-rerun/run-demo-rerun.ps1",
+  "fix_summary": {
+    "defect": "DelegateCommand (UI-agnostic) could not hook WPF CommandManager.RequerySuggested — bound Undo/Redo buttons never re-queried CanExecute after reset, so IsEnabled stayed False.",
+    "remedy": "ImageDisplayViewModel.WindowWidth and WindowCenter setters now call RefreshUndoRedoState(), which invokes _undoCommand.RaiseCanExecuteChanged() and _redoCommand.RaiseCanExecuteChanged(). Two regression unit tests added; full suite 85 unit+module tests green."
+  },
+  "demo_1_t02_happy_path": {
+    "scenario": "Reset restores DICOM default Window Width and Window Center",
+    "launch_args": "--simulator --seed=demo",
+    "steps_shown": [
+      { "step": "Given current WW=800 WC=-200", "observed": "WW=800 WC=-200", "screenshot": ".harness/demo_evidence/ww-wc-reset/task-2-20260702T145656/01-before-reset.png" },
+      { "step": "When ResetWindowLevelButton clicked", "observed": "InvokeOk=True WW=1,500 WC=-600", "screenshot": ".harness/demo_evidence/ww-wc-reset/task-2-20260702T145656/02-after-reset-status-visible.png" },
+      { "step": "Then status auto-dismisses", "observed": "Status empty after dismiss", "screenshot": ".harness/demo_evidence/ww-wc-reset/task-2-20260702T145656/03-status-dismissed.png" }
+    ],
+    "notes": "WW/WC updated 800/-200 -> 1500/-600 as expected."
+  },
+  "demo_2_t03_fallback": {
+    "scenario": "Fallback values applied when DICOM windowing tags are absent",
+    "launch_args": "--simulator --seed=demo --no-dicom-ww",
+    "steps_shown": [
+      { "step": "Given CT series loaded without DICOM windowing tags", "observed": "ResetButton.IsEnabled=True", "screenshot": ".harness/demo_evidence/ww-wc-reset/task-3-20260702T145656/01-before-reset-no-dicom.png" },
+      { "step": "When ResetWindowLevelButton clicked (no DICOM tags)", "observed": "WW=400 WC=40 (fallback)", "screenshot": ".harness/demo_evidence/ww-wc-reset/task-3-20260702T145656/02-after-fallback-reset.png" }
+    ],
+    "notes": "Fallback WW=400/WC=40 applied correctly."
+  },
+  "demo_3_t04_undo_redo": {
+    "scenario": "Undo restores the previous Window Width and Window Center",
+    "launch_args": "--simulator --seed=demo",
+    "key_fix_verification": {
+      "UndoButton_IsEnabled_BEFORE_reset": false,
+      "UndoButton_IsEnabled_AFTER_reset": true,
+      "Undo_InvokePattern_succeeded": true,
+      "Redo_InvokePattern_succeeded": true,
+      "WW_after_reset": "1,500", "WC_after_reset": "-600",
+      "WW_after_undo": "800",   "WC_after_undo": "-200",
+      "WW_after_redo": "1,500", "WC_after_redo": "-600"
+    },
+    "steps_shown": [
+      { "step": "Given no WL changes — UndoButton.IsEnabled checked", "observed": "UndoButton.IsEnabled=False", "screenshot": ".harness/demo_evidence/ww-wc-reset/task-4-20260702T145656/01-startup-undo-disabled.png" },
+      { "step": "When ResetWindowLevelButton clicked — UndoButton.IsEnabled re-checked (THE FIX)", "observed": "WW=1,500 WC=-600; UndoButton.IsEnabled=True; RedoButton.IsEnabled=False", "screenshot": ".harness/demo_evidence/ww-wc-reset/task-4-20260702T145656/02-after-reset-undo-enabled.png" },
+      { "step": "When UndoButton clicked (InvokePattern)", "observed": "InvokeOk=True; WW=800 WC=-200 restored; RedoButton.IsEnabled=True", "screenshot": ".harness/demo_evidence/ww-wc-reset/task-4-20260702T145656/03-after-undo.png" },
+      { "step": "When RedoButton clicked (InvokePattern)", "observed": "InvokeOk=True; WW=1,500 WC=-600 reapplied", "screenshot": ".harness/demo_evidence/ww-wc-reset/task-4-20260702T145656/04-after-redo.png" }
+    ],
+    "notes": "All undo/redo interactions succeeded. Previously: UndoButton stuck False after reset, InvokePattern returned 'Unrecognized error'. Now: button enables after reset, Undo/Redo InvokePattern both succeed, WW/WC values correctly cycle through reset -> undo -> redo."
+  }
+}

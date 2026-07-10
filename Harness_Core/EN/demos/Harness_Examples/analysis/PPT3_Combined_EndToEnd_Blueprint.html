@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPT 3 — 有机结合：全自动 End-to-End AI 交付蓝图 / Combined Blueprint</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#1e293b; --panel2:#172033; --ink:#e2e8f0; --muted:#94a3b8;
+    --accent:#38bdf8; --accent2:#a78bfa; --ok:#22c55e; --warn:#eab308; --bad:#ef4444; --line:#334155;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:'Segoe UI','Microsoft YaHei',system-ui,sans-serif;overflow:hidden}
+  body[data-lang="cn"] [data-en]{display:none !important}
+  body[data-lang="en"] [data-cn]{display:none !important}
+  .deck{height:100vh;width:100vw;position:relative}
+  .slide{position:absolute;inset:0;padding:44px 60px;display:none;flex-direction:column;animation:fade .35s ease}
+  .slide.active{display:flex}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  h1{font-size:38px;line-height:1.15;margin-bottom:8px;background:linear-gradient(90deg,var(--accent),var(--ok),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  h2{font-size:27px;margin-bottom:16px;color:#fff;display:flex;align-items:center;gap:12px}
+  h2::before{content:"";width:6px;height:27px;background:linear-gradient(var(--accent),var(--accent2));border-radius:3px}
+  .sub{color:var(--muted);font-size:16px;margin-bottom:20px}
+  .kicker{color:var(--ok);font-weight:700;letter-spacing:2px;font-size:13px;text-transform:uppercase;margin-bottom:12px}
+  ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  li{padding-left:24px;position:relative;font-size:16px;line-height:1.45;color:#dbe4f0}
+  li::before{content:"▸";position:absolute;left:0;color:var(--ok)}
+  li b{color:#fff}
+  .muted{color:var(--muted)}
+  .grid{display:grid;gap:12px}
+  .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:14px 16px}
+  .card h3{font-size:15.5px;color:#fff;margin-bottom:7px;display:flex;align-items:center;gap:8px}
+  .card p,.card li{font-size:13.5px;color:var(--muted);line-height:1.45}
+  .card ul{gap:5px}.card li{padding-left:16px;font-size:13.5px}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  th{background:var(--panel2);color:#fff}
+  td{color:#cbd5e1}
+  .mine{color:#c4b5fd;font-weight:600}.his{color:#7dd3fc;font-weight:600}
+  .foot{position:absolute;bottom:16px;left:60px;right:60px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:10px}
+  .dots{display:flex;gap:6px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--line);cursor:pointer}
+  .dot.active{background:var(--ok);width:22px;border-radius:4px}
+  .lang{position:absolute;top:14px;right:18px;z-index:10;display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:5px 12px}
+  .lang button{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-weight:600;font-family:inherit}
+  .lang button.active{color:var(--ok)}
+  .lang span{color:var(--line)}
+  .hint{position:absolute;top:50px;right:20px;color:var(--muted);font-size:11.5px}
+  code{background:#0b1220;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12.5px;color:#86efac}
+  .flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .node{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:7px 11px;font-size:12.5px;color:#fff;text-align:center}
+  .node .s{display:block;font-size:10.5px;margin-top:2px}
+  .node.his{border-color:#38bdf8}.node.mine{border-color:#a78bfa}.node.gate{border-color:var(--warn)}
+  .arrow{color:var(--ok);font-size:16px}
+  .lgd{display:flex;gap:16px;margin-top:12px;font-size:12.5px;color:var(--muted)}
+  .lgd span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .tree{font-family:Consolas,monospace;font-size:12.5px;line-height:1.5;color:#cbd5e1;background:#0b1220;border:1px solid var(--line);border-radius:12px;padding:14px 18px;white-space:pre;overflow:auto}
+  .tree .h{color:#7dd3fc}.tree .m{color:#c4b5fd}.tree .n{color:#86efac}.tree .c{color:var(--muted)}
+  .phase{display:flex;gap:12px}
+  .phase .p{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 15px}
+  .phase .p .ph{font-size:11.5px;color:var(--ok);font-weight:700;letter-spacing:1px}
+  .phase .p h4{color:#fff;font-size:15px;margin:4px 0 8px}
+  .big{font-size:48px;font-weight:800;color:#fff;line-height:1.1}
+</style>
+</head>
+<body data-lang="cn">
+
+<div class="lang">
+  <button id="lcn" class="active" onclick="setLang('cn')">中文</button>
+  <span>|</span>
+  <button id="len" onclick="setLang('en')">EN</button>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 title -->
+  <section class="slide active">
+    <div style="margin:auto 0">
+      <div class="kicker"><span data-cn>AI End-to-End 软件交付 · 有机结合蓝图</span><span data-en>AI End-to-End Software Delivery · Combined Blueprint</span></div>
+      <h1><span data-cn>1 + 1 &gt; 2：全自动<br>End-to-End AI 交付 Harness</span><span data-en>1 + 1 &gt; 2: Fully-Automated<br>End-to-End AI Delivery Harness</span></h1>
+      <p class="sub"><span data-cn>把 Kunal 的「自主执行引擎」与 Peng 的「领域·合规·质量智库」有机融合，迭代成一套强大的 <code>.github</code> AI Harness，在 VS Code 中直接可用。</span><span data-en>Fuse Kunal's "autonomous execution engine" with Peng's "domain · compliance · quality brain trust" into one powerful <code>.github</code> AI Harness, usable directly in VS Code.</span></p>
+      <div class="flow" style="margin-top:12px">
+        <span class="node his"><span data-cn>执行引擎</span><span data-en>Execution engine</span><span class="s">Kunal</span></span>
+        <span class="big" style="color:var(--ok)">＋</span>
+        <span class="node mine"><span data-cn>领域智库</span><span data-en>Domain brain trust</span><span class="s">Peng</span></span>
+        <span class="big" style="color:var(--ok)">＝</span>
+        <span class="node" style="border-color:var(--ok)">Harness_Enhance<span class="s"><span data-cn>真·全自动交付</span><span data-en>true full-auto delivery</span></span></span>
+      </div>
+      <p class="muted" style="margin-top:20px"><span data-cn>输出</span><span data-en>Output</span>：<code>C:\Work\Code\Git_Code\Harness_Enhance</code> ｜ Deck 3 / 3</p>
+    </div>
+  </section>
+
+  <!-- 2 vision -->
+  <section class="slide">
+    <div class="kicker">Vision</div>
+    <h2><span data-cn>目标：真正的「完全 AI 自动化」</span><span data-en>Goal: true "full AI automation"</span></h2>
+    <p class="sub"><span data-cn>一次需求输入 → 自主完成 需求·架构·计划·编码·测试·评估·风险·合规文档·演示 → 人只在关键 Gate 决策。</span><span data-en>One requirement in → autonomously complete requirements·architecture·plan·code·test·evaluate·risk·compliance-docs·demo → humans only decide at key gates.</span></p>
+    <div class="grid g3">
+      <div class="card"><h3>🔄 <span data-cn>自主</span><span data-en>Autonomous</span></h3><p><span data-cn>长跑循环 + 3× 重试 + 定义缺陷级联，任务级自愈，无需逐步人推。</span><span data-en>Long-run loop + 3× retry + definition cascade; task-level self-healing without step-by-step nudging.</span></p></div>
+      <div class="card"><h3>🔒 <span data-cn>可信</span><span data-en>Trustworthy</span></h3><p><span data-cn>生成/评估隔离 + 盲测，评估诚实；DFMEA/影响分析把风险显性化。</span><span data-en>Gen/eval isolation + blind testing yields honest assessment; DFMEA/impact make risk explicit.</span></p></div>
+      <div class="card"><h3>🩺 <span data-cn>合规</span><span data-en>Compliant</span></h3><p><span data-cn>IEC 62304 活体 QMS + IFU + TICS/CodeScene 自愈，审计与交付就绪。</span><span data-en>IEC 62304 living QMS + IFU + TICS/CodeScene self-heal, audit- and delivery-ready.</span></p></div>
+    </div>
+    <p class="muted" style="margin-top:14px"><span data-cn>衡量「落地」的三问：<b style="color:#fff">跑得起来吗（自主）？信得过吗（评估）？交得出吗（合规）？</b> 合并后三者兼得。</span><span data-en>Three questions for "landing": <b style="color:#fff">Does it run (autonomy)? Can you trust it (evaluation)? Can you ship it (compliance)?</b> The merge delivers all three.</span></p>
+  </section>
+
+  <!-- 3 complementary -->
+  <section class="slide">
+    <div class="kicker">Complementary Map</div>
+    <h2><span data-cn>互补映射：谁补谁</span><span data-en>Complementary Map: who fills what</span></h2>
+    <table>
+      <tr><th style="width:26%"><span data-cn>能力层</span><span data-en>Capability layer</span></th><th style="width:37%"><span class="his"><span data-cn>来自 Kunal（执行引擎）</span><span data-en>From Kunal (execution engine)</span></span></th><th style="width:37%"><span class="mine"><span data-cn>来自 Peng（领域智库）</span><span data-en>From Peng (domain brain trust)</span></span></th></tr>
+      <tr><td><span data-cn>需求定义</span><span data-en>Requirements</span></td><td class="his">analyst · product-owner (Gherkin)</td><td class="mine">requirements-review · traceability · <span data-cn>安全等级</span><span data-en>safety class</span> · domain-knowledge</td></tr>
+      <tr><td><span data-cn>架构</span><span data-en>Architecture</span></td><td class="his">sw-architect · ADR/C4</td><td class="mine">architecture · impact-analysis</td></tr>
+      <tr><td><span data-cn>实现</span><span data-en>Implementation</span></td><td class="his">developer · BDD (Reqnroll)</td><td class="mine">tics/codescene <span data-cn>常驻规则</span><span data-en>always-on rules</span> · csharp-development</td></tr>
+      <tr><td><span data-cn>测试</span><span data-en>Test</span></td><td class="his">test-designer <span data-cn>盲测</span><span data-en>blind</span> · FlaUI</td><td class="mine">test-generator · bdd-generator · nunit</td></tr>
+      <tr><td><span data-cn>评估</span><span data-en>Evaluation</span></td><td class="his">dev-evaluator <span data-cn>隔离·跑全测</span><span data-en>isolated·runs all</span></td><td class="mine">code-review · code-quality · tics/codescene <span data-cn>自愈</span><span data-en>self-heal</span></td></tr>
+      <tr><td><span data-cn>风险&合规</span><span data-en>Risk & compliance</span></td><td class="his">iec62304 · qms-documentation</td><td class="mine">DFMEA · IFU · <span data-cn>产品缺陷</span><span data-en>product-defect</span> · 3PP DMR</td></tr>
+      <tr><td><span data-cn>演示&交付</span><span data-en>Demo & delivery</span></td><td class="his">feature-demonstrator · md→docx</td><td class="mine">doc-generator · <span data-cn>自包含 HTML</span><span data-en>self-contained HTML</span></td></tr>
+    </table>
+  </section>
+
+  <!-- 4 unified pipeline -->
+  <section class="slide">
+    <div class="kicker">Unified Pipeline</div>
+    <h2><span data-cn>融合后的统一流水线</span><span data-en>The Unified Pipeline</span></h2>
+    <div class="flow">
+      <span class="node his">Analyst<span class="s">Kunal</span></span><span class="arrow">→</span>
+      <span class="node mine"><span data-cn>需求评审+追溯</span><span data-en>Req-review+trace</span><span class="s">Peng</span></span><span class="arrow">→</span>
+      <span class="node his">Architect(ADR)<span class="s">Kunal</span></span><span class="arrow">+</span>
+      <span class="node mine"><span data-cn>影响分析</span><span data-en>Impact</span><span class="s">Peng</span></span><span class="arrow">→</span>
+      <span class="node his">Backlog+Gherkin<span class="s">Kunal</span></span>
+    </div>
+    <div class="flow" style="margin-top:8px"><span class="node gate"><span data-cn>⏸ GATE 1 · 需求+架构+计划+风险</span><span data-en>⏸ GATE 1 · req+arch+plan+risk</span></span></div>
+    <div class="flow" style="margin-top:10px">
+      <span class="node his">Developer(BDD)<span class="s">Kunal</span></span><span class="arrow">∥</span>
+      <span class="node his"><span data-cn>盲测</span><span data-en>Blind test</span><span class="s">Kunal·FlaUI</span></span>
+      <span class="mine" style="padding:6px 10px;border:1px dashed #a78bfa;border-radius:9px;font-size:12px"><span data-cn>常驻 TICS/CodeScene（Peng）</span><span data-en>always-on TICS/CodeScene (Peng)</span></span>
+      <span class="arrow">→</span><span class="node gate">⏸ GATE 2</span>
+    </div>
+    <div class="flow" style="margin-top:10px">
+      <span class="node his"><span data-cn>隔离评估</span><span data-en>Isolated eval</span><span class="s">Kunal</span></span><span class="arrow">+</span>
+      <span class="node mine">code-quality+<span data-cn>自愈</span><span data-en>self-heal</span><span class="s">Peng</span></span><span class="arrow">→</span>
+      <span class="node mine">DFMEA/IFU/QMS<span class="s">Peng+Kunal</span></span><span class="arrow">→</span>
+      <span class="node his">Demo<span class="s">Kunal</span></span><span class="arrow">→</span><span class="node gate">⏸ GATE 3</span><span class="arrow">→</span>
+      <span class="node" style="border-color:var(--ok)">Done</span>
+    </div>
+    <div class="lgd"><span><i class="sw" style="background:#38bdf8"></i><span data-cn>执行引擎（Kunal）</span><span data-en>Execution engine (Kunal)</span></span><span><i class="sw" style="background:#a78bfa"></i><span data-cn>领域智库（Peng）</span><span data-en>Domain brain trust (Peng)</span></span><span><i class="sw" style="background:#eab308"></i><span data-cn>人工 Gate</span><span data-en>Human gate</span></span></div>
+  </section>
+
+  <!-- 5 combined catalog -->
+  <section class="slide">
+    <div class="kicker">Combined Assets</div>
+    <h2><span data-cn>合并后的资产目录（去重后）</span><span data-en>Combined Asset Catalog (deduplicated)</span></h2>
+    <div class="grid g4">
+      <div class="card"><h3>🤖 Agents</h3><p><span class="his">Kunal 12</span> + <span class="mine">Peng 8</span> → <b style="color:#fff"><span data-cn>统一 Orchestrator + ~14 角色</span><span data-en>unified Orchestrator + ~14 roles</span></b></p></div>
+      <div class="card"><h3>🧠 Skills</h3><p><span class="his">Kunal 14</span> + <span class="mine">Peng 17</span> → <b style="color:#fff">~31</b> <span data-cn>（0 冲突）</span><span data-en>(0 collisions)</span></p></div>
+      <div class="card"><h3>📏 Instructions</h3><p><span class="his">Kunal 3</span> + <span class="mine">Peng 2</span> → <b style="color:#fff">5</b> <span data-cn>（路径触发 + TICS/CodeScene）</span><span data-en>(path-triggered + TICS/CodeScene)</span></p></div>
+      <div class="card"><h3>⚡ Prompts</h3><p><span class="his">Kunal 2</span> + <span class="mine">Peng 10</span> → <b style="color:#fff">12</b></p></div>
+    </div>
+    <div class="grid g2" style="margin-top:12px">
+      <div class="card"><h3>🗂️ <span data-cn>状态 & 构建</span><span data-en>State & Build</span></h3><p><span data-cn>采用 Kunal 的 <code>.harness/</code> + <code>Build/</code> 门禁 + <code>scripts/</code> QMS 管线；保留 Peng 的 <code>artifacts/&lt;feature&gt;</code> 报告产出。</span><span data-en>Adopt Kunal's <code>.harness/</code> + <code>Build/</code> gates + <code>scripts/</code> QMS pipeline; keep Peng's <code>artifacts/&lt;feature&gt;</code> report output.</span></p></div>
+      <div class="card"><h3>📄 <span data-cn>QMS & 报告</span><span data-en>QMS & Reports</span></h3><p><span data-cn>Kunal 活体 QMS + md→docx，融合 Peng 的 DFMEA/IFU/code-quality HTML，形成「审计文档 + 管理视图」双轨。</span><span data-en>Kunal's living QMS + md→docx fused with Peng's DFMEA/IFU/code-quality HTML → a dual "audit-doc + management-view" track.</span></p></div>
+    </div>
+  </section>
+
+  <!-- 6 directory -->
+  <section class="slide">
+    <div class="kicker">Harness_Enhance · <span data-cn>目录蓝图</span><span data-en>Directory Blueprint</span></div>
+    <h2><span data-cn>输出目录结构</span><span data-en>Output Directory Structure</span></h2>
+    <div class="tree"><span class="c">C:\Work\Code\Git_Code\</span>Harness_Enhance\
+├─ <span class="h">.github\</span>                     <span class="c"># <span data-cn>统一 AI Harness（VS Code 直接可用）</span><span data-en>unified AI Harness (usable in VS Code)</span></span>
+│  ├─ copilot-instructions.md   <span class="c"># <span data-cn>融合两套哲学的常驻核心</span><span data-en>merged always-on core</span></span>
+│  ├─ ASSET_CATALOG.md          <span class="c"># <span data-cn>资产→阶段全映射</span><span data-en>asset→stage full map</span></span>
+│  ├─ <span class="h">agents\</span>   <span class="c"># Kunal 12 + Peng 6 = 18</span>
+│  ├─ <span class="m">skills\</span>   <span class="c"># Kunal 14 + Peng 17 = 31</span>
+│  ├─ instructions\  <span class="c"># 5 </span>  prompts\  <span class="c"># 12</span>
+│  └─ scripts\                  <span class="c"># QMS md→docx (Python)</span>
+├─ <span class="h">Build\</span>        <span class="c"># <span data-cn>批处理质量门</span><span data-en>batch quality gates</span></span>
+├─ <span class="h">.harness\</span>     <span class="c"># <span data-cn>状态存储</span><span data-en>state store</span></span>
+├─ docs\qms\      <span class="c"># IEC 62304 <span data-cn>活体 QMS</span><span data-en>living QMS</span></span>
+├─ analysis\      <span class="c"># <span data-cn>本次 3 份 PPT</span><span data-en>the 3 decks</span></span>
+└─ README_Harness.md            <span class="c"># <span data-cn>融合版总说明</span><span data-en>merged overview</span></span></div>
+    <p class="muted" style="margin-top:12px"><span data-cn>原则：<b style="color:#fff">物理合并两套 <code>.github</code>，再叠加「统一 Orchestrator + 资产清单映射」的集成层</b>，避免能力丢失，同时消除重复。</span><span data-en>Principle: <b style="color:#fff">physically merge both <code>.github</code> trees, then add a "unified Orchestrator + asset-map" integration layer</b> — no lost capability, no duplication.</span></p>
+  </section>
+
+  <!-- 7 integration principles -->
+  <section class="slide">
+    <div class="kicker">Integration Principles</div>
+    <h2><span data-cn>合并的 6 条原则</span><span data-en>6 Merge Principles</span></h2>
+    <div class="grid g2">
+      <div class="card"><h3>① <span data-cn>执行用 Kunal，判断用 Peng</span><span data-en>Execute with Kunal, judge with Peng</span></h3><p><span data-cn>编排/循环/隔离评估用 Kunal 引擎；风险/合规/质量判据用 Peng 技能。</span><span data-en>Orchestration/loop/isolated-eval use Kunal's engine; risk/compliance/quality criteria use Peng's skills.</span></p></div>
+      <div class="card"><h3>② <span data-cn>一个 Orchestrator</span><span data-en>One Orchestrator</span></h3><p><span data-cn>统一入口，内部按阶段委派两套角色；避免双头指挥。</span><span data-en>One entry point delegating both role sets by stage; no two-headed command.</span></p></div>
+      <div class="card"><h3>③ <span data-cn>隔离不可破</span><span data-en>Isolation is inviolable</span></h3><p><span data-cn>evaluator/test-designer 保持独立上下文——Peng 技能以「只读判据」注入，不打破盲测。</span><span data-en>evaluator/test-designer keep isolated contexts — Peng's skills inject as read-only criteria, never breaking blind testing.</span></p></div>
+      <div class="card"><h3>④ <span data-cn>标准即代码</span><span data-en>Standards as code</span></h3><p><span data-cn>Peng 的 TICS/CodeScene instructions 常驻，作用于 Kunal 的 developer 产出。</span><span data-en>Peng's TICS/CodeScene instructions stay always-on, applied to Kunal's developer output.</span></p></div>
+      <div class="card"><h3>⑤ <span data-cn>文档双轨</span><span data-en>Dual-track docs</span></h3><p><span data-cn>审计轨（QMS md→docx）+ 管理轨（自包含 HTML）并行产出。</span><span data-en>Audit track (QMS md→docx) + management track (self-contained HTML) in parallel.</span></p></div>
+      <div class="card"><h3>⑥ <span data-cn>可移植不硬编码</span><span data-en>Portable, not hardcoded</span></h3><p><span data-cn>项目特定事实入 <code>.harness</code>/<code>/memories/repo</code>，技能保持团队可移植。</span><span data-en>Project-specific facts go to <code>.harness</code>/<code>/memories/repo</code>; skills stay team-portable.</span></p></div>
+    </div>
+  </section>
+
+  <!-- 8 roadmap -->
+  <section class="slide">
+    <div class="kicker">Roadmap</div>
+    <h2><span data-cn>分阶段落地（迭代更新）</span><span data-en>Phased Rollout (iterate)</span></h2>
+    <div class="phase">
+      <div class="p"><div class="ph">PHASE 1 · <span data-cn>合并</span><span data-en>MERGE</span></div><h4><span data-cn>物理集成</span><span data-en>Physical integration</span></h4><ul>
+        <li data-cn>合并两套 .github</li><li data-en>Merge both .github</li>
+        <li data-cn>统一核心 + Orchestrator</li><li data-en>Unify core + Orchestrator</li>
+        <li data-cn>去重资产映射</li><li data-en>Dedup asset map</li></ul></div>
+      <div class="p"><div class="ph">PHASE 2 · <span data-cn>试点</span><span data-en>PILOT</span></div><h4><span data-cn>单特性验证</span><span data-en>One-feature validation</span></h4><ul>
+        <li data-cn>选 1 特性端到端跑通</li><li data-en>Run 1 feature end-to-end</li>
+        <li data-cn>校准 3 Gate + 重试预算</li><li data-en>Calibrate 3 gates + retry budget</li>
+        <li data-cn>产出 QMS + HTML 报告</li><li data-en>Produce QMS + HTML reports</li></ul></div>
+      <div class="p"><div class="ph">PHASE 3 · <span data-cn>强化</span><span data-en>STRENGTHEN</span></div><h4><span data-cn>能力补齐</span><span data-en>Capability fill-in</span></h4><ul>
+        <li data-cn>注入 DFMEA/IFU/影响到评估</li><li data-en>Wire DFMEA/IFU/impact into eval</li>
+        <li data-cn>接 md→docx + 质量报告</li><li data-en>Connect md→docx + quality reports</li>
+        <li data-cn>路径触发 instructions 扩面</li><li data-en>Expand path-triggered instructions</li></ul></div>
+      <div class="p"><div class="ph">PHASE 4 · <span data-cn>推广</span><span data-en>SCALE</span></div><h4><span data-cn>多项目铺开</span><span data-en>Multi-project rollout</span></h4><ul>
+        <li data-cn>并行编排跑大特性</li><li data-en>Parallel orchestration for big features</li>
+        <li data-cn>沉淀 domain-knowledge</li><li data-en>Grow domain-knowledge</li>
+        <li data-cn>接 Azure DevOps CI</li><li data-en>Connect Azure DevOps CI</li></ul></div>
+    </div>
+    <p class="muted" style="margin-top:12px"><span data-cn>迭代闭环：<b style="color:#fff">每个特性跑完 → 回收 Gate 反馈 → 更新技能与规则 → 下一特性更强</b>，Harness 自我进化。</span><span data-en>Iteration loop: <b style="color:#fff">each feature done → harvest gate feedback → update skills & rules → next feature stronger</b> — the harness self-evolves.</span></p>
+  </section>
+
+  <!-- 9 KPIs -->
+  <section class="slide">
+    <div class="kicker">Success Metrics</div>
+    <h2><span data-cn>怎么证明「落地了」</span><span data-en>How to Prove It "Landed"</span></h2>
+    <div class="grid g3">
+      <div class="card"><h3>🔄 <span data-cn>自主度</span><span data-en>Autonomy</span></h3><p><span data-cn>无人工完成任务占比；每特性 Gate 次数；失败自愈率。</span><span data-en>Unattended-completion %; gates per feature; self-heal rate.</span></p></div>
+      <div class="card"><h3>⏱️ <span data-cn>效率</span><span data-en>Efficiency</span></h3><p><span data-cn>需求→可演示周期；QMS 工时下降；并行提速比。</span><span data-en>Requirement→demo cycle; QMS effort saved; parallel speed-up.</span></p></div>
+      <div class="card"><h3>✅ <span data-cn>质量</span><span data-en>Quality</span></h3><p><span data-cn>evaluator 首过率；TICS TQI≥8.0 / Coverity 0 新高危；覆盖率达标。</span><span data-en>Evaluator first-pass; TICS TQI≥8.0 / Coverity 0 new-High; coverage met.</span></p></div>
+      <div class="card"><h3>🩺 <span data-cn>合规</span><span data-en>Compliance</span></h3><p><span data-cn>IEC 62304 追溯完整度；DFMEA/IFU 覆盖；审计发现下降。</span><span data-en>IEC 62304 traceability; DFMEA/IFU coverage; audit findings ↓.</span></p></div>
+      <div class="card"><h3>🧪 <span data-cn>可信</span><span data-en>Trust</span></h3><p><span data-cn>隔离评估捕获缺陷数；盲测 UI 通过率。</span><span data-en>Defects caught by isolated eval; blind-UI pass rate.</span></p></div>
+      <div class="card"><h3>📈 <span data-cn>采纳</span><span data-en>Adoption</span></h3><p><span data-cn>接入项目数；活跃团队数；技能复用次数。</span><span data-en>Projects onboarded; active teams; skill reuse count.</span></p></div>
+    </div>
+  </section>
+
+  <!-- 10 CTA -->
+  <section class="slide">
+    <div style="margin:auto 0">
+      <div class="kicker">Call to Action</div>
+      <h2><span data-cn>下一步</span><span data-en>Next Steps</span></h2>
+      <ul style="font-size:17px">
+        <li data-cn><b>立即</b>：评审本 3 份 PPT + <code>Harness_Enhance</code> 合并骨架（已生成）。</li>
+        <li data-en><b>Now</b>: review these 3 decks + the <code>Harness_Enhance</code> merged skeleton (already generated).</li>
+        <li data-cn><b>本周</b>：与 Kunal 对齐资产映射，确定统一 Orchestrator 的角色委派顺序。</li>
+        <li data-en><b>This week</b>: align the asset map with Kunal; fix the unified Orchestrator's delegation order.</li>
+        <li data-cn><b>试点</b>：选 1 个新项目/新特性，按 Phase 2 端到端跑通，收集 Gate 反馈。</li>
+        <li data-en><b>Pilot</b>: pick one new project/feature, run Phase 2 end-to-end, collect gate feedback.</li>
+        <li data-cn><b>迭代</b>：按 Phase 3/4 逐步注入领域·合规·报告能力，多项目铺开。</li>
+        <li data-en><b>Iterate</b>: inject domain·compliance·reporting per Phase 3/4, then scale to more projects.</li>
+      </ul>
+      <div class="card" style="margin-top:20px;max-width:1000px;border-color:var(--ok)">
+        <p style="font-size:17px;color:#fff"><span data-cn>融合结论：<b style="color:var(--ok)">Kunal 的「执行引擎」× Peng 的「领域智库」＝ 一套既跑得起来、又信得过、还交得出的全自动 End-to-End AI 交付 Harness。</b> <code>Harness_Enhance</code> 已作为起点落地，可在 VS Code 中直接演进。</span><span data-en>Conclusion: <b style="color:var(--ok)">Kunal's "execution engine" × Peng's "domain brain trust" = a fully-automated End-to-End AI delivery harness that runs, is trustworthy, and ships.</b> <code>Harness_Enhance</code> is landed as the starting point, ready to evolve in VS Code.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span><span data-cn>有机结合：全自动 End-to-End AI 交付蓝图</span><span data-en>Combined: Fully-Automated End-to-End AI Delivery Blueprint</span> · Deck 3 / 3</span>
+    <div class="dots" id="dots"></div>
+    <span id="pageno">1 / 10</span>
+  </div>
+</div>
+
+<div class="hint">← → · L</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const dots=document.getElementById('dots');
+  const pageno=document.getElementById('pageno');
+  let i=0;
+  slides.forEach((_,k)=>{const d=document.createElement('div');d.className='dot'+(k===0?' active':'');d.onclick=()=>go(k);dots.appendChild(d)});
+  const dotEls=[...dots.children];
+  function go(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('active',k===i));dotEls.forEach((d,k)=>d.classList.toggle('active',k===i));pageno.textContent=(i+1)+' / '+slides.length}
+  function setLang(l){document.body.dataset.lang=l;document.getElementById('lcn').classList.toggle('active',l==='cn');document.getElementById('len').classList.toggle('active',l==='en')}
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();go(i+1)}
+    else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(i-1)}
+    else if(e.key==='Home')go(0); else if(e.key==='End')go(slides.length-1);
+    else if(e.key.toLowerCase()==='l'){setLang(document.body.dataset.lang==='cn'?'en':'cn')}
+    else if(e.key.toLowerCase()==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+  });
+</script>
+</body>
+</html>

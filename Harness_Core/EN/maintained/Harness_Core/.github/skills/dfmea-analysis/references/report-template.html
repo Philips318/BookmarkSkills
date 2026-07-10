@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DFMEA 分析报告 — {{SUBSYSTEM_NAME}}</title>
+<style>
+  :root {
+    --bg: #f5f7fb;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #d7deea;
+    --accent: #0f4c81;
+    --safety-bg: #fde8e8; --safety-text: #a11a1a; --safety-border: #ef4444;
+    --high-bg: #fff4de;   --high-text: #8a5a00;   --high-border: #f97316;
+    --medium-bg: #fefce8; --medium-text: #854d0e;  --medium-border: #eab308;
+    --low-bg: #e8f7ee;    --low-text: #11653a;     --low-border: #22c55e;
+    --na-bg: #eef2f7;     --na-text: #475569;
+    --code-bg: #f1f5f9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: linear-gradient(180deg, #eef3f9 0%, var(--bg) 100%);
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .wrap { max-width: 1400px; margin: 0 auto; padding: 32px 24px 48px; }
+
+  /* ===== Hero ===== */
+  .hero {
+    background: linear-gradient(135deg, #133c63 0%, #0f4c81 55%, #3d7fb5 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 28px 32px;
+    box-shadow: 0 18px 36px rgba(15, 76, 129, 0.18);
+  }
+  .hero h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.2; }
+  .hero p { margin: 6px 0; opacity: 0.95; font-size: 15px; }
+  .meta-pills { display: flex; flex-wrap: wrap; gap: 10px 14px; margin-top: 14px; font-size: 14px; }
+  .meta-pills span {
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 999px; padding: 6px 12px;
+  }
+
+  /* ===== Section ===== */
+  .section {
+    margin-top: 24px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 18px;
+    padding: 24px 26px;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+  }
+  .section h2 { margin: 0 0 14px; font-size: 22px; color: var(--accent); }
+  .section h3 { margin: 20px 0 10px; font-size: 17px; color: #153b5d; }
+
+  /* ===== Risk Stats Grid ===== */
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-top: 12px; }
+  .stat-card {
+    border-radius: 14px; padding: 18px 16px; text-align: center;
+    border: 1px solid var(--border);
+  }
+  .stat-card .stat-num { font-size: 2.4rem; font-weight: 800; line-height: 1; }
+  .stat-card .stat-label { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  .stat-safety { background: var(--safety-bg); border-color: var(--safety-border); }
+  .stat-safety .stat-num { color: var(--safety-text); }
+  .stat-high { background: var(--high-bg); border-color: var(--high-border); }
+  .stat-high .stat-num { color: var(--high-text); }
+  .stat-medium { background: var(--medium-bg); border-color: var(--medium-border); }
+  .stat-medium .stat-num { color: var(--medium-text); }
+  .stat-low { background: var(--low-bg); border-color: var(--low-border); }
+  .stat-low .stat-num { color: var(--low-text); }
+  .stat-total { background: #eef2f7; }
+  .stat-total .stat-num { color: var(--accent); }
+
+  /* ===== Status Badges ===== */
+  .badge {
+    display: inline-block; min-width: 60px; text-align: center;
+    border-radius: 999px; padding: 4px 10px;
+    font-weight: 600; font-size: 12px;
+  }
+  .badge-safety { background: var(--safety-bg); color: var(--safety-text); }
+  .badge-high   { background: var(--high-bg); color: var(--high-text); }
+  .badge-medium { background: var(--medium-bg); color: var(--medium-text); }
+  .badge-low    { background: var(--low-bg); color: var(--low-text); }
+  .badge-na     { background: var(--na-bg); color: var(--na-text); }
+  .badge-rmm    { background: #fde8e8; color: #a11a1a; font-weight: 700; }
+
+  /* ===== Tables ===== */
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+  th, td { border: 1px solid var(--border); padding: 8px 8px; vertical-align: top; text-align: left; }
+  th { background: #edf3fb; color: #143754; font-size: 12px; white-space: nowrap; position: sticky; top: 0; z-index: 2; }
+
+  /* DFMEA table specific */
+  .dfmea-table { font-size: 12px; }
+  .dfmea-table th { font-size: 11px; padding: 6px 6px; }
+  .dfmea-table td { padding: 6px 6px; font-size: 12px; }
+  .dfmea-table .col-id { width: 40px; text-align: center; font-weight: 600; }
+  .dfmea-table .col-num { width: 35px; text-align: center; font-family: Consolas, monospace; }
+  .dfmea-table .col-class { width: 70px; text-align: center; }
+  .dfmea-table .col-text { min-width: 150px; }
+  .dfmea-table .col-wide { min-width: 200px; }
+
+  /* Row risk highlighting */
+  .dfmea-table tr.risk-safety td { background: #fef2f2; }
+  .dfmea-table tr.risk-high td { background: #fffbeb; }
+
+  /* Column group headers */
+  .col-group-initial { background: #e8f0fe !important; }
+  .col-group-rmm { background: #fce7e7 !important; }
+  .col-group-optimized { background: #e8f7ee !important; }
+
+  /* ===== Grid / Cards ===== */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card {
+    border: 1px solid var(--border); border-radius: 14px;
+    background: #fbfdff; padding: 16px;
+  }
+  .card strong { display: block; margin-bottom: 6px; color: var(--accent); }
+
+  /* ===== SOD Reference Tables ===== */
+  .sod-table { font-size: 13px; }
+  .sod-table th { background: #dbe6f0; font-size: 12px; }
+  .sod-table td:first-child { text-align: center; font-weight: 700; font-size: 16px; width: 50px; }
+
+  /* ===== Criticality Matrix Visual ===== */
+  .matrix-grid {
+    display: grid; grid-template-columns: 60px repeat(5, 1fr);
+    gap: 2px; margin-top: 12px; font-size: 13px;
+  }
+  .matrix-cell {
+    padding: 10px 6px; text-align: center; border-radius: 6px;
+    font-weight: 600; font-size: 14px;
+  }
+  .matrix-header { background: #dbe6f0; color: #143754; font-weight: 700; font-size: 12px; }
+  .matrix-sev { background: #edf3fb; color: var(--accent); font-weight: 700; }
+  .mc-safety { background: #fecaca; color: #991b1b; }
+  .mc-high   { background: #fed7aa; color: #9a3412; }
+  .mc-medium { background: #fef08a; color: #854d0e; }
+  .mc-low    { background: #bbf7d0; color: #166534; }
+
+  /* ===== Recommendations ===== */
+  .rec-list { list-style: none; padding: 0; margin: 0; }
+  .rec-list li {
+    padding: 12px 16px; margin-bottom: 10px;
+    border-radius: 12px; border-left: 6px solid; font-size: 14px;
+  }
+  .rec-must    { border-left-color: var(--safety-border); background: var(--safety-bg); }
+  .rec-should  { border-left-color: var(--high-border); background: var(--high-bg); }
+  .rec-consider { border-left-color: var(--medium-border); background: var(--medium-bg); }
+  .rec-label { font-weight: 700; font-size: 13px; margin-right: 8px; }
+
+  /* ===== Review Notes ===== */
+  .review-note {
+    background: #f0f4ff; border: 1px solid #bfdbfe;
+    border-radius: 10px; padding: 12px 16px;
+    margin-bottom: 10px; font-size: 14px;
+  }
+  .review-note::before { content: "📋 "; }
+
+  .small { color: var(--muted); font-size: 13px; }
+  .mono { font-family: Consolas, monospace; background: var(--code-bg); border-radius: 4px; padding: 1px 5px; font-size: 12px; }
+
+  /* ===== Table scroll wrapper ===== */
+  .table-scroll {
+    overflow-x: auto; margin-top: 10px;
+    border: 1px solid var(--border); border-radius: 12px;
+  }
+  .table-scroll table { margin: 0; border: none; }
+  .table-scroll th:first-child,
+  .table-scroll td:first-child { position: sticky; left: 0; z-index: 1; background: inherit; }
+
+  /* ===== Disclaimer ===== */
+  .disclaimer {
+    background: #fffbeb; border: 1px solid #fde68a;
+    border-radius: 12px; padding: 14px 18px;
+    margin-top: 16px; font-size: 13px; color: #92400e;
+  }
+  .disclaimer::before { content: "⚠️ "; font-size: 16px; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .matrix-grid { font-size: 11px; }
+  }
+  @media print {
+    .hero { box-shadow: none; }
+    .section { box-shadow: none; break-inside: avoid; }
+    .table-scroll { overflow: visible; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero">
+    <h1>DFMEA 分析报告</h1>
+    <p>{{SUBSYSTEM_NAME}} — {{SUBSYSTEM_DESCRIPTION}}</p>
+    <p>本报告由 AI 辅助生成，仅作为 DFMEA 评审会议的参考草稿。最终结论须经 DFMEA 团队评审确认。</p>
+    <div class="meta-pills">
+      <span>子系统：{{SUBSYSTEM_NAME}}</span>
+      <span>需求范围：{{REQUIREMENT_SCOPE}}</span>
+      <span>需求数量：{{REQUIREMENT_COUNT}}</span>
+      <span>日期：{{DATE}}</span>
+      <span>产品线：{{PRODUCT_LINE}}</span>
+    </div>
+  </section>
+
+  <!-- ==================== EXECUTIVE SUMMARY ==================== -->
+  <section class="section">
+    <h2>Executive Summary</h2>
+    <p>{{EXECUTIVE_SUMMARY_TEXT}}</p>
+    <!--
+    Example: "本次 DFMEA 分析覆盖 12 条 SRS/SSRS 需求，共识别 28 个潜在失效模式。
+    其中 2 个涉及安全分类，5 个为高风险（需 RMM），8 个为中等风险，13 个为低风险。"
+    -->
+
+    <div class="stats-grid">
+      <div class="stat-card stat-total">
+        <div class="stat-num">{{TOTAL_REQUIREMENTS}}</div>
+        <div class="stat-label">需求数</div>
+      </div>
+      <div class="stat-card stat-total">
+        <div class="stat-num">{{TOTAL_FAILURE_MODES}}</div>
+        <div class="stat-label">失效模式</div>
+      </div>
+      <div class="stat-card stat-safety">
+        <div class="stat-num">{{SAFETY_COUNT}}</div>
+        <div class="stat-label">Safety</div>
+      </div>
+      <div class="stat-card stat-high">
+        <div class="stat-num">{{HIGH_COUNT}}</div>
+        <div class="stat-label">High (RMM)</div>
+      </div>
+      <div class="stat-card stat-medium">
+        <div class="stat-num">{{MEDIUM_COUNT}}</div>
+        <div class="stat-label">Medium</div>
+      </div>
+      <div class="stat-card stat-low">
+        <div class="stat-num">{{LOW_COUNT}}</div>
+        <div class="stat-label">Low</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SOD CRITERIA REFERENCE ==================== -->
+  <section class="section">
+    <h2>SOD 评分标准参考</h2>
+    <div class="grid">
+      <div class="card">
+        <strong>Severity（严重度）</strong>
+        <table class="sod-table">
+          <tr><th>Level</th><th>Name</th><th>说明</th></tr>
+          <tr><td style="color:var(--safety-text)">S</td><td>Safety</td><td>安全相关失效，参考 Hazard List</td></tr>
+          <tr><td>8</td><td>Critical</td><td>主功能丧失或降级（非安全相关）</td></tr>
+          <tr><td>5</td><td>Major</td><td>便利功能不可用</td></tr>
+          <tr><td>3</td><td>Minor</td><td>轻微不满意或性能轻微影响</td></tr>
+          <tr><td>1</td><td>No effect</td><td>用户可能察觉不到</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <strong>Occurrence（发生度）</strong>
+        <table class="sod-table">
+          <tr><th>Level</th><th>Name</th><th>说明</th></tr>
+          <tr><td>10</td><td>Frequent</td><td>全新技术/设计，无历史数据</td></tr>
+          <tr><td>8</td><td>Likely</td><td>新设计/新应用，可能发生</td></tr>
+          <tr><td>5</td><td>Probable</td><td>类似设计中偶尔发生</td></tr>
+          <tr><td>3</td><td>Remote</td><td>几乎相同设计中仅个别发生</td></tr>
+          <tr><td>1</td><td>Improbable</td><td>通过预防控制已消除</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <strong>Detection（探测度）</strong>
+        <table class="sod-table">
+          <tr><th>Level</th><th>Name</th><th>说明</th></tr>
+          <tr><td>10</td><td>Almost impossible</td><td>无测试程序能检测到</td></tr>
+          <tr><td>8</td><td>Remote</td><td>测试程序不确定/经验有限</td></tr>
+          <tr><td>5</td><td>Moderate</td><td>成熟测试程序，新使用场景</td></tr>
+          <tr><td>3</td><td>High</td><td>物理测试，高置信度</td></tr>
+          <tr><td>1</td><td>Almost certain</td><td>设计符合标准，有效预防</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CRITICALITY MATRIX ==================== -->
+  <section class="section">
+    <h2>Criticality Matrix</h2>
+    <p class="small">色块标注失效模式在矩阵中的分布位置。数字为该区间内的失效模式数量。</p>
+
+    <div class="matrix-grid">
+      <!-- Header row -->
+      <div class="matrix-cell matrix-header">Sev \ Occ</div>
+      <div class="matrix-cell matrix-header">1</div>
+      <div class="matrix-cell matrix-header">3</div>
+      <div class="matrix-cell matrix-header">5</div>
+      <div class="matrix-cell matrix-header">8</div>
+      <div class="matrix-cell matrix-header">10</div>
+      <!-- S row -->
+      <div class="matrix-cell matrix-sev">S</div>
+      <div class="matrix-cell mc-safety">{{M_S_1}}</div>
+      <div class="matrix-cell mc-safety">{{M_S_3}}</div>
+      <div class="matrix-cell mc-safety">{{M_S_5}}</div>
+      <div class="matrix-cell mc-safety">{{M_S_8}}</div>
+      <div class="matrix-cell mc-safety">{{M_S_10}}</div>
+      <!-- 8 row -->
+      <div class="matrix-cell matrix-sev">8</div>
+      <div class="matrix-cell mc-low">{{M_8_1}}</div>
+      <div class="matrix-cell mc-medium">{{M_8_3}}</div>
+      <div class="matrix-cell mc-high">{{M_8_5}}</div>
+      <div class="matrix-cell mc-high">{{M_8_8}}</div>
+      <div class="matrix-cell mc-high">{{M_8_10}}</div>
+      <!-- 5 row -->
+      <div class="matrix-cell matrix-sev">5</div>
+      <div class="matrix-cell mc-low">{{M_5_1}}</div>
+      <div class="matrix-cell mc-medium">{{M_5_3}}</div>
+      <div class="matrix-cell mc-medium">{{M_5_5}}</div>
+      <div class="matrix-cell mc-high">{{M_5_8}}</div>
+      <div class="matrix-cell mc-high">{{M_5_10}}</div>
+      <!-- 3 row -->
+      <div class="matrix-cell matrix-sev">3</div>
+      <div class="matrix-cell mc-low">{{M_3_1}}</div>
+      <div class="matrix-cell mc-low">{{M_3_3}}</div>
+      <div class="matrix-cell mc-medium">{{M_3_5}}</div>
+      <div class="matrix-cell mc-medium">{{M_3_8}}</div>
+      <div class="matrix-cell mc-high">{{M_3_10}}</div>
+      <!-- 1 row -->
+      <div class="matrix-cell matrix-sev">1</div>
+      <div class="matrix-cell mc-low">{{M_1_1}}</div>
+      <div class="matrix-cell mc-low">{{M_1_3}}</div>
+      <div class="matrix-cell mc-low">{{M_1_5}}</div>
+      <div class="matrix-cell mc-low">{{M_1_8}}</div>
+      <div class="matrix-cell mc-low">{{M_1_10}}</div>
+    </div>
+    <p class="small" style="margin-top:10px;">
+      <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#fecaca;vertical-align:middle;margin-right:4px;"></span> Safety
+      <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#fed7aa;vertical-align:middle;margin:0 4px 0 12px;"></span> High (RMM)
+      <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#fef08a;vertical-align:middle;margin:0 4px 0 12px;"></span> Medium
+      <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:#bbf7d0;vertical-align:middle;margin:0 4px 0 12px;"></span> Low
+    </p>
+  </section>
+
+  <!-- ==================== DFMEA ANALYSIS TABLE ==================== -->
+  <section class="section">
+    <h2>DFMEA 分析表</h2>
+    <p class="small">以下为基于输入需求生成的 DFMEA 分析条目。可直接复制到正式 DFMEA 文档中，经评审后纳入。</p>
+
+    <div class="table-scroll">
+      <table class="dfmea-table" id="dfmeaTable">
+        <thead>
+          <!-- Row 1: Group headers -->
+          <tr>
+            <th colspan="4" style="text-align:center;">标识</th>
+            <th colspan="5" style="text-align:center;">失效分析</th>
+            <th colspan="8" class="col-group-initial" style="text-align:center;">Initial State</th>
+            <th colspan="3" class="col-group-rmm" style="text-align:center;">Risk Management</th>
+            <th colspan="8" class="col-group-optimized" style="text-align:center;">Optimized State</th>
+            <th>备注</th>
+          </tr>
+          <!-- Row 2: Column headers -->
+          <tr>
+            <th class="col-id">ID</th>
+            <th class="col-text">Item/<br>Function</th>
+            <th class="col-wide">Requirement</th>
+            <th class="col-class">Higher<br>Order<br>Class.</th>
+            <th class="col-wide">Potential<br>Failure Mode</th>
+            <th class="col-text">Local Effect<br>of Failure</th>
+            <th class="col-text">End Effect<br>of Failure</th>
+            <th class="col-text">Rationale</th>
+            <th class="col-wide">Potential Cause /<br>Mechanism</th>
+            <!-- Initial State -->
+            <th class="col-num col-group-initial">S1</th>
+            <th class="col-text col-group-initial">Prevention<br>Control</th>
+            <th class="col-num col-group-initial">O1</th>
+            <th class="col-num col-group-initial">S×O</th>
+            <th class="col-class col-group-initial">Class.</th>
+            <th class="col-text col-group-initial">Detection<br>Control</th>
+            <th class="col-num col-group-initial">D1</th>
+            <th class="col-num col-group-initial">RPN</th>
+            <!-- Risk Management -->
+            <th class="col-text col-group-rmm">RMM ID</th>
+            <th class="col-num col-group-rmm">RMM<br>Sev.</th>
+            <th class="col-class col-group-rmm">CTS<br>Level</th>
+            <!-- Optimized State -->
+            <th class="col-num col-group-optimized">S2</th>
+            <th class="col-text col-group-optimized">Prevention<br>Action</th>
+            <th class="col-num col-group-optimized">O2</th>
+            <th class="col-num col-group-optimized">S×O</th>
+            <th class="col-class col-group-optimized">Class.</th>
+            <th class="col-text col-group-optimized">Detection<br>Action</th>
+            <th class="col-num col-group-optimized">D2</th>
+            <th class="col-num col-group-optimized">RPN</th>
+            <th class="col-text">Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{DFMEA_TABLE_ROWS}}
+          <!--
+          Template for each row. Add class="risk-safety" or "risk-high" to <tr> for highlighting.
+
+          <tr class="risk-high">
+            <td class="col-id">1</td>
+            <td>Rib APP/<br>Display rib labeling</td>
+            <td><span class="mono">CT-NMP.SSRS.Console.7636</span><br>The rib application shall support to extract rib centerline with labeling</td>
+            <td class="col-class">N/A</td>
+            <td>FM01: The rib application fails to display the rib labeling</td>
+            <td>The rib application does not provide rib centerline extraction</td>
+            <td>convenience function inoperable</td>
+            <td>User needs to restart the rib application. Cannot directly get rib labeling.</td>
+            <td>The rib algorithm component crashes.</td>
+            <td class="col-num">5</td>
+            <td>The rib application is designed as independent process. Crash would not impact scan.</td>
+            <td class="col-num">1</td>
+            <td class="col-num">5</td>
+            <td class="col-class"><span class="badge badge-low">N/A</span></td>
+            <td>software test</td>
+            <td class="col-num">3</td>
+            <td class="col-num">15</td>
+            <td>N/A</td>
+            <td class="col-num">N/A</td>
+            <td class="col-class">N/A</td>
+            <td class="col-num">5</td>
+            <td>No further action needed</td>
+            <td class="col-num">1</td>
+            <td class="col-num">5</td>
+            <td class="col-class"><span class="badge badge-low">N/A</span></td>
+            <td>No further action needed</td>
+            <td class="col-num">3</td>
+            <td class="col-num">15</td>
+            <td></td>
+          </tr>
+
+          For RMM items:
+          <tr class="risk-safety">
+            ...
+            <td class="col-class"><span class="badge badge-rmm">RMM</span></td>
+            ...
+            <td><span class="mono">CT-NM.RMM-P2-RMM.xxxx</span><br>或 TBD</td>
+            <td class="col-num">S1</td>
+            <td class="col-class">No CTS</td>
+            ...
+          </tr>
+          -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== RECOMMENDATIONS ==================== -->
+  <section class="section">
+    <h2>建议与行动项</h2>
+    <ul class="rec-list">
+      {{RECOMMENDATIONS}}
+      <!--
+      Template:
+      <li class="rec-must">
+        <span class="rec-label" style="color:var(--safety-text)">Must-Address</span>
+        ID 4 (FM02): Severity=S, Criticality=S×3=RMM — 需要分配 RMM ID 并确认 CTS 级别
+      </li>
+      <li class="rec-should">
+        <span class="rec-label" style="color:var(--high-text)">Should-Address</span>
+        ID 7: Criticality=40 — 建议增加独立错误恢复机制以降低 Occurrence
+      </li>
+      <li class="rec-consider">
+        <span class="rec-label" style="color:var(--medium-text)">Consider</span>
+        ID 12: RPN=45 — 建议增加集成测试覆盖以降低 Detection
+      </li>
+      -->
+    </ul>
+  </section>
+
+  <!-- ==================== REVIEW NOTES ==================== -->
+  <section class="section">
+    <h2>评审说明</h2>
+    {{REVIEW_NOTES}}
+    <!--
+    Template:
+    <div class="review-note">
+      SOD 评分基于 AI 对设计架构的理解，实际评分需由 DFMEA 团队结合领域经验确认。
+    </div>
+    <div class="review-note">
+      RMM ID 标记为 TBD 的条目需由风险管理流程分配正式编号。
+    </div>
+    <div class="review-note">
+      Prevention Control 中引用的设计文档编号需要核实是否为最新版本。
+    </div>
+    -->
+
+    <div class="disclaimer">
+      本报告由 AI 辅助生成，仅作为 DFMEA 评审的参考草稿。所有分析结论、SOD 评分、风险分类和建议行动均须经过
+      DFMEA 评审团队（包括软件架构师、系统工程师、质量工程师等）的正式评审和确认后，方可纳入正式 DFMEA 文档。
+      AI 生成的 RMM ID 均标记为 TBD，正式编号须通过风险管理流程分配。
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <div style="text-align:center; padding:28px 0 0; color:var(--muted); font-size:12px; border-top:1px solid var(--border); margin-top:32px;">
+    DFMEA Analysis Report · Generated by Copilot dfmea-analysis Skill · Philips CT SW
+    <br>本报告为 AI 辅助分析草稿，最终权威来源为正式 DFMEA 文档。
+    <br>Conforming to IEC 62304 / ISO 14971 / Philips DFMEA Process
+  </div>
+
+</div>
+
+<!-- ==================== SCRIPTS ==================== -->
+<script>
+// Table sorting
+document.querySelectorAll('.dfmea-table th').forEach((th, idx) => {
+  th.style.cursor = 'pointer';
+  th.addEventListener('click', () => {
+    const table = th.closest('table');
+    const tbody = table.tBodies[0];
+    const rows = Array.from(tbody.rows);
+    const colIdx = Array.from(th.parentNode.children).indexOf(th);
+    if (!table._sortDir) table._sortDir = {};
+    const dir = table._sortDir[colIdx] = !(table._sortDir[colIdx] || false);
+    rows.sort((a, b) => {
+      let va = a.cells[colIdx] ? a.cells[colIdx].textContent.trim() : '';
+      let vb = b.cells[colIdx] ? b.cells[colIdx].textContent.trim() : '';
+      const na = parseFloat(va), nb = parseFloat(vb);
+      if (!isNaN(na) && !isNaN(nb)) return dir ? na - nb : nb - na;
+      return dir ? va.localeCompare(vb) : vb.localeCompare(va);
+    });
+    rows.forEach(r => tbody.appendChild(r));
+  });
+});
+</script>
+</body>
+</html>

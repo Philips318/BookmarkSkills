@@ -1,0 +1,362 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Philips.CT.Host.ImageDisplay.Impl</name>
+    </assembly>
+    <members>
+        <member name="T:Philips.CT.Host.ImageDisplay.Commands.ResetWindowLevelCommand">
+            <summary>
+            Command that resets the current Window Width and Window Center to the values stored in
+            the DICOM series default, falling back to configured defaults when no DICOM values are
+            available.
+            </summary>
+            <remarks>
+            This command is bound to the Reset W/L button and the Ctrl+Shift+W keyboard shortcut.
+            It is enabled only when a series is loaded (<see cref="P:Philips.CT.Host.ImageDisplay.IImageDisplayViewModel.IsSeriesLoaded"/>).
+            </remarks>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Commands.ResetWindowLevelCommand.#ctor(Philips.CT.Host.ImageDisplay.IImageDisplayViewModel,Philips.CT.Host.ImageDisplay.IDicomImageModel,Philips.CT.Host.ImageDisplay.IStatusNotifier,Philips.CT.Host.ImageDisplay.IUndoService,Philips.CT.Host.ImageDisplay.IWindowLevelDefaults)">
+            <summary>
+            Initialises a new instance of <see cref="T:Philips.CT.Host.ImageDisplay.Commands.ResetWindowLevelCommand"/>.
+            </summary>
+            <param name="viewModel">The ViewModel whose WW/WC properties will be updated.</param>
+            <param name="dicomModel">Source of DICOM-default window level values.</param>
+            <param name="statusNotifier">Displays the reset confirmation in the status bar.</param>
+            <param name="undoService">Undo stack; the reset action is pushed before applying values.</param>
+            <param name="windowLevelDefaults">Fallback defaults used when DICOM values are absent.</param>
+        </member>
+        <member name="E:Philips.CT.Host.ImageDisplay.Commands.ResetWindowLevelCommand.CanExecuteChanged">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Commands.ResetWindowLevelCommand.CanExecute(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Commands.ResetWindowLevelCommand.LastResetUsedFallback">
+            <summary>
+            Gets a value indicating whether the most recent <see cref="M:Philips.CT.Host.ImageDisplay.Commands.ResetWindowLevelCommand.Execute(System.Object)"/> call applied
+            fallback Window Level values because the DICOM series lacked valid windowing tags.
+            </summary>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Commands.ResetWindowLevelCommand.Execute(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Commands.ResetWindowLevelCommand.RaiseCanExecuteChanged">
+            <summary>Raises <see cref="E:Philips.CT.Host.ImageDisplay.Commands.ResetWindowLevelCommand.CanExecuteChanged"/> to notify bindings of a state change.</summary>
+        </member>
+        <member name="T:Philips.CT.Host.ImageDisplay.Constants.DicomDisplayTags">
+            <summary>
+            Named constants for DICOM Image Presentation attributes used by the Image Display module.
+            All tag identifiers are taken from DICOM PS3.3 §C.7.6.3.1.5 — VOI LUT Module.
+            </summary>
+            <remarks>
+            No magic-number DICOM tag literals are permitted elsewhere in the codebase.
+            All DICOM tag access must reference these constants.
+            Reference: DICOM PS3.3 2024a §C.7.6.3.1.5, Table C.7-24.
+            </remarks>
+        </member>
+        <member name="F:Philips.CT.Host.ImageDisplay.Constants.DicomDisplayTags.WindowCenter">
+            <summary>
+            DICOM tag (0028,1050) — Window Center.
+            Defines the value mapped to the center of the display range.
+            Multi-valued; use the first value (index 0) per FR-03.
+            Reference: DICOM PS3.3 §C.7.6.3.1.5, Table C.7-24.
+            </summary>
+        </member>
+        <member name="F:Philips.CT.Host.ImageDisplay.Constants.DicomDisplayTags.WindowWidth">
+            <summary>
+            DICOM tag (0028,1051) — Window Width.
+            Defines the range of input values mapped to the full display range.
+            Must be strictly greater than zero; enforced by <see cref="M:Philips.CT.Host.ImageDisplay.WindowLevel.Create(System.Double,System.Double,System.String)"/>.
+            Multi-valued; use the first value (index 0) per FR-03.
+            Reference: DICOM PS3.3 §C.7.6.3.1.5, Table C.7-24.
+            </summary>
+        </member>
+        <member name="F:Philips.CT.Host.ImageDisplay.Constants.DicomDisplayTags.WindowCenterWidthExplanation">
+            <summary>
+            DICOM tag (0028,1055) — Window Center &amp; Width Explanation.
+            Optional free-text explanation of the window center and width pair
+            (e.g. "Soft Tissue", "Lung", "Bone").
+            Stored as the <see cref="P:Philips.CT.Host.ImageDisplay.WindowLevel.PresetName"/> when present.
+            Reference: DICOM PS3.3 §C.7.6.3.1.5, Table C.7-24.
+            </summary>
+        </member>
+        <member name="T:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel">
+            <summary>
+            ViewModel for the Image Display panel.
+            Implements <see cref="T:Philips.CT.Host.ImageDisplay.IImageDisplayViewModel"/> and exposes Window Width/Center,
+            the reset command, series-loaded state, and the current status message.
+            </summary>
+        </member>
+        <member name="E:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.PropertyChanged">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.#ctor(Philips.CT.Host.ImageDisplay.IDicomImageModel,Philips.CT.Host.ImageDisplay.IStatusNotifier,Philips.CT.Host.ImageDisplay.IUndoService,Philips.CT.Host.ImageDisplay.IWindowLevelDefaults)">
+            <summary>
+            Initialises a new instance of <see cref="T:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel"/>.
+            </summary>
+            <param name="dicomModel">DICOM image model providing default WW/WC values.</param>
+            <param name="statusNotifier">Status-bar notifier for reset confirmations.</param>
+            <param name="undoService">Undo stack service for Window/Level changes.</param>
+            <param name="windowLevelDefaults">Fallback WW/WC defaults when DICOM values are absent.</param>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.WindowWidth">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.WindowCenter">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.ResetWindowLevelCommand">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.UndoCommand">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.RedoCommand">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.IsSeriesLoaded">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.StatusMessage">
+            <summary>
+            Gets the most recent status message set by the reset command.
+            Mirrors the current message from the injected <see cref="T:Philips.CT.Host.ImageDisplay.IStatusNotifier"/>.
+            </summary>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.RefreshUndoRedoState">
+            <summary>
+            Re-evaluates the enabled state of the Undo and Redo commands so bound UI controls
+            (e.g. WPF buttons) refresh whenever the undo stack may have changed. The reset command
+            applies its new values through the Window Width/Center setters, so refreshing here also
+            enables the Undo button immediately after a reset, not only after an undo/redo.
+            </summary>
+        </member>
+        <member name="T:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.DelegateCommand">
+            <summary>Lightweight command implementation that delegates execution and CanExecute evaluation.</summary>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.DelegateCommand.#ctor(System.Action,System.Func{System.Boolean})">
+            <summary>Initialises a new <see cref="T:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.DelegateCommand"/>.</summary>
+            <param name="execute">The action to invoke on <see cref="M:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.DelegateCommand.Execute(System.Object)"/>.</param>
+            <param name="canExecute">The predicate evaluated by <see cref="M:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.DelegateCommand.CanExecute(System.Object)"/>.</param>
+        </member>
+        <member name="E:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.DelegateCommand.CanExecuteChanged">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.DelegateCommand.CanExecute(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.DelegateCommand.Execute(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.DelegateCommand.RaiseCanExecuteChanged">
+            <summary>Raises <see cref="E:Philips.CT.Host.ImageDisplay.ImageDisplayViewModel.DelegateCommand.CanExecuteChanged"/> to notify bindings of a state change.</summary>
+        </member>
+        <member name="T:Philips.CT.Host.ImageDisplay.Models.DicomImageModel">
+            <summary>
+            Concrete DICOM image model that stores the window-level defaults loaded from a DICOM series.
+            Implements <see cref="T:Philips.CT.Host.ImageDisplay.IDicomImageModel"/> and exposes <see cref="M:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.LoadSeries(System.Double,System.Double,System.String)"/>,
+            <see cref="M:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.LoadSeriesWithoutTags"/>, and <see cref="M:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.LoadSeriesWithInvalidWW(System.Double,System.Double)"/> for
+            simulation and test support.
+            </summary>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.DefaultWindowLevel">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.HasValidDefaultWindowLevel">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.HasDicomWindowingTags">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.IsSeriesLoaded">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.RawWindowWidth">
+            <summary>Gets the raw Window Width value stored in the model, or <see langword="null"/> when no series is loaded.</summary>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.RawWindowCenter">
+            <summary>Gets the raw Window Center value stored in the model, or <see langword="null"/> when no series is loaded.</summary>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.LoadSeries(System.Double,System.Double,System.String)">
+            <summary>
+            Loads a CT series into the model, recording the DICOM default Window Width and
+            Window Center values parsed from tags (0028,1051) and (0028,1050).
+            </summary>
+            <param name="ww">
+            Window Width from the DICOM series. Must be strictly greater than zero.
+            </param>
+            <param name="wc">Window Center from the DICOM series.</param>
+            <param name="presetName">
+            Optional preset name from DICOM tag (0028,1055). Pass <see langword="null"/> when absent.
+            </param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when <paramref name="ww"/> is less than or equal to zero.
+            </exception>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.LoadSeriesWithoutTags">
+            <summary>
+            Simulates loading a CT series that carries no DICOM windowing tags (0028,1050 / 0028,1051).
+            After this call <see cref="P:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.DefaultWindowLevel"/> returns <see langword="null"/> and
+            <see cref="P:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.HasDicomWindowingTags"/> returns <see langword="false"/>.
+            </summary>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.LoadSeriesWithInvalidWW(System.Double,System.Double)">
+            <summary>
+            Simulates loading a CT series whose DICOM WW tag carries an invalid (zero or negative)
+            value.  The raw values are stored as-is; <see cref="P:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.DefaultWindowLevel"/> returns
+            <see langword="null"/> and <see cref="P:Philips.CT.Host.ImageDisplay.Models.DicomImageModel.HasDicomWindowingTags"/> returns <see langword="true"/>.
+            </summary>
+            <param name="ww">Invalid Window Width (zero or negative).</param>
+            <param name="wc">Window Center to store alongside the invalid WW.</param>
+        </member>
+        <member name="T:Philips.CT.Host.ImageDisplay.Models.WindowLevelChangeAction">
+            <summary>
+            Undoable action that captures a Window Width / Window Center change,
+            allowing the operator to undo or redo a Window/Level reset.
+            </summary>
+            <remarks>
+            The action holds its own before/after state (per-viewport scope, OQ-02).
+            <see cref="M:Philips.CT.Host.ImageDisplay.Models.WindowLevelChangeAction.Execute"/> applies the new values; <see cref="M:Philips.CT.Host.ImageDisplay.Models.WindowLevelChangeAction.Undo"/> restores the previous
+            values.  Both use the apply-callback supplied at construction time so
+            that no direct ViewModel reference leaks out of the Models layer.
+            </remarks>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Models.WindowLevelChangeAction.#ctor(System.Double,System.Double,System.Double,System.Double,System.Action{System.Double,System.Double})">
+            <summary>
+            Initialises a new <see cref="T:Philips.CT.Host.ImageDisplay.Models.WindowLevelChangeAction"/>.
+            </summary>
+            <param name="previousWw">Window Width before the reset.</param>
+            <param name="previousWc">Window Center before the reset.</param>
+            <param name="newWw">Window Width after the reset.</param>
+            <param name="newWc">Window Center after the reset.</param>
+            <param name="applyCallback">
+            Callback invoked with (ww, wc) to apply values to the owning ViewModel.
+            Must not be <see langword="null"/>.
+            </param>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Models.WindowLevelChangeAction.Description">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Models.WindowLevelChangeAction.Execute">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Models.WindowLevelChangeAction.Undo">
+            <inheritdoc/>
+        </member>
+        <member name="T:Philips.CT.Host.ImageDisplay.Resources.ImageDisplayStrings">
+            <summary>
+            Strongly-typed accessor for the <c>ImageDisplayStrings.resx</c> resource file.
+            All user-visible strings in the ImageDisplay module must be retrieved through this class.
+            Falls back to compile-time constants when the embedded resource cannot be loaded
+            (e.g. during unit tests running against a standalone assembly).
+            </summary>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Resources.ImageDisplayStrings.ResetButtonLabel">
+            <summary>Gets the label text for the Reset Window/Level button.</summary>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Resources.ImageDisplayStrings.ResetButtonTooltip">
+            <summary>Gets the tooltip text for the Reset Window/Level button.</summary>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Resources.ImageDisplayStrings.ResetConfirmationMessage">
+            <summary>
+            Gets the confirmation message format string (without preset name).
+            Placeholder 0 = Window Width, placeholder 1 = Window Center.
+            </summary>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Resources.ImageDisplayStrings.ResetFallbackMessage">
+            <summary>
+            Gets the fallback confirmation message format string used when DICOM windowing tags are absent.
+            Placeholder 0 = Window Width, placeholder 1 = Window Center.
+            </summary>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Resources.ImageDisplayStrings.ResetInvalidDicomMessage">
+            <summary>
+            Gets the fallback confirmation message format string used when an invalid DICOM WW value is encountered.
+            Placeholder 0 = Window Width, placeholder 1 = Window Center.
+            </summary>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Resources.ImageDisplayStrings.ResetConfirmationMessageWithPreset">
+            <summary>
+            Gets the confirmation message format string (with preset name).
+            Placeholder 0 = preset name, placeholder 1 = Window Width, placeholder 2 = Window Center.
+            </summary>
+        </member>
+        <member name="T:Philips.CT.Host.ImageDisplay.Services.StatusBarNotifier">
+            <summary>
+            Lightweight status-bar notifier that displays transient messages and auto-dismisses them
+            using a <see cref="T:System.Threading.Timer"/>.
+            Does not carry any WPF dependency, making it usable in plain class-library projects.
+            </summary>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Services.StatusBarNotifier.CurrentMessage">
+            <summary>
+            Gets the message currently displayed in the status bar.
+            An empty string indicates no active message.
+            </summary>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Services.StatusBarNotifier.LastDisplayDuration">
+            <summary>
+            Gets the duration passed to the most recent <see cref="M:Philips.CT.Host.ImageDisplay.Services.StatusBarNotifier.ShowTransientMessage(System.String,System.TimeSpan)"/> call.
+            Used by tests to verify the auto-dismiss interval without waiting for the timer.
+            </summary>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Services.StatusBarNotifier.ShowTransientMessage(System.String,System.TimeSpan)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Services.StatusBarNotifier.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:Philips.CT.Host.ImageDisplay.Services.WindowLevelDefaults">
+            <summary>
+            Provides the configurable fallback Window Level applied when a DICOM series does not
+            carry valid WW/WC tags.  Implements <see cref="T:Philips.CT.Host.ImageDisplay.IWindowLevelDefaults"/>.
+            </summary>
+            <remarks>
+            The fallback values are injected at construction time (defaults: WW = 400, WC = 40).
+            This keeps the class testable without configuration infrastructure.
+            </remarks>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Services.WindowLevelDefaults.#ctor(System.Double,System.Double)">
+            <summary>
+            Initialises a new instance of <see cref="T:Philips.CT.Host.ImageDisplay.Services.WindowLevelDefaults"/> with configurable
+            fallback values.
+            </summary>
+            <param name="fallbackWw">
+            Fallback Window Width.  Must be strictly greater than zero.
+            </param>
+            <param name="fallbackWc">Fallback Window Center (any finite value is permitted).</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Thrown when <paramref name="fallbackWw"/> is less than or equal to zero.
+            </exception>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Services.WindowLevelDefaults.FallbackWindowLevel">
+            <inheritdoc/>
+        </member>
+        <member name="T:Philips.CT.Host.ImageDisplay.Services.WindowLevelUndoService">
+            <summary>
+            Per-viewport undo/redo stack implementation.
+            Maintains a bounded undo history (maximum depth <see cref="F:Philips.CT.Host.ImageDisplay.Services.WindowLevelUndoService.MaxDepth"/>) and a redo
+            stack that is cleared whenever a new action is pushed.
+            </summary>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Services.WindowLevelUndoService.CanUndo">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Services.WindowLevelUndoService.CanRedo">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Services.WindowLevelUndoService.Push(Philips.CT.Host.ImageDisplay.IUndoableAction)">
+            <inheritdoc/>
+            <remarks>
+            Pushes <paramref name="action"/> onto the undo stack, clears the redo stack,
+            and drops the oldest entry when the stack exceeds <see cref="F:Philips.CT.Host.ImageDisplay.Services.WindowLevelUndoService.MaxDepth"/>.
+            </remarks>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Services.WindowLevelUndoService.Undo">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Services.WindowLevelUndoService.Redo">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPT 2 — Peng 的 .github AI Harness：对比·强化·落地 / Compare·Strengthen·Land</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#1e293b; --panel2:#172033; --ink:#e2e8f0; --muted:#94a3b8;
+    --accent:#38bdf8; --accent2:#a78bfa; --ok:#22c55e; --warn:#eab308; --bad:#ef4444; --line:#334155;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:'Segoe UI','Microsoft YaHei',system-ui,sans-serif;overflow:hidden}
+  body[data-lang="cn"] [data-en]{display:none !important}
+  body[data-lang="en"] [data-cn]{display:none !important}
+  .deck{height:100vh;width:100vw;position:relative}
+  .slide{position:absolute;inset:0;padding:48px 64px;display:none;flex-direction:column;animation:fade .35s ease}
+  .slide.active{display:flex}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  h1{font-size:38px;line-height:1.15;margin-bottom:8px;background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+  h2{font-size:29px;margin-bottom:18px;color:#fff;display:flex;align-items:center;gap:12px}
+  h2::before{content:"";width:6px;height:29px;background:linear-gradient(var(--accent2),var(--accent));border-radius:3px}
+  .sub{color:var(--muted);font-size:17px;margin-bottom:22px}
+  .kicker{color:var(--accent2);font-weight:700;letter-spacing:2px;font-size:13px;text-transform:uppercase;margin-bottom:14px}
+  ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  li{padding-left:26px;position:relative;font-size:17px;line-height:1.5;color:#dbe4f0}
+  li::before{content:"▸";position:absolute;left:0;color:var(--accent2)}
+  li b{color:#fff}
+  .muted{color:var(--muted)}
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 19px}
+  .card h3{font-size:16.5px;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .card p,.card li{font-size:14px;color:var(--muted);line-height:1.5}
+  .card ul{gap:6px}.card li{padding-left:18px}
+  .tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:20px;font-weight:600}
+  .t-pro{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.35)}
+  .t-con{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.35)}
+  .t-opp{background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.35)}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  th{background:var(--panel2);color:#fff}
+  td{color:#cbd5e1}
+  .yes{color:#4ade80;font-weight:700}.no{color:#f87171;font-weight:700}.mid{color:#fde047;font-weight:700}
+  .foot{position:absolute;bottom:18px;left:64px;right:64px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+  .dots{display:flex;gap:6px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--line);cursor:pointer}
+  .dot.active{background:var(--accent2);width:22px;border-radius:4px}
+  .stat{display:flex;gap:22px;flex-wrap:wrap;margin-top:10px}
+  .stat .s{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px 20px;min-width:120px}
+  .stat .s .n{font-size:32px;font-weight:800;color:var(--accent2)}
+  .stat .s .l{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .lang{position:absolute;top:16px;right:20px;z-index:10;display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:5px 12px}
+  .lang button{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-weight:600;font-family:inherit}
+  .lang button.active{color:var(--accent2)}
+  .lang span{color:var(--line)}
+  .hint{position:absolute;top:54px;right:22px;color:var(--muted);font-size:11.5px}
+  code{background:#0b1220;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12.5px;color:#c4b5fd}
+</style>
+</head>
+<body data-lang="cn">
+
+<div class="lang">
+  <button id="lcn" class="active" onclick="setLang('cn')">中文</button>
+  <span>|</span>
+  <button id="len" onclick="setLang('en')">EN</button>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 -->
+  <section class="slide active">
+    <div style="margin:auto 0">
+      <div class="kicker"><span data-cn>AI End-to-End 软件交付 · Peng 的成果</span><span data-en>AI End-to-End Software Delivery · Peng's Work</span></div>
+      <h1><span data-cn>Peng 的 .github AI Harness<br>对比 · 强化 · 落地</span><span data-en>Peng's .github AI Harness<br>Compare · Strengthen · Land</span></h1>
+      <p class="sub"><span data-cn>角色化交付流水线 + 富领域/合规技能库 · 面向 Philips CT（IEC 62304 / ISO 14971 / TICS / CodeScene）</span><span data-en>Role-based delivery pipeline + rich domain/compliance skills · for Philips CT (IEC 62304 / ISO 14971 / TICS / CodeScene)</span></p>
+      <div class="stat">
+        <div class="s"><div class="n">8</div><div class="l">Agents</div></div>
+        <div class="s"><div class="n">17</div><div class="l">Skills</div></div>
+        <div class="s"><div class="n">10</div><div class="l">Prompts</div></div>
+        <div class="s"><div class="n">2</div><div class="l">Instructions</div></div>
+      </div>
+      <p class="muted" style="margin-top:22px"><span data-cn>来源</span><span data-en>Source</span>：<code>C:\Work\Code\Git_Code\.github</code> ｜ <span data-cn>作者</span><span data-en>Author</span>: Peng ｜ Deck 2 / 3</p>
+    </div>
+  </section>
+
+  <!-- 2 exec -->
+  <section class="slide">
+    <div class="kicker">Executive Summary</div>
+    <h2><span data-cn>它是什么：一套「工程 + 合规智库」</span><span data-en>What it is: an "engineering + compliance knowledge base"</span></h2>
+    <p class="sub"><span data-cn>以 7 角色流水线为骨架，配一套覆盖需求→架构→编码→测试→审查→文档→CI 的富技能库，在医疗器械领域分析、风险合规、质量自愈上纵深很强。</span><span data-en>A 7-role pipeline backbone plus a rich skill library spanning Requirements→Architecture→Code→Test→Review→Docs→CI, with deep strength in medical-device domain analysis, risk/compliance, and quality self-healing.</span></p>
+    <div class="grid g2">
+      <div class="card"><h3>🎯 <span data-cn>设计取向</span><span data-en>Design orientation</span></h3><ul>
+        <li data-cn>Orchestrator + 6 角色 Agent，阶段间设<b>人工检查点</b></li>
+        <li data-en>Orchestrator + 6 role agents with <b>human checkpoints</b> between stages</li>
+        <li data-cn>10 个 <code>/</code> 斜杠 Prompt 一键入口，低门槛即用</li>
+        <li data-en>10 slash <code>/</code> prompts as one-click entry points — low barrier</li>
+        <li data-cn>技能<b>团队可移植</b>，产出自包含 HTML 报告</li>
+        <li data-en>Skills are <b>team-portable</b>; outputs are self-contained HTML reports</li></ul></div>
+      <div class="card"><h3>🧬 <span data-cn>差异化优势</span><span data-en>Differentiators</span></h3><ul>
+        <li data-cn>DFMEA / IFU / 产品缺陷 / 影响分析等<b>风险&临床</b>能力</li>
+        <li data-en>DFMEA / IFU / product-defect / impact analysis — <b>risk & clinical</b></li>
+        <li data-cn>TICS / CodeScene <b>问题修复</b>技能 + 常驻规则 instructions</li>
+        <li data-en>TICS / CodeScene <b>remediation</b> skills + always-on rule instructions</li>
+        <li data-cn>CT / DICOM / 光谱<b>领域知识库</b></li>
+        <li data-en>CT / DICOM / Spectral <b>domain knowledge base</b></li></ul></div>
+    </div>
+    <p class="muted" style="margin-top:14px"><span data-cn>定性：<b style="color:#fff">强在「懂医疗、懂标准、能自愈、能出报告」；相对弱在自主长跑执行与隔离评估。</b></span><span data-en>In one line: <b style="color:#fff">strong at "understands medicine & standards, self-heals, produces reports"; relatively weak at autonomous long-running execution and isolated evaluation.</b></span></p>
+  </section>
+
+  <!-- 3 catalog -->
+  <section class="slide">
+    <div class="kicker">Asset Catalog</div>
+    <h2><span data-cn>资产全景（8 / 17 / 10 / 2）</span><span data-en>Asset Catalog (8 / 17 / 10 / 2)</span></h2>
+    <div class="grid g2">
+      <div class="card"><h3>🤖 Agents · 8</h3><p>Orchestrator · RequirementsAnalyst · Architect · Developer · Tester · Reviewer · DocWriter · CiCd</p></div>
+      <div class="card"><h3>⚡ Prompts · 10</h3><p>/full-pipeline · /code-review · /code-quality · /tics-preflight · /codescene-preflight · /dfmea-analysis · /ifu-generator · /productdefect-analysis · /generate-3pp-dmr · /quick-test</p></div>
+      <div class="card"><h3>🧠 Skills · 17</h3><p>requirements · requirements-review · requirements-traceability · architecture · bdd-generator · test-generator · code-review · code-quality · codescene-health · tics-standard · impact-analysis · dfmea-analysis · doc-generator · ifu-generator · productdefect-analysis · generate-3pp-dmr · domain-knowledge</p></div>
+      <div class="card"><h3>📏 Instructions · 2 <span data-cn>（常驻）</span><span data-en>(always-on)</span></h3><p><span data-cn>tics-csharp（版权头/XML 注释/异常日志/命名空间）· codescene-csharp（复杂度/反基本类型偏执/防颠簸路径与巨脑方法）</span><span data-en>tics-csharp (copyright/XML docs/exception logging/namespaces) · codescene-csharp (complexity/anti primitive-obsession/bumpy-road & brain-method prevention)</span></p></div>
+    </div>
+  </section>
+
+  <!-- 4 strengths -->
+  <section class="slide">
+    <div class="kicker">Strengths</div>
+    <h2><span class="tag t-pro">PRO</span>&nbsp;<span data-cn>Peng 方案强在哪里</span><span data-en>Where Peng's harness is strong</span></h2>
+    <div class="grid g3">
+      <div class="card"><h3>🩺 <span data-cn>医疗领域纵深</span><span data-en>Medical domain depth</span></h3><p><span data-cn>DFMEA、IFU、产品缺陷、影响分析、3PP DMR + CT/DICOM/光谱知识库，直击专业场景。</span><span data-en>DFMEA, IFU, product-defect, impact analysis, 3PP DMR + CT/DICOM/Spectral knowledge hit professional scenarios directly.</span></p></div>
+      <div class="card"><h3>🔧 <span data-cn>质量自愈</span><span data-en>Quality self-heal</span></h3><p><span data-cn>tics-standard、codescene-health 能<b>修复</b>问题；tics/codescene instructions 常驻，从源头预防。</span><span data-en>tics-standard & codescene-health <b>fix</b> issues; always-on instructions prevent them at the source.</span></p></div>
+      <div class="card"><h3>📋 <span data-cn>需求工程深度</span><span data-en>Requirements depth</span></h3><p><span data-cn>requirements + review + traceability，覆盖需求质量与审计追溯。</span><span data-en>requirements + review + traceability cover quality and audit traceability.</span></p></div>
+      <div class="card"><h3>📊 <span data-cn>可视化报告</span><span data-en>Visual reports</span></h3><p><span data-cn>code-quality（8 维雷达/热力图）、DFMEA、IFU 均输出自包含 HTML。</span><span data-en>code-quality (8-axis radar/heatmap), DFMEA, IFU all emit self-contained HTML.</span></p></div>
+      <div class="card"><h3>⚡ <span data-cn>低门槛入口</span><span data-en>Low-barrier entry</span></h3><p><span data-cn>10 个斜杠 Prompt 即点即用，无需重环境；技能可移植。</span><span data-en>10 slash prompts work instantly, no heavy setup; skills are portable.</span></p></div>
+      <div class="card"><h3>📐 <span data-cn>标准即代码</span><span data-en>Standards as code</span></h3><p><span data-cn>Philips 具体 TICS/CodeScene 规则固化为常驻 instructions，自动作用于每个 .cs。</span><span data-en>Specific Philips TICS/CodeScene rules baked into always-on instructions, auto-applied to every .cs.</span></p></div>
+    </div>
+  </section>
+
+  <!-- 5 comparison -->
+  <section class="slide">
+    <div class="kicker">Head-to-Head</div>
+    <h2><span data-cn>两套 Harness 能力对比</span><span data-en>Head-to-Head Capability Comparison</span></h2>
+    <table>
+      <tr><th style="width:24%"><span data-cn>维度</span><span data-en>Dimension</span></th><th style="width:38%"><span data-cn>Kunal（执行引擎）</span><span data-en>Kunal (execution engine)</span></th><th style="width:38%"><span data-cn>Peng（工程+合规智库）</span><span data-en>Peng (engineering + compliance)</span></th></tr>
+      <tr><td><span data-cn>自主长跑执行</span><span data-en>Autonomous long-run</span></td><td class="yes"><span data-cn>强 · 生成/评估循环+3×重试</span><span data-en>Strong · gen/eval loop + 3× retry</span></td><td class="mid"><span data-cn>中 · 线性+人工检查点</span><span data-en>Medium · linear + checkpoints</span></td></tr>
+      <tr><td><span data-cn>隔离/诚实评估</span><span data-en>Isolated/honest eval</span></td><td class="yes"><span data-cn>强 · 盲测+隔离</span><span data-en>Strong · blind + isolated</span></td><td class="no"><span data-cn>弱 · Reviewer 看全量</span><span data-en>Weak · reviewer sees all</span></td></tr>
+      <tr><td><span data-cn>UI/端到端测试</span><span data-en>UI/E2E testing</span></td><td class="yes"><span data-cn>强 · FlaUI 黑盒</span><span data-en>Strong · FlaUI black-box</span></td><td class="no"><span data-cn>弱 · 无 UI 自动化</span><span data-en>Weak · no UI automation</span></td></tr>
+      <tr><td><span data-cn>QMS 活文档+docx</span><span data-en>Living QMS + docx</span></td><td class="yes"><span data-cn>强 · 8 类 QMS</span><span data-en>Strong · 8 QMS docs</span></td><td class="mid"><span data-cn>中 · 无 docx 管线</span><span data-en>Medium · no docx pipeline</span></td></tr>
+      <tr><td><span data-cn>并行任务</span><span data-en>Parallel tasks</span></td><td class="yes"><span data-cn>有</span><span data-en>Yes</span></td><td class="no"><span data-cn>无</span><span data-en>No</span></td></tr>
+      <tr><td><span data-cn>领域/风险分析</span><span data-en>Domain/risk analysis</span></td><td class="no"><span data-cn>弱 · 仅流程合规</span><span data-en>Weak · process only</span></td><td class="yes"><span data-cn>强 · DFMEA/IFU/影响</span><span data-en>Strong · DFMEA/IFU/impact</span></td></tr>
+      <tr><td><span data-cn>质量自愈（修复）</span><span data-en>Quality self-heal</span></td><td class="no"><span data-cn>弱 · 仅 CI 门禁</span><span data-en>Weak · CI gates only</span></td><td class="yes"><span data-cn>强 · tics/codescene 修复</span><span data-en>Strong · tics/codescene fix</span></td></tr>
+      <tr><td><span data-cn>领域知识库</span><span data-en>Domain knowledge</span></td><td class="no"><span data-cn>无</span><span data-en>None</span></td><td class="yes"><span data-cn>强 · CT/DICOM/光谱</span><span data-en>Strong · CT/DICOM/Spectral</span></td></tr>
+      <tr><td><span data-cn>可视化报告</span><span data-en>Visual reports</span></td><td class="no"><span data-cn>弱</span><span data-en>Weak</span></td><td class="yes"><span data-cn>强 · 自包含 HTML</span><span data-en>Strong · self-contained HTML</span></td></tr>
+      <tr><td><span data-cn>采纳门槛</span><span data-en>Adoption barrier</span></td><td class="mid"><span data-cn>较高</span><span data-en>Higher</span></td><td class="yes"><span data-cn>低 · 斜杠即用</span><span data-en>Low · slash-and-go</span></td></tr>
+    </table>
+  </section>
+
+  <!-- 6 gaps -->
+  <section class="slide">
+    <div class="kicker">Gaps</div>
+    <h2><span class="tag t-con">CON</span>&nbsp;<span data-cn>Peng 方案需要补的缺口</span><span data-en>Gaps Peng's harness must fill</span></h2>
+    <div class="grid g2">
+      <div class="card"><h3>🔁 <span data-cn>无自主执行循环</span><span data-en>No autonomous loop</span></h3><p><span data-cn>流水线偏线性、靠人推进阶段；缺「失败自动重试 + 定义缺陷级联」的长跑机制。</span><span data-en>Pipeline is linear, human-driven; lacks the "auto-retry + definition-cascade" long-run mechanism.</span></p></div>
+      <div class="card"><h3>🔒 <span data-cn>无隔离式评估</span><span data-en>No isolated evaluation</span></h3><p><span data-cn>Reviewer 读取全部上下文，缺「生成≠评估」的物理隔离。</span><span data-en>The reviewer reads all context; no physical "generation ≠ evaluation" isolation.</span></p></div>
+      <div class="card"><h3>🧪 <span data-cn>无 UI/黑盒验收</span><span data-en>No UI/black-box acceptance</span></h3><p><span data-cn>缺 test-designer 盲测 + FlaUI，端到端只到单元/集成层。</span><span data-en>No blind test-designer + FlaUI; E2E only reaches unit/integration.</span></p></div>
+      <div class="card"><h3>🗂️ <span data-cn>状态存储偏轻</span><span data-en>Lightweight state store</span></h3><p><span data-cn><code>artifacts/&lt;feature&gt;</code> 无 schema 校验的 backlog/eval 存储与跨会话协议。</span><span data-en><code>artifacts/&lt;feature&gt;</code> has no schema-validated backlog/eval store or cross-session protocol.</span></p></div>
+      <div class="card"><h3>🎬 <span data-cn>无演示/证据</span><span data-en>No demo/evidence</span></h3><p><span data-cn>缺 feature-demonstrator 与录屏证据链。</span><span data-en>No feature-demonstrator or video evidence chain.</span></p></div>
+      <div class="card"><h3>🧵 <span data-cn>无并行 & 路径触发</span><span data-en>No parallel & path triggers</span></h3><p><span data-cn>无并发任务；instructions 仅 <code>applyTo:*.cs</code>。</span><span data-en>No concurrent tasks; instructions only <code>applyTo:*.cs</code>.</span></p></div>
+    </div>
+  </section>
+
+  <!-- 7 strengthen -->
+  <section class="slide">
+    <div class="kicker">Strengthen</div>
+    <h2><span data-cn>Peng 方案如何强化（吸收 Kunal 之长）</span><span data-en>How to strengthen Peng's harness (absorb Kunal's strengths)</span></h2>
+    <ul>
+      <li data-cn><b>引入自主执行内核</b>：把 Orchestrator 升级为「生成/评估循环 + 3× 重试预算 + 定义缺陷向下级联」。</li>
+      <li data-en><b>Adopt an autonomous core</b>: upgrade the Orchestrator to a "generate/evaluate loop + 3× retry budget + definition cascade".</li>
+      <li data-cn><b>加隔离式 Evaluator</b>：新增独立上下文的评估角色，跑全部测试、只判质量、不写测试。</li>
+      <li data-en><b>Add an isolated evaluator</b>: a fresh-context role that runs all tests, only judges quality, authors no tests.</li>
+      <li data-cn><b>补黑盒测试设计者</b>：新增 test-designer（盲测）+ FlaUI/UI 自动化技能，端到端打到 UI 层。</li>
+      <li data-en><b>Add a black-box test-designer</b>: blind test-designer + FlaUI/UI skills to reach the UI layer end-to-end.</li>
+      <li data-cn><b>升级状态存储</b>：把 <code>artifacts/</code> 扩为 <code>.harness/</code> 式（backlog schema、eval_feedback、tool_outputs、progress）。</li>
+      <li data-en><b>Upgrade the state store</b>: extend <code>artifacts/</code> to a <code>.harness/</code>-style store (backlog schema, eval_feedback, tool_outputs, progress).</li>
+      <li data-cn><b>接活体 QMS 管线</b>：把 doc-generator/ifu 产出接上 md→docx 导出与结构校验。</li>
+      <li data-en><b>Wire the living-QMS pipeline</b>: connect doc-generator/ifu output to md→docx export + structure checks.</li>
+      <li data-cn><b>路径触发 instructions</b>：从只作用 .cs，扩到按 <code>Src/**</code>、<code>Build/**</code>、状态目录自动触发。</li>
+      <li data-en><b>Path-triggered instructions</b>: from only .cs to auto-firing on <code>Src/**</code>, <code>Build/**</code>, and state dirs.</li>
+    </ul>
+  </section>
+
+  <!-- 8 opportunities -->
+  <section class="slide">
+    <div class="kicker">Landing Opportunities</div>
+    <h2><span class="tag t-opp">OPP</span>&nbsp;<span data-cn>Peng 方案落地机会</span><span data-en>Peng's landing opportunities</span></h2>
+    <div class="grid g3">
+      <div class="card"><h3>🩺 <span data-cn>风险&合规刚需</span><span data-en>Risk & compliance need</span></h3><p><span data-cn>DFMEA/IFU/产品缺陷分析对接现有法规交付，立即产生审计价值。</span><span data-en>DFMEA/IFU/product-defect analysis plug into existing regulatory delivery for immediate audit value.</span></p></div>
+      <div class="card"><h3>🧹 <span data-cn>存量质量治理</span><span data-en>Legacy quality cleanup</span></h3><p><span data-cn>tics-standard/codescene-health 在存量代码库做质量攻坚，见效快。</span><span data-en>tics-standard/codescene-health drive quality cleanup on legacy code with quick results.</span></p></div>
+      <div class="card"><h3>📊 <span data-cn>管理层可视化</span><span data-en>Management visibility</span></h3><p><span data-cn>code-quality HTML 报告用于模块健康度评审与决策。</span><span data-en>code-quality HTML reports for module-health review and decisions.</span></p></div>
+      <div class="card"><h3>⚡ <span data-cn>斜杠即用推广</span><span data-en>Slash-and-go rollout</span></h3><p><span data-cn>10 个 Prompt 低门槛，适合快速多团队铺开、培养习惯。</span><span data-en>10 low-barrier prompts suit fast multi-team rollout and habit-building.</span></p></div>
+      <div class="card"><h3>🧠 <span data-cn>领域知识沉淀</span><span data-en>Domain knowledge capital</span></h3><p><span data-cn>domain-knowledge 作为团队共享智库，持续积累 CT 经验。</span><span data-en>domain-knowledge as a shared brain trust accruing CT expertise.</span></p></div>
+      <div class="card"><h3>🤝 <span data-cn>嫁接执行引擎</span><span data-en>Graft the engine</span></h3><p><span data-cn>把领域/合规技能挂到 Kunal 的自主引擎上，形成完整闭环（Deck 3）。</span><span data-en>Attach domain/compliance skills to Kunal's autonomous engine for a full loop (Deck 3).</span></p></div>
+    </div>
+  </section>
+
+  <!-- 9 verdict -->
+  <section class="slide">
+    <div style="margin:auto 0">
+      <div class="kicker">Verdict</div>
+      <h2><span data-cn>一句话评价 & 关键洞察</span><span data-en>Verdict & Key Insight</span></h2>
+      <p style="font-size:23px;line-height:1.5;color:#fff;max-width:1020px"><span data-cn>Peng 的 Harness 是一套<b style="color:var(--accent2)">「懂医疗、懂标准、能自愈、能出报告」的深度知识资产</b>；短板恰是<b style="color:var(--accent)">自主长跑执行、隔离评估与 UI 测试闭环</b>——而这正是 Kunal 的强项。</span><span data-en>Peng's harness is a <b style="color:var(--accent2)">deep knowledge asset that "understands medicine & standards, self-heals, and reports"</b>; its gaps — <b style="color:var(--accent)">autonomous long-run execution, isolated evaluation, UI test loop</b> — are exactly Kunal's strengths.</span></p>
+      <div class="card" style="margin-top:22px;max-width:1020px">
+        <h3>🔑 <span data-cn>核心洞察</span><span data-en>Key insight</span></h3>
+        <p style="font-size:16px;color:#dbe4f0"><span data-cn>两套 Harness <b style="color:#fff">不是竞争，而是拼图的两半</b>：Kunal 的「执行引擎 + 隔离评估 + 测试/QMS 闭环」 × Peng 的「领域知识 + 风险合规 + 质量自愈 + 报告」＝ 真正可落地的<b style="color:var(--accent)">全自动 End-to-End AI 交付</b>。→ Deck 3 给出合并蓝图与 <code>Harness_Enhance</code> 目录。</span><span data-en>The two harnesses <b style="color:#fff">aren't rivals — they're two halves of one puzzle</b>: Kunal's "execution engine + isolated eval + test/QMS loop" × Peng's "domain knowledge + risk/compliance + self-heal + reports" = a truly deployable <b style="color:var(--accent)">fully-automated End-to-End AI delivery</b>. → Deck 3 gives the merge blueprint and the <code>Harness_Enhance</code> directory.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span><span data-cn>Peng 的 .github AI Harness · 对比·强化·落地</span><span data-en>Peng's .github AI Harness · Compare·Strengthen·Land</span> · Deck 2 / 3</span>
+    <div class="dots" id="dots"></div>
+    <span id="pageno">1 / 9</span>
+  </div>
+</div>
+
+<div class="hint">← → · L</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const dots=document.getElementById('dots');
+  const pageno=document.getElementById('pageno');
+  let i=0;
+  slides.forEach((_,k)=>{const d=document.createElement('div');d.className='dot'+(k===0?' active':'');d.onclick=()=>go(k);dots.appendChild(d)});
+  const dotEls=[...dots.children];
+  function go(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('active',k===i));dotEls.forEach((d,k)=>d.classList.toggle('active',k===i));pageno.textContent=(i+1)+' / '+slides.length}
+  function setLang(l){document.body.dataset.lang=l;document.getElementById('lcn').classList.toggle('active',l==='cn');document.getElementById('len').classList.toggle('active',l==='en')}
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();go(i+1)}
+    else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(i-1)}
+    else if(e.key==='Home')go(0); else if(e.key==='End')go(slides.length-1);
+    else if(e.key.toLowerCase()==='l'){setLang(document.body.dataset.lang==='cn'?'en':'cn')}
+    else if(e.key.toLowerCase()==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Philips.CT.Host.ImageDisplay.App</name>
+    </assembly>
+    <members>
+        <member name="T:Philips.CT.Host.ImageDisplay.Shell.App">
+            <summary>
+            Application entry point and composition root for the Window/Level Reset demo host.
+            Wires up the DICOM model, status notifier, undo service, and fallback defaults, then
+            constructs the ViewModel and shows the main window.
+            </summary>
+            <remarks>
+            Supported launch arguments:
+            <list type="bullet">
+            <item><description><c>--simulator --seed=demo</c> — loads a CT series with DICOM defaults WW 1500 / WC -600 (preset "Lung").</description></item>
+            <item><description><c>--no-dicom-ww</c> — loads a series without DICOM windowing tags so Reset applies the fallback (WW 400 / WC 40).</description></item>
+            </list>
+            </remarks>
+            <summary>
+            App
+            </summary>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Shell.App.OnStartup(System.Windows.StartupEventArgs)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Shell.App.Main">
+            <summary>
+            Application Entry Point.
+            </summary>
+        </member>
+        <member name="T:Philips.CT.Host.ImageDisplay.Shell.DispatcherStatusNotifier">
+            <summary>
+            WPF status-bar notifier that displays a transient message and auto-dismisses it using a
+            <see cref="T:System.Windows.Threading.DispatcherTimer"/> on the UI thread. Implements <see cref="T:System.ComponentModel.INotifyPropertyChanged"/>
+            so the status-bar text can data-bind to <see cref="P:Philips.CT.Host.ImageDisplay.Shell.DispatcherStatusNotifier.Message"/> and update live.
+            </summary>
+            <remarks>
+            This is the WPF-specific realisation of <see cref="T:Philips.CT.Host.ImageDisplay.IStatusNotifier"/> envisaged by ADR-001
+            (§Decision item 4). The tested class library ships a WPF-free variant; the demo host uses this
+            dispatcher-based one so no cross-thread marshalling is required when the timer clears the text.
+            </remarks>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Shell.DispatcherStatusNotifier.#ctor">
+            <summary>Initialises a new instance of the <see cref="T:Philips.CT.Host.ImageDisplay.Shell.DispatcherStatusNotifier"/> class.</summary>
+        </member>
+        <member name="E:Philips.CT.Host.ImageDisplay.Shell.DispatcherStatusNotifier.PropertyChanged">
+            <inheritdoc/>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Shell.DispatcherStatusNotifier.Message">
+            <summary>Gets the message currently shown in the status bar; an empty string means none.</summary>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Shell.DispatcherStatusNotifier.ShowTransientMessage(System.String,System.TimeSpan)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Philips.CT.Host.ImageDisplay.Shell.ImageDisplayView">
+            <summary>
+            The demo host window presenting the Window/Level controls, a viewport whose brightness
+            reflects the current Window Center, and a status bar bound to the transient notifier.
+            </summary>
+            <summary>
+            ImageDisplayView
+            </summary>
+        </member>
+        <member name="P:Philips.CT.Host.ImageDisplay.Shell.ImageDisplayView.Status">
+            <summary>
+            Gets the status notifier whose <see cref="P:Philips.CT.Host.ImageDisplay.Shell.DispatcherStatusNotifier.Message"/> is shown
+            in the status bar. The same instance is injected into the ViewModel's reset command.
+            </summary>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Shell.ImageDisplayView.#ctor(Philips.CT.Host.ImageDisplay.IImageDisplayViewModel,Philips.CT.Host.ImageDisplay.Shell.DispatcherStatusNotifier)">
+            <summary>Initialises the view with its ViewModel and the shared status notifier.</summary>
+            <param name="viewModel">The image-display ViewModel used as the data context.</param>
+            <param name="status">The notifier whose message is displayed in the status bar.</param>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Shell.ImageDisplayView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Philips.CT.Host.ImageDisplay.Shell.WindowCenterToBrushConverter">
+            <summary>
+            Converts a DICOM Window Center (HU) value into a grayscale <see cref="T:System.Windows.Media.Brush"/> so the demo
+            viewport visibly changes brightness when the Window/Level is reset. This is a presentation-only
+            helper; it carries no clinical meaning beyond making the reset visible during the demonstration.
+            </summary>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Shell.WindowCenterToBrushConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Philips.CT.Host.ImageDisplay.Shell.WindowCenterToBrushConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

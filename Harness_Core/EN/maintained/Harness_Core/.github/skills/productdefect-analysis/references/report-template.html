@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Defect Analysis — {{DEFECT_ID}}</title>
+<style>
+  :root {
+    --bg: #f4f6f8;
+    --panel: #ffffff;
+    --text: #1f2933;
+    --muted: #52606d;
+    --line: #d9e2ec;
+    --accent: #0b6e4f;
+    --accent-2: #1f4e79;
+    --warn: #b86e00;
+    --warn-bg: #fff7e6;
+    --pass: #1f7a4d;
+    --pass-bg: #eaf7ef;
+    --fail: #b42318;
+    --fail-bg: #fdecec;
+    --code-bg: #111827;
+    --code-text: #e5e7eb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px;
+    font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+    color: var(--text);
+    background: linear-gradient(180deg, #eef4f8 0%, #f8fafc 100%);
+    line-height: 1.6;
+  }
+  .page { max-width: 1040px; margin: 0 auto; }
+
+  .hero {
+    background: linear-gradient(135deg, #16324f 0%, #0b6e4f 100%);
+    color: #fff; border-radius: 18px; padding: 28px 32px;
+    box-shadow: 0 16px 48px rgba(18, 38, 63, 0.18);
+  }
+  .hero h1 { margin: 0 0 10px; font-size: 28px; letter-spacing: 0.2px; }
+  .hero p { margin: 0; color: rgba(255,255,255,0.92); font-size: 15px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+  .meta-item {
+    background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 999px; padding: 7px 12px; font-size: 13px;
+  }
+
+  .section {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 16px; margin-top: 22px; padding: 22px 26px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  }
+  .section h2 {
+    margin: 0 0 12px; font-size: 18px; color: var(--accent-2);
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .section h2 .num {
+    flex: 0 0 auto; min-width: 28px; height: 28px; line-height: 28px;
+    text-align: center; border-radius: 8px;
+    background: var(--accent); color: #fff; font-size: 14px; font-weight: 700;
+  }
+  .section p { margin: 8px 0; }
+  .section ul { margin: 8px 0 0 20px; padding: 0; }
+  .section li { margin: 6px 0; }
+
+  .answer { color: var(--text); }
+  .sub {
+    border-left: 4px solid var(--line); margin-top: 12px;
+    padding: 4px 0 4px 14px;
+  }
+  .sub .label { font-weight: 600; color: var(--muted); }
+
+  /* Frequency selector */
+  .freq { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+  .freq .opt {
+    border: 1px solid var(--line); border-radius: 10px;
+    padding: 10px 14px; color: var(--muted);
+  }
+  .freq .opt.selected {
+    border-color: var(--accent); background: var(--pass-bg);
+    color: var(--pass); font-weight: 700;
+  }
+  .freq .opt .mark { margin-right: 8px; }
+
+  .pill {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 700;
+  }
+  .pill-yes { color: var(--fail); background: var(--fail-bg); }
+  .pill-no  { color: var(--pass); background: var(--pass-bg); }
+  .pill-warn { color: var(--warn); background: var(--warn-bg); }
+
+  .note {
+    border-left: 5px solid var(--warn); background: var(--warn-bg);
+    padding: 12px 16px; border-radius: 10px; margin-top: 12px; font-size: 14px;
+  }
+  code {
+    font-family: "Cascadia Code", Consolas, monospace;
+    background: #eef2f6; padding: 1px 5px; border-radius: 6px; font-size: 13px;
+  }
+  .footnote {
+    margin-top: 22px; color: var(--muted); font-size: 12px; text-align: center;
+  }
+  @media (max-width: 760px) { body { padding: 18px; } }
+</style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>Product Defect Analysis — Investigated</h1>
+      <p>{{DEFECT_ID}} — {{DEFECT_TITLE}}</p>
+      <div class="meta">
+        <div class="meta-item">Defect: {{DEFECT_ID}}</div>
+        <div class="meta-item">Date: {{DATE}}</div>
+        <div class="meta-item">Code Review Ref: {{REVIEW_REF}}</div>
+        <div class="meta-item">Related: {{RELATED_DEFECTS}}</div>
+        <div class="meta-item">Investigator: {{INVESTIGATOR}}</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">1</span> Describe the impact including possible work-around for the Customer</h2>
+      <div class="answer">{{IMPACT_AND_WORKAROUND}}</div>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">2</span> How to recover the system back from failure mode?</h2>
+      <div class="answer">{{RECOVERY}}</div>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">3</span> Root cause-analysis of this problem</h2>
+      <div class="answer">{{ROOT_CAUSE}}</div>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">4</span> Is the issue present in the installed base?</h2>
+      <div class="answer"><span class="pill {{INSTALLED_BASE_PILL_CLASS}}">{{INSTALLED_BASE_YESNO}}</span></div>
+      <div class="sub">
+        <p><span class="label">Oldest release that has this issue:</span> {{OLDEST_RELEASE}}</p>
+        <p><span class="label">Affected product configurations:</span> {{AFFECTED_CONFIGS}}</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">5</span> What is the frequency of occurrence?</h2>
+      <div class="freq">
+        <div class="opt {{FREQ_EVERY_TIME_CLASS}}"><span class="mark">{{FREQ_EVERY_TIME_MARK}}</span>Occurs every time</div>
+        <div class="opt {{FREQ_MAY_OCCUR_CLASS}}"><span class="mark">{{FREQ_MAY_OCCUR_MARK}}</span>May occur</div>
+        <div class="opt {{FREQ_NOT_EXPECTED_CLASS}}"><span class="mark">{{FREQ_NOT_EXPECTED_MARK}}</span>Not expected to occur</div>
+      </div>
+      <p class="answer">{{FREQUENCY_RATIONALE}}</p>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">6</span> Proposed solution (technical risk &amp; reliability impact)</h2>
+      <div class="answer">{{PROPOSED_SOLUTION}}</div>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">7</span> DHF/DMR documents to create or modify</h2>
+      <p class="answer"><strong>Requirements, IFU, Design-, Test- and/or Purchase Specifications:</strong></p>
+      <div class="answer">{{DHF_DMR_DOCS}}</div>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">8</span> Is testing required?</h2>
+      <div class="answer">{{TESTING_REQUIRED}}</div>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">9</span> Is an update of the IFU / SMI required?</h2>
+      <div class="answer"><span class="pill {{IFU_PILL_CLASS}}">{{IFU_YESNO}}</span> {{IFU_DETAIL}}</div>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">10</span> My (Investigator's) advice</h2>
+      <div class="answer">{{INVESTIGATOR_ADVICE}}</div>
+    </section>
+
+    <section class="section">
+      <h2><span class="num">11</span> Identify/Confirm failing product requirement</h2>
+      <div class="answer">{{FAILING_REQUIREMENT}}</div>
+    </section>
+
+    {{TO_CONFIRM_NOTE}}
+
+    <p class="footnote">Generated for Product Defect {{DEFECT_ID}}. Based on Code Review Report {{REVIEW_REF}} and SSRS {{SSRS_REF}}. {{DATE}}.</p>
+  </div>
+</body>
+</html>

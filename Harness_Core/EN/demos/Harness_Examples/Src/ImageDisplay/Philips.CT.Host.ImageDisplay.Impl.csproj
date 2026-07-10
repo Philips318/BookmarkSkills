@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <!-- Exclude the Test subfolder so its NUnit files are not compiled by the Impl project -->
+    <Compile Remove="Test\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Set an explicit manifest name so ResourceManager can locate the strings regardless
+         of the project's default root namespace. -->
+    <EmbeddedResource Update="Resources\ImageDisplayStrings.resx">
+      <LogicalName>Philips.CT.Host.ImageDisplay.Resources.ImageDisplayStrings</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ExtInf\ImageDisplay\Philips.CT.Host.ImageDisplay.Inf.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+</Project>

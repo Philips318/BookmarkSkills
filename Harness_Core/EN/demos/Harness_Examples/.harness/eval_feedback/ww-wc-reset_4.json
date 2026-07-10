@@ -1,0 +1,87 @@
+{
+  "task": "4",
+  "title": "Undo support for Window/Level reset",
+  "verdict": "pass",
+  "evaluated_at": "2026-07-02",
+  "test_counts": {
+    "unit_passed": 83,
+    "module_passed": 17,
+    "failed": 0,
+    "skipped": 0,
+    "undefined": 0,
+    "notes": "Evaluator clean rerun deleted Src\\ModuleTests\\WwWcReset\\bin and obj, rebuilt Src\\ImageDisplayImpl.sln with 0 warnings and 0 errors, then ran dotnet test Src\\ImageDisplayImpl.sln --no-build. The Task 4 scenario 'Undo is unavailable when no reset has been performed' executed and passed."
+  },
+  "sections": {
+    "test_execution": {
+      "verdict": "PASS",
+      "scenarios_pass": true,
+      "verification_tests_pass": true,
+      "no_vacuous_passes": true,
+      "no_regressions": true,
+      "stored_outputs_accepted": false,
+      "tools_rerun": [
+        "Remove-Item Src\\ModuleTests\\WwWcReset\\bin,Src\\ModuleTests\\WwWcReset\\obj -Recurse -Force",
+        "dotnet build Src\\ImageDisplayImpl.sln",
+        "dotnet test Src\\ImageDisplayImpl.sln --no-build"
+      ],
+      "notes": "Clean evaluator reruns superseded the stale Task 4 TRX evidence. Final counts: 83 unit tests passed and 17 module tests passed, with 0 failed, 0 skipped, and 0 undefined Reqnroll steps."
+    },
+    "test_quality": {
+      "verdict": "PASS",
+      "all_scenarios_have_verification_tests": true,
+      "asserts_are_meaningful": true,
+      "verification_project": "Src/ModuleTests/WwWcReset/",
+      "combined_coverage_percent": null,
+      "coverage_by_type": {
+        "unit": null,
+        "module": null,
+        "verification": null
+      },
+      "notes": "Coverage was assessed qualitatively because dotCover is unavailable in this environment. The new ImageDisplayViewModel tests prove Reset CanExecute remains true for tag-less and invalid-WW series while remaining false with no loaded series. The new bounded-depth undo test proves oldest-entry eviction by asserting undo order 24..5 and the absence of ids 0..4. The previously skipped Task 4 undo-availability scenario now executes and asserts UndoCommand.CanExecute(false) through production code."
+    },
+    "code_quality": {
+      "verdict": "PASS",
+      "naming_conventions": true,
+      "no_dead_code": true,
+      "security_owasp": true,
+      "notes": "Reviewed changed files follow the existing namespace and layering rules, carry copyright headers, retain XML documentation on public members, stay within the requested size and complexity envelope, and build with zero warnings."
+    },
+    "architecture_adherence": {
+      "verdict": "PASS",
+      "layer_boundaries_respected": true,
+      "interface_contracts_used": true,
+      "approved_patterns_applied": true,
+      "adrs_checked": [
+        "ADR-001"
+      ],
+      "notes": "The added IDicomImageModel.IsSeriesLoaded contract separates 'series present' from 'valid DICOM defaults present', which aligns Reset enablement with ADR-001 without leaking ViewModel dependencies into the model layer. The undo action/service pattern remains consistent with the approved design."
+    },
+    "functional_completeness": {
+      "verdict": "PASS",
+      "all_requirements_covered": true,
+      "edge_cases_handled": true,
+      "non_functional_requirements": true,
+      "requirements_checked": [
+        "FR-01",
+        "FR-04",
+        "FR-06",
+        "FR-07"
+      ],
+      "notes": "FR-06 is fully executed by the three Task 4 scenarios. FR-01, FR-04, and FR-07 remain coherent because Reset enablement now keys off actual series presence, and the Task 3 fallback scenarios continued to pass in the same clean test run."
+    },
+    "demo_readiness": {
+      "verdict": "PASS",
+      "application_launchable": true,
+      "notes": "Per the evaluation scope, demo readiness was judged from code correctness rather than from a runnable host executable in this repository snapshot. No code blockers remain for the Task 4 undo/reset workflow."
+    }
+  },
+  "overall": "PASS",
+  "rework_target": "none",
+  "definition_gap": {
+    "layer": "none",
+    "rationale": ""
+  },
+  "defects": [],
+  "feedback_for_developer": "",
+  "feedback_for_test_designer": ""
+}

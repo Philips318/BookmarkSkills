@@ -1,0 +1,12 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Philips.CT.Host.ImageDisplay.Inf -> C:\Work\Code\Git_Code\Harness_Enhance\ExtInf\ImageDisplay\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.Inf.dll
+  Philips.CT.Host.ImageDisplay.Impl -> C:\Work\Code\Git_Code\Harness_Enhance\Src\ImageDisplay\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.Impl.dll
+  Philips.CT.Host.ImageDisplay.Test -> C:\Work\Code\Git_Code\Harness_Enhance\Src\ImageDisplay\Test\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.Test.dll
+  Philips.CT.Host.ImageDisplay.ModuleTests -> C:\Work\Code\Git_Code\Harness_Enhance\Src\ModuleTests\WwWcReset\bin\Debug\net8.0\Philips.CT.Host.ImageDisplay.ModuleTests.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.18

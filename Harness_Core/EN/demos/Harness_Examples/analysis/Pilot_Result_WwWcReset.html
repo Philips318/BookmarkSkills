@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harness E2E Pilot Result — WW/WC Reset / 端到端试点结果</title>
+<style>
+  :root{
+    --bg:#f6f8fb; --panel:#ffffff; --ink:#1e293b; --muted:#64748b; --soft:#94a3b8;
+    --accent:#2563eb; --accent2:#7c3aed; --ok:#16a34a; --warn:#d97706; --bad:#dc2626; --line:#e2e8f0;
+    --okbg:#ecfdf5; --badbg:#fef2f2; --warnbg:#fffbeb; --bluebg:#eff6ff; --violbg:#f5f3ff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:'Segoe UI','Microsoft YaHei',system-ui,sans-serif;line-height:1.55;font-size:15px}
+  body[data-lang="cn"] [data-en]{display:none !important}
+  body[data-lang="en"] [data-cn]{display:none !important}
+  header{position:sticky;top:0;z-index:20;background:linear-gradient(90deg,#0f172a,#1e293b);color:#fff;padding:14px 34px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 14px rgba(0,0,0,.15)}
+  header h1{font-size:19px;font-weight:700}
+  header .meta{font-size:12px;color:#93a1b5;margin-top:2px}
+  .lang{display:flex;gap:7px;align-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:4px 11px}
+  .lang button{background:none;border:none;color:#cbd5e1;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+  .lang button.active{color:#7dd3fc}
+  .lang span{color:#475569}
+  main{max-width:1120px;margin:0 auto;padding:26px 30px 60px}
+  section{margin-bottom:26px}
+  h2{font-size:21px;color:#0f172a;margin-bottom:12px;padding-left:12px;border-left:5px solid var(--accent);display:flex;align-items:center;gap:9px}
+  h3{font-size:16px;color:#0f172a;margin:14px 0 8px}
+  p{margin-bottom:9px;color:#334155}
+  .banner{border-radius:14px;padding:16px 20px;display:flex;gap:16px;align-items:center;margin-bottom:16px;border:1px solid}
+  .banner.ok{background:var(--okbg);border-color:#a7f3d0}
+  .banner .ic{font-size:30px}
+  .banner b{color:#0f172a}
+  .stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:6px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px;text-align:center}
+  .stat .n{font-size:26px;font-weight:800;color:var(--accent)}
+  .stat .l{font-size:11.5px;color:var(--muted);margin-top:3px}
+  .stat.ok .n{color:var(--ok)}.stat.warn .n{color:var(--warn)}.stat.viol .n{color:var(--accent2)}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .fn{border-radius:9px;padding:7px 11px;font-size:12.5px;font-weight:600;border:1px solid}
+  .fn.def{background:var(--violbg);border-color:#ddd6fe;color:#6d28d9}
+  .fn.dev{background:var(--bluebg);border-color:#bfdbfe;color:#1d4ed8}
+  .fn.gate{background:var(--warnbg);border-color:#fde68a;color:#b45309}
+  .fn.done{background:var(--okbg);border-color:#a7f3d0;color:#15803d}
+  .ar{color:var(--soft);font-weight:700}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;background:var(--panel);border-radius:10px;overflow:hidden}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:#f1f5f9;color:#0f172a;font-weight:700}
+  td .d{color:var(--muted);font-size:12.5px}
+  .v-ok{color:var(--ok);font-weight:700}.v-fail{color:var(--bad);font-weight:700}.v-wait{color:var(--warn);font-weight:700}
+  .catch{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--bad);border-radius:12px;padding:14px 18px;margin-bottom:12px}
+  .catch.fixed{border-left-color:var(--ok)}
+  .catch h3{margin:0 0 6px;display:flex;align-items:center;gap:8px;font-size:15.5px}
+  .catch .who{font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:20px;background:#f1f5f9;color:#475569}
+  .catch ul{margin:5px 0 0 0;padding-left:18px}
+  .catch li{font-size:13.5px;color:#334155;margin-bottom:3px}
+  .catch li b{color:#0f172a}
+  .tagfix{font-size:11px;font-weight:700;color:var(--ok);background:var(--okbg);border:1px solid #a7f3d0;border-radius:20px;padding:1px 8px}
+  .pri{display:inline-block;font-size:11px;font-weight:800;border-radius:6px;padding:1px 7px;color:#fff}
+  .p0{background:var(--bad)}.p1{background:var(--warn)}.p2{background:var(--accent)}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 18px}
+  .card h3{margin-top:0}
+  ul.clean{list-style:none;padding:0}
+  ul.clean li{padding-left:20px;position:relative;margin-bottom:6px;font-size:13.8px;color:#334155}
+  ul.clean li::before{content:"▹";position:absolute;left:0;color:var(--accent)}
+  ul.clean li b{color:#0f172a}
+  .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:30px;padding-top:14px;border-top:1px solid var(--line)}
+  code{background:#eef2f7;border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:12.5px;color:#b45309;font-family:Consolas,monospace}
+  @media print{header{position:static}body{background:#fff}.lang{display:none}}
+  @media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.cols{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-lang="cn">
+
+<header>
+  <div>
+    <h1><span data-cn>Harness 端到端试点结果 · WW/WC Reset</span><span data-en>Harness E2E Pilot Result · WW/WC Reset</span></h1>
+    <div class="meta"><span data-cn>合并版 AI Harness（Harness_Enhance）· 首个端到端特性交付实验 · 2026-07-02</span><span data-en>Merged AI Harness (Harness_Enhance) · first end-to-end feature delivery experiment · 2026-07-02</span></div>
+  </div>
+  <div class="lang"><button id="lcn" class="active" onclick="setLang('cn')">中文</button><span>|</span><button id="len" onclick="setLang('en')">EN</button></div>
+</header>
+
+<main>
+
+  <!-- exec summary -->
+  <section>
+    <div class="banner ok">
+      <div class="ic">✅</div>
+      <div>
+        <p style="margin:0"><span data-cn><b>结论：</b>合并版 Harness <b>端到端跑通</b>了一个真实特性（CT 图像 WW/WC 复位，IEC 62304 Class B）。4 个任务全部完成，最终 <b>100 个测试全绿</b>。最关键的是——harness 的<b>隔离评估与演示 Gate 主动抓出 3 个单元/BDD 测试都没发现的真实缺陷</b>，并自愈修复。当前停在 Gate 3，等待用户最终验收。</span><span data-en><b>Conclusion:</b> the merged harness delivered a real feature <b>end-to-end</b> (CT image WW/WC reset, IEC 62304 Class B). All 4 tasks complete, <b>100 tests green</b>. Crucially, the harness's <b>isolated evaluation and demo gate caught 3 real defects that unit/BDD tests missed</b>, then self-corrected. Now paused at Gate 3 awaiting user sign-off.</span></p>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n">4/4</div><div class="l"><span data-cn>任务完成</span><span data-en>Tasks done</span></div></div>
+      <div class="stat"><div class="n">17</div><div class="l"><span data-cn>BDD 场景</span><span data-en>BDD scenarios</span></div></div>
+      <div class="stat ok"><div class="n">100</div><div class="l"><span data-cn>测试全绿(85+17*)</span><span data-en>tests green (85+17*)</span></div></div>
+      <div class="stat viol"><div class="n">3</div><div class="l"><span data-cn>抓出并修复的缺陷</span><span data-en>defects caught+fixed</span></div></div>
+      <div class="stat warn"><div class="n">3</div><div class="l"><span data-cn>返工循环</span><span data-en>rework cycles</span></div></div>
+      <div class="stat"><div class="n">2 / 3</div><div class="l"><span data-cn>Gate 已过</span><span data-en>gates passed</span></div></div>
+    </div>
+    <p style="font-size:12px;color:var(--soft)"><span data-cn>* 最终干净构建：85 单元 + 17 模块(Reqnroll BDD) 测试，0 失败 / 0 跳过 / 0 未定义。</span><span data-en>* Final clean build: 85 unit + 17 module (Reqnroll BDD) tests, 0 failed / 0 skipped / 0 undefined.</span></p>
+  </section>
+
+  <!-- flow -->
+  <section>
+    <h2>🔄 <span data-cn>端到端流程</span><span data-en>End-to-End Flow</span></h2>
+    <div class="flow">
+      <span class="fn def">Analyst</span><span class="ar">→</span>
+      <span class="fn def">SW-Architect</span><span class="ar">→</span>
+      <span class="fn def">Product-Owner</span><span class="ar">→</span>
+      <span class="fn gate">⏸ GATE 1 ✔</span><span class="ar">→</span>
+      <span class="fn dev">Developer ∥ Test-Designer</span><span class="ar">→</span>
+      <span class="fn gate">⏸ GATE 2 ✔</span><span class="ar">→</span>
+      <span class="fn dev">Dev-Evaluator</span><span class="ar">↺×2</span><span class="ar">→</span>
+      <span class="fn dev">Feature-Demonstrator</span><span class="ar">→</span>
+      <span class="fn gate">⏸ GATE 3 ⧗</span><span class="ar">→</span>
+      <span class="fn done"><span data-cn>待验收</span><span data-en>awaiting sign-off</span></span>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:8px"><span data-cn>4 个任务（T01 基础设施 · T02 复位主路径 · T03 缺省回退 · T04 撤销）在「Developer→Evaluator(→返工)」的循环里逐个交付；<code>↺×2</code> 表示 T01 与 T04 各经历一次评估 FAIL→修复→复评 PASS。</span><span data-en>4 tasks (T01 infrastructure · T02 happy-path reset · T03 fallback · T04 undo) delivered one by one through the Developer→Evaluator(→rework) loop; <code>↺×2</code> = T01 and T04 each went FAIL→fix→re-eval PASS.</span></p>
+  </section>
+
+  <!-- stage delivery table -->
+  <section>
+    <h2>📦 <span data-cn>各阶段交付物与成果</span><span data-en>Deliverables & Outcomes by Stage</span></h2>
+    <table>
+      <tr><th style="width:15%"><span data-cn>阶段 / 角色</span><span data-en>Stage / Agent</span></th><th style="width:52%"><span data-cn>交付内容</span><span data-en>Deliverables</span></th><th style="width:15%"><span data-cn>成果</span><span data-en>Outcome</span></th></tr>
+      <tr>
+        <td><b>Analyst</b><br><span class="d"><span data-cn>需求分析</span><span data-en>Requirements</span></span></td>
+        <td><span data-cn>需求文档（<b>7 FR · 5 NFR</b>、IEC 62304 <b>Class B</b>、5 风险、5 开放问题）；更新 <code>docs/qms/SwRS.md</code></span><span data-en>Requirements doc (<b>7 FR · 5 NFR</b>, IEC 62304 <b>Class B</b>, 5 risks, 5 open questions); updated <code>docs/qms/SwRS.md</code></span></td>
+        <td class="v-ok">✔ <span data-cn>完成</span><span data-en>Done</span></td>
+      </tr>
+      <tr>
+        <td><b>SW-Architect</b><br><span class="d"><span data-cn>架构</span><span data-en>Architecture</span></span></td>
+        <td><span data-cn><b>ADR-001</b>（7 项设计决策：命令绑定/缺省值归属/回退策略/状态栏确认/撤销服务/绿地布局）；组件+时序 <b>Mermaid 图</b>；更新 <code>docs/qms/SSDS.md</code></span><span data-en><b>ADR-001</b> (7 decisions: command binding / default ownership / fallback / status-bar confirm / undo service / greenfield layout); component + sequence <b>Mermaid diagrams</b>; updated <code>docs/qms/SSDS.md</code></span></td>
+        <td class="v-ok">✔ <span data-cn>完成</span><span data-en>Done</span></td>
+      </tr>
+      <tr>
+        <td><b>Product-Owner</b><br><span class="d"><span data-cn>计划</span><span data-en>Plan</span></span></td>
+        <td><span data-cn><b>Backlog</b>（4 任务，纵向切片，schema 校验）；<b>4 个 Gherkin 特性文件 / 17 场景</b>；SwRS 的<b>需求→验证追溯表</b></span><span data-en><b>Backlog</b> (4 tasks, vertically sliced, schema-validated); <b>4 Gherkin feature files / 17 scenarios</b>; requirement→verification <b>traceability table</b> in SwRS</span></td>
+        <td class="v-ok">✔ <span data-cn>完成</span><span data-en>Done</span></td>
+      </tr>
+      <tr>
+        <td><b>GATE 1</b><br><span class="d"><span data-cn>组合评审</span><span data-en>Combined review</span></span></td>
+        <td><span data-cn>用户评审 需求+架构+计划；解决 2 个阻塞开放问题（OQ-01 → Class B；OQ-02 → 撤销栈按视口）</span><span data-en>User reviewed requirements+architecture+plan; resolved 2 blocking open questions (OQ-01 → Class B; OQ-02 → per-viewport undo)</span></td>
+        <td class="v-ok">✔ <span data-cn>批准</span><span data-en>Approved</span></td>
+      </tr>
+      <tr>
+        <td><b>Developer</b><br><span class="d"><span data-cn>实现 ×4 任务</span><span data-en>Impl ×4 tasks</span></span></td>
+        <td><span data-cn>ExtInf 7 个接口 + <code>WindowLevel</code> 值对象；Impl 生产代码（命令/模型/服务/资源）；<b>85 单元测试</b> + Reqnroll 步骤；4 项目 + <code>Src\ImageDisplayImpl.sln</code></span><span data-en>7 ExtInf interfaces + <code>WindowLevel</code> value object; Impl production code (commands/models/services/resources); <b>85 unit tests</b> + Reqnroll steps; 4 projects + <code>Src\ImageDisplayImpl.sln</code></span></td>
+        <td class="v-ok">✔ <span data-cn>完成</span><span data-en>Done</span></td>
+      </tr>
+      <tr>
+        <td><b>Test-Designer</b><br><span class="d"><span data-cn>黑盒测试</span><span data-en>Black-box tests</span></span></td>
+        <td><span data-cn>本应产出独立 <code>Src\VerificationTests\</code> 黑盒验收套件——<b>本次未建成</b>（见改进点）</span><span data-en>Was to author an independent <code>Src\VerificationTests\</code> black-box suite — <b>not created this run</b> (see improvements)</span></td>
+        <td class="v-wait">⚠ <span data-cn>缺口</span><span data-en>Gap</span></td>
+      </tr>
+      <tr>
+        <td><b>Dev-Evaluator</b><br><span class="d"><span data-cn>隔离评估</span><span data-en>Isolated eval</span></span></td>
+        <td><span data-cn>独立上下文跑全部测试、判质量、核对已存证据；产出 <code>eval_feedback/*.json</code> + 更新 <code>docs/qms/MVReport.md</code>。<b>T01 FAIL、T04 FAIL</b>（各含具体发现），修复后<b>复评 PASS</b></span><span data-en>Fresh-context run of all tests, quality judgment, evidence cross-check; produced <code>eval_feedback/*.json</code> + updated <code>docs/qms/MVReport.md</code>. <b>T01 FAIL, T04 FAIL</b> (with concrete findings), then <b>PASS on re-eval</b> after fixes</span></td>
+        <td class="v-ok">✔ <span data-cn>最终 PASS</span><span data-en>Final PASS</span></td>
+      </tr>
+      <tr>
+        <td><b>Feature-Demonstrator</b><br><span class="d">Gate 3</span></td>
+        <td><span data-cn>加建 WPF 宿主 <code>Src\ImageDisplayApp\</code>（未改动被测库）；3 个演示（复位/回退/撤销）经 Windows UI Automation 运行；<b>9 张截图</b> + 演示日志 + 回放脚本</span><span data-en>Added WPF host <code>Src\ImageDisplayApp\</code> (tested library untouched); 3 demos (reset/fallback/undo) via Windows UI Automation; <b>9 screenshots</b> + demo logs + replay scripts</span></td>
+        <td class="v-wait">⧗ <span data-cn>待验收</span><span data-en>Awaiting</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- the 3 catches - highlight -->
+  <section>
+    <h2>🎯 <span data-cn>亮点：Harness 主动抓出的 3 个真实缺陷</span><span data-en>Highlight: 3 Real Defects the Harness Caught</span></h2>
+    <p><span data-cn>这是本次实验<b>最有价值的证据</b>：单元测试与 BDD 全绿，但 harness 的<b>隔离评估</b>和<b>演示 Gate</b>仍抓出了 3 个真实缺陷——正好印证「生成 ≠ 评估」与「演示 Gate」的价值。</span><span data-en>This is the experiment's <b>most valuable evidence</b>: unit and BDD tests were green, yet the harness's <b>isolated evaluation</b> and <b>demo gate</b> still caught 3 real defects — validating the "generation ≠ evaluation" and demo-gate principles.</span></p>
+
+    <div class="catch fixed">
+      <h3>① <span class="who">dev-evaluator · T01</span> <span data-cn>基础设施评估 FAIL</span><span data-en>Infrastructure eval FAIL</span> <span class="tagfix">FIXED</span></h3>
+      <ul>
+        <li><span data-cn><b>发现：</b><code>DicomDisplayTags</code> 字段缺 XML 文档；QMS 的 <code>SDD/MVP/MVProcedure</code> 必填章节为空；缺 <code>VerificationTests.sln</code>。</span><span data-en><b>Found:</b> missing XML docs on <code>DicomDisplayTags</code> fields; QMS <code>SDD/MVP/MVProcedure</code> required sections empty; missing <code>VerificationTests.sln</code>.</span></li>
+        <li><span data-cn><b>意义：</b>评估器强制了「代码文档 + 活体 QMS」纪律，而非只看测试是否通过。</span><span data-en><b>Why it matters:</b> the evaluator enforced "code docs + living QMS" discipline, not just green tests.</span></li>
+      </ul>
+    </div>
+
+    <div class="catch fixed">
+      <h3>② <span class="who">dev-evaluator · T04</span> <span data-cn>撤销任务评估 FAIL（3 个发现）</span><span data-en>Undo task eval FAIL (3 findings)</span> <span class="tagfix">FIXED</span></h3>
+      <ul>
+        <li><span data-cn><b>功能 Bug：</b><code>IsSeriesLoaded</code> 由「是否有有效缺省窗宽」推导 → 无 DICOM 标签/非法 WW 的序列会让复位按钮<b>被错误禁用</b>，违反 FR-01/04/07。</span><span data-en><b>Functional bug:</b> <code>IsSeriesLoaded</code> was derived from "has valid default WW" → a series without DICOM tags / invalid WW <b>wrongly disabled</b> the Reset button, violating FR-01/04/07.</span></li>
+        <li><span data-cn><b>静默跳过的 BDD：</b>Reqnroll 把步骤里的 <code>/</code>（Window/Level）当成 Cucumber「或」运算符 → 步骤永不匹配 → 场景被<b>静默跳过</b>而非报错。</span><span data-en><b>Silently skipped BDD:</b> Reqnroll treated <code>/</code> in the step (Window/Level) as a Cucumber "OR" operator → step never matched → scenario <b>silently skipped</b> instead of failing.</span></li>
+        <li><span data-cn><b>弱测试：</b>有界深度撤销测试只验证「上限 20」，未证明「淘汰最旧项」→ 已强化为断言淘汰顺序。</span><span data-en><b>Weak test:</b> the bounded-depth undo test only checked the "cap of 20", not "evicts the oldest" → strengthened to assert eviction order.</span></li>
+      </ul>
+    </div>
+
+    <div class="catch fixed">
+      <h3>③ <span class="who">feature-demonstrator · Gate 3</span> <span data-cn>演示时发现 WPF 集成缺陷</span><span data-en>WPF integration defect found at demo</span> <span class="tagfix">FIXED</span></h3>
+      <ul>
+        <li><span data-cn><b>现象：</b>复位后<b>撤销按钮仍禁用</b>、无法点击（而所有单元/BDD 测试都通过）。</span><span data-en><b>Symptom:</b> after a reset the <b>Undo button stayed disabled</b> and couldn't be invoked (yet all unit/BDD tests passed).</span></li>
+        <li><span data-cn><b>根因：</b>自定义 <code>DelegateCommand</code> 在 UI 无关的 net8.0 库里，钩不到 WPF 的 <code>CommandManager.RequerySuggested</code>；复位路径没触发 <code>CanExecuteChanged</code>。测试通过是因为它们直接调 <code>CanExecute(null)</code>，绕过了 WPF 的事件式重查询。</span><span data-en><b>Root cause:</b> the custom <code>DelegateCommand</code> in the UI-agnostic net8.0 library can't hook WPF's <code>CommandManager.RequerySuggested</code>; the reset path never fired <code>CanExecuteChanged</code>. Tests passed because they call <code>CanExecute(null)</code> directly, bypassing WPF's event-driven requery.</span></li>
+        <li><span data-cn><b>意义（关键）：</b>这正是<b>只有真机演示能抓到、纯测试抓不到</b>的集成缺陷——证明演示 Gate 不可或缺。修复后重跑演示，撤销/重做均正常。</span><span data-en><b>Why it matters (key):</b> exactly the kind of integration defect <b>only a live demo catches, not pure tests</b> — proving the demo gate is indispensable. After the fix, the re-run demo showed undo/redo working.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- evidence -->
+  <section>
+    <h2>🧾 <span data-cn>测试与证据总览</span><span data-en>Test & Evidence Summary</span></h2>
+    <div class="cols">
+      <div class="card">
+        <h3><span data-cn>测试与质量</span><span data-en>Tests & quality</span></h3>
+        <ul class="clean">
+          <li><b>85</b> <span data-cn>单元测试</span><span data-en>unit tests</span> + <b>17</b> <span data-cn>模块(BDD)测试</span><span data-en>module (BDD) tests</span> — <b>0</b> <span data-cn>失败/跳过/未定义</span><span data-en>failed/skipped/undefined</span></li>
+          <li><span data-cn>构建 <b>0 警告 0 错误</b>（<code>TreatWarningsAsErrors</code>）；<code>Verify-Baseline.cmd</code> → Baseline OK</span><span data-en>Build <b>0 warnings 0 errors</b> (<code>TreatWarningsAsErrors</code>); <code>Verify-Baseline.cmd</code> → Baseline OK</span></li>
+          <li><span data-cn>17 个 Gherkin 场景 ← 需求追溯（FR-01~07 / NFR-01~05）</span><span data-en>17 Gherkin scenarios ← requirement traceability (FR-01–07 / NFR-01–05)</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span data-cn>产出证据</span><span data-en>Evidence produced</span></h3>
+        <ul class="clean">
+          <li><span data-cn>QMS 活文档：<b>SwRS · SSDS · SDD · MVP · MVProcedure · MVReport</b></span><span data-en>Living QMS: <b>SwRS · SSDS · SDD · MVP · MVProcedure · MVReport</b></span></li>
+          <li><span data-cn>状态存储：backlog · requirements · ADR + 图 · specs · <b>eval_feedback</b> · tool_outputs · progress.md</span><span data-en>State store: backlog · requirements · ADR + diagrams · specs · <b>eval_feedback</b> · tool_outputs · progress.md</span></li>
+          <li><span data-cn>演示：<b>9 张截图</b> + 3 份 demo 日志 + 回放脚本</span><span data-en>Demo: <b>9 screenshots</b> + 3 demo logs + replay scripts</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- improvements -->
+  <section>
+    <h2>🔧 <span data-cn>需要改进的点</span><span data-en>Points to Improve</span></h2>
+    <table>
+      <tr><th style="width:8%"><span data-cn>优先级</span><span data-en>Priority</span></th><th style="width:30%"><span data-cn>问题</span><span data-en>Issue</span></th><th style="width:62%"><span data-cn>建议</span><span data-en>Recommendation</span></th></tr>
+      <tr>
+        <td><span class="pri p0">P0</span></td>
+        <td><span data-cn>评估环境工具缺失</span><span data-en>Evaluator tooling missing</span></td>
+        <td><span data-cn><code>dotnet dotcover</code>（覆盖率）、ReSharper CLI（<code>inspectcode</code>）、<code>ffmpeg</code>（演示录像）均未安装 → 覆盖率无法量化、代码检查/录像跳过。<b>应在 harness 环境预置这些工具</b>。</span><span data-en><code>dotnet dotcover</code> (coverage), ReSharper CLI (<code>inspectcode</code>), <code>ffmpeg</code> (demo video) all missing → no quantitative coverage, inspection/video skipped. <b>Provision these in the harness environment.</b></span></td>
+      </tr>
+      <tr>
+        <td><span class="pri p0">P0</span></td>
+        <td><span data-cn>黑盒验收套件未建成</span><span data-en>Black-box suite not built</span></td>
+        <td><span data-cn>Test-Designer 的独立 <code>Src\VerificationTests\VerificationTests.sln</code> 未创建 → 合并覆盖率跑不了，盲测隔离价值未完全体现。<b>下次强制先建验收套件骨架</b>。</span><span data-en>The Test-Designer's independent <code>Src\VerificationTests\VerificationTests.sln</code> was never created → combined coverage couldn't run and the blind-test isolation value was under-realized. <b>Next time, mandate the acceptance-suite skeleton first.</b></span></td>
+      </tr>
+      <tr>
+        <td><span class="pri p1">P1</span></td>
+        <td><span data-cn>测试通过但真机集成失败</span><span data-en>Tests pass, integration fails</span></td>
+        <td><span data-cn>WPF 命令重查询缺陷靠演示才抓到。<b>补 WPF 层集成测试</b>，或在功能任务里<b>更早触发演示 Gate</b>；把「<code>CanExecute(null)</code> 直调会绕过 WPF 重查询」写入 codescene/评审 checklist。</span><span data-en>The WPF requery defect was only caught at demo. <b>Add WPF-level integration tests</b>, or <b>trigger the demo gate earlier</b> for UI tasks; add "direct <code>CanExecute(null)</code> bypasses WPF requery" to the review checklist.</span></td>
+      </tr>
+      <tr>
+        <td><span class="pri p1">P1</span></td>
+        <td><span data-cn>Reqnroll <code>/</code> 静默跳过</span><span data-en>Reqnroll <code>/</code> silent skip</span></td>
+        <td><span data-cn>步骤含 <code>/</code> 被当作 Cucumber「或」→ 场景静默跳过。<b>加一条 lint/守卫</b>：步骤含 <code>/</code> 必须强制正则；<b>禁止提交生成的 <code>*.feature.cs</code></b>。写入 reqnroll-bdd skill。</span><span data-en>A <code>/</code> in a step is read as Cucumber "OR" → scenario silently skipped. <b>Add a lint/guard</b>: steps containing <code>/</code> must force regex; <b>never commit generated <code>*.feature.cs</code></b>. Fold into the reqnroll-bdd skill.</span></td>
+      </tr>
+      <tr>
+        <td><span class="pri p1">P1</span></td>
+        <td><span data-cn>绿地 UI 特性缺演示宿主</span><span data-en>Greenfield UI lacks demo host</span></td>
+        <td><span data-cn>特性按可测试类库构建，Gate 3 时才补 WPF 宿主。<b>UI 类特性应在架构阶段就规划演示宿主</b>。</span><span data-en>The feature was a testable library; the WPF host was added only at Gate 3. <b>Plan the demo host during architecture for UI features.</b></span></td>
+      </tr>
+      <tr>
+        <td><span class="pri p2">P2</span></td>
+        <td><span data-cn>领域/合规层未被调用（战略缺口）</span><span data-en>Domain/compliance layer unused (strategic gap)</span></td>
+        <td><span data-cn>本次只用了执行引擎角色；<b>Peng 的领域层（DFMEA · IFU · impact-analysis · code-quality · tics-standard + reviewer/requirements-analyst 角色）未被调用</b>——而这正是合并的核心价值。<b>下一个试点必须演练领域层</b>：如对该特性跑 DFMEA、用 code-quality 出报告、用 impact-analysis 评估变更面。</span><span data-en>This run used only execution-engine roles; <b>Peng's domain layer (DFMEA · IFU · impact-analysis · code-quality · tics-standard + reviewer/requirements-analyst) was not invoked</b> — the very point of the merge. <b>The next pilot must exercise the domain layer</b>: e.g. run DFMEA on this feature, produce a code-quality report, assess change surface with impact-analysis.</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- what it proves + next -->
+  <section>
+    <h2>🏁 <span data-cn>结论与下一步</span><span data-en>Conclusion & Next Steps</span></h2>
+    <div class="cols">
+      <div class="card" style="border-left:4px solid var(--ok)">
+        <h3>✅ <span data-cn>本次实验证明了什么</span><span data-en>What this proves</span></h3>
+        <ul class="clean">
+          <li><span data-cn>合并版 harness <b>真的能端到端自主交付</b>一个合规特性（含 QMS）。</span><span data-en>The merged harness <b>can autonomously deliver</b> a compliant feature end-to-end (QMS included).</span></li>
+          <li><span data-cn><b>隔离评估 + 演示 Gate 有效</b>：抓出 3 个测试没发现的真实缺陷并自愈。</span><span data-en><b>Isolated eval + demo gate work</b>: caught 3 real defects tests missed, then self-healed.</span></li>
+          <li><span data-cn>返工/级联/Gate 机制<b>按设计运转</b>，最终 100 测试全绿。</span><span data-en>Rework/cascade/gate mechanics <b>behaved as designed</b>; final 100 tests green.</span></li>
+        </ul>
+      </div>
+      <div class="card" style="border-left:4px solid var(--accent)">
+        <h3>🚀 <span data-cn>下一步</span><span data-en>Next steps</span></h3>
+        <ul class="clean">
+          <li><span data-cn>用户完成 <b>Gate 3 验收</b>（当前唯一未决项）。</span><span data-en>User completes <b>Gate 3 sign-off</b> (the only open item).</span></li>
+          <li><span data-cn>预置 P0 工具（dotcover/ReSharper/ffmpeg）+ 建黑盒验收套件。</span><span data-en>Provision P0 tooling (dotcover/ReSharper/ffmpeg) + build the black-box suite.</span></li>
+          <li><span data-cn><b>下个试点演练领域层</b>：DFMEA / code-quality / impact-analysis，验证合并的完整价值。</span><span data-en><b>Next pilot exercises the domain layer</b>: DFMEA / code-quality / impact-analysis to prove the merge's full value.</span></li>
+          <li><span data-cn>把本次经验写回 skills/instructions（Reqnroll 守卫、WPF 重查询检查项）。</span><span data-en>Fold lessons back into skills/instructions (Reqnroll guard, WPF requery checklist).</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span data-cn>Harness_Enhance · 端到端试点结果 · 特性「WW/WC Reset」· 来源：<code>.harness/progress.md</code> · <code>eval_feedback/</code> · <code>backlogs/ww-wc-reset.json</code></span>
+    <span data-en>Harness_Enhance · E2E pilot result · feature "WW/WC Reset" · sources: <code>.harness/progress.md</code> · <code>eval_feedback/</code> · <code>backlogs/ww-wc-reset.json</code></span>
+  </div>
+
+</main>
+
+<script>
+  function setLang(l){document.body.dataset.lang=l;document.getElementById('lcn').classList.toggle('active',l==='cn');document.getElementById('len').classList.toggle('active',l==='en')}
+  document.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='l'){setLang(document.body.dataset.lang==='cn'?'en':'cn')}});
+</script>
+</body>
+</html>

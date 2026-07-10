@@ -1,0 +1,31 @@
+﻿{
+    "task":  "3",
+    "demo_scenario":  "Scenario: Fallback values applied when DICOM windowing tags are absent",
+    "demonstrated_at":  "2026-07-02T14:47:42",
+    "video":  "(not captured - ffmpeg not installed)",
+    "screenshots":  [
+                        ".harness\\demo_evidence\\ww-wc-reset\\task-3-20260702T000000\\01-before-reset-no-dicom.png",
+                        ".harness\\demo_evidence\\ww-wc-reset\\task-3-20260702T000000\\02-after-fallback-reset.png"
+                    ],
+    "steps_shown":  [
+                        {
+                            "step":  "Given CT series loaded without DICOM windowing tags",
+                            "observed":  "ResetButton.IsEnabled=True",
+                            "screenshot":  "C:\\Work\\Code\\Git_Code\\Harness_Enhance\\.harness\\demo_evidence\\ww-wc-reset\\task-3-20260702T000000\\01-before-reset-no-dicom.png"
+                        },
+                        {
+                            "step":  "When ResetWindowLevelButton clicked (no DICOM tags)",
+                            "observed":  "WW=400 WC=40",
+                            "screenshot":  "C:\\Work\\Code\\Git_Code\\Harness_Enhance\\.harness\\demo_evidence\\ww-wc-reset\\task-3-20260702T000000\\02-after-fallback-reset.png"
+                        },
+                        {
+                            "step":  "Then WW=400 WC=40 (fallback)",
+                            "observed":  "WW=400 WC=40"
+                        },
+                        {
+                            "step":  "And status indicates fallback used",
+                            "observed":  "Status: "
+                        }
+                    ],
+    "notes":  "ffmpeg not installed; screenshots captured instead."
+}

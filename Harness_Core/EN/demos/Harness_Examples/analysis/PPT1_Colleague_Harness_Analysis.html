@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPT 1 — Kunal · CT AI Dev Harness 预研分析 / Pre-Research Analysis</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#1e293b; --panel2:#172033; --ink:#e2e8f0; --muted:#94a3b8;
+    --accent:#38bdf8; --accent2:#a78bfa; --ok:#22c55e; --warn:#eab308; --bad:#ef4444; --line:#334155;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:'Segoe UI','Microsoft YaHei',system-ui,sans-serif;overflow:hidden}
+  /* bilingual */
+  body[data-lang="cn"] [data-en]{display:none !important}
+  body[data-lang="en"] [data-cn]{display:none !important}
+  .deck{height:100vh;width:100vw;position:relative}
+  .slide{position:absolute;inset:0;padding:48px 64px;display:none;flex-direction:column;animation:fade .35s ease}
+  .slide.active{display:flex}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  h1{font-size:38px;line-height:1.15;margin-bottom:8px;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  h2{font-size:29px;margin-bottom:18px;color:#fff;display:flex;align-items:center;gap:12px}
+  h2::before{content:"";width:6px;height:29px;background:linear-gradient(var(--accent),var(--accent2));border-radius:3px}
+  .sub{color:var(--muted);font-size:17px;margin-bottom:22px}
+  .kicker{color:var(--accent);font-weight:700;letter-spacing:2px;font-size:13px;text-transform:uppercase;margin-bottom:14px}
+  ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  li{padding-left:26px;position:relative;font-size:17px;line-height:1.5;color:#dbe4f0}
+  li::before{content:"▸";position:absolute;left:0;color:var(--accent)}
+  li b{color:#fff}
+  .muted{color:var(--muted)}
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 19px}
+  .card h3{font-size:16.5px;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .card p,.card li{font-size:14px;color:var(--muted);line-height:1.5}
+  .card ul{gap:6px}.card li{padding-left:18px}
+  .tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:20px;font-weight:600}
+  .t-pro{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.35)}
+  .t-con{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.35)}
+  .t-opp{background:rgba(56,189,248,.15);color:#38bdf8;border:1px solid rgba(56,189,248,.35)}
+  table{border-collapse:collapse;width:100%;font-size:14px}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:left}
+  th{background:var(--panel2);color:#fff}
+  td{color:#cbd5e1}
+  .flow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:8px}
+  .node{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 13px;font-size:13.5px;color:#fff}
+  .node.g{border-color:var(--ok)}
+  .arrow{color:var(--accent);font-size:19px}
+  .pill{background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:5px 12px;font-size:13px;color:#cbd5e1}
+  .foot{position:absolute;bottom:18px;left:64px;right:64px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+  .dots{display:flex;gap:6px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--line);cursor:pointer}
+  .dot.active{background:var(--accent);width:22px;border-radius:4px}
+  .stat{display:flex;gap:22px;flex-wrap:wrap;margin-top:10px}
+  .stat .s{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px 20px;min-width:120px}
+  .stat .s .n{font-size:32px;font-weight:800;color:var(--accent)}
+  .stat .s .l{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .lang{position:absolute;top:16px;right:20px;z-index:10;display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:5px 12px}
+  .lang button{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-weight:600;font-family:inherit}
+  .lang button.active{color:var(--accent)}
+  .lang span{color:var(--line)}
+  .hint{position:absolute;top:54px;right:22px;color:var(--muted);font-size:11.5px}
+  code{background:#0b1220;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12.5px;color:#7dd3fc}
+</style>
+</head>
+<body data-lang="cn">
+
+<div class="lang">
+  <button id="lcn" class="active" onclick="setLang('cn')">中文</button>
+  <span>|</span>
+  <button id="len" onclick="setLang('en')">EN</button>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 title -->
+  <section class="slide active">
+    <div style="margin:auto 0">
+      <div class="kicker"><span data-cn>AI End-to-End 软件交付 · 预研分析</span><span data-en>AI End-to-End Software Delivery · Pre-Research Analysis</span></div>
+      <h1><span data-cn>Kunal 的 CT AI Dev Harness<br>预研成果分析</span><span data-en>Kunal's CT AI Dev Harness<br>Pre-Research Analysis</span></h1>
+      <p class="sub"><span data-cn>面向医疗器械软件的自主 Agent Harness · 基于 Anthropic Harness 研究的「生成器 + 评估器」范式</span><span data-en>Autonomous Agent Harness for Medical-Device Software · Anthropic "generator + evaluator" paradigm</span></p>
+      <div class="stat">
+        <div class="s"><div class="n">12</div><div class="l">Agents</div></div>
+        <div class="s"><div class="n">14</div><div class="l">Skills</div></div>
+        <div class="s"><div class="n">3</div><div class="l">Instructions</div></div>
+        <div class="s"><div class="n">2</div><div class="l">Prompts</div></div>
+        <div class="s"><div class="n">3</div><div class="l"><span data-cn>人工 Gate</span><span data-en>Human Gates</span></div></div>
+      </div>
+      <p class="muted" style="margin-top:22px"><span data-cn>来源</span><span data-en>Source</span>：<code>C:\Users\...\Downloads\CT_AIDevHarness</code> ｜ <span data-cn>作者</span><span data-en>Author</span>: Kunal ｜ Deck 1 / 3</p>
+    </div>
+  </section>
+
+  <!-- 2 exec summary -->
+  <section class="slide">
+    <div class="kicker">Executive Summary</div>
+    <h2><span data-cn>它是什么：一台「自主执行引擎」</span><span data-en>What it is: an "autonomous execution engine"</span></h2>
+    <p class="sub"><span data-cn>一套在 VS Code + GitHub Copilot 中运行的自主 AI 开发流水线，把「需求→架构→计划(BDD)→开发→评估→演示→完成」编排为可长时间运行的 Agent 协作。</span><span data-en>An autonomous AI development pipeline in VS Code + GitHub Copilot that orchestrates "Requirements → Architecture → Plan (BDD) → Develop → Evaluate → Demo → Done" as long-running agent collaboration.</span></p>
+    <div class="grid g2">
+      <div class="card"><h3>🎯 <span data-cn>核心目标</span><span data-en>Core Goal</span></h3><ul>
+        <li data-cn>用户一次调用 <code>@orchestrator</code>，系统自主实现整个特性</li>
+        <li data-en>User invokes <code>@orchestrator</code> once; the system autonomously implements the whole feature</li>
+        <li data-cn>只在 <b>3 个人工 Gate</b> 介入；任务 <b>失败 3 次</b>才需人工干预</li>
+        <li data-en>Human intervenes at only <b>3 gates</b>; manual help needed only if a task <b>fails 3×</b></li>
+        <li data-cn>面向 IEC 62304 医疗器械软件，内建 QMS 文档与多重质量门禁</li>
+        <li data-en>Targets IEC 62304 medical-device software with built-in QMS docs and multi-gate quality control</li>
+      </ul></div>
+      <div class="card"><h3>🧬 <span data-cn>理论根基</span><span data-en>Theoretical Basis</span></h3><ul>
+        <li data-cn>Anthropic「Effective Harnesses for Long-Running Agents」</li>
+        <li data-en>Anthropic "Effective Harnesses for Long-Running Agents"</li>
+        <li data-cn><b>生成器 + 评估器</b>分离：Agent 无法客观评判自己的产出</li>
+        <li data-en><b>Generator + evaluator</b> separation: an agent can't objectively judge its own output</li>
+        <li data-cn><b>上下文隔离</b>是关键机制：测试设计者从不看生产代码</li>
+        <li data-en><b>Context isolation</b> is the key mechanism: the test-designer never sees production code</li>
+      </ul></div>
+    </div>
+    <p class="muted" style="margin-top:16px"><span data-cn>一句话定性：<b style="color:#fff">强调「自主、隔离、可评估」的执行机器，把 Agent 编排工程化到了可落地的成熟度。</b></span><span data-en>In one line: <b style="color:#fff">an execution machine emphasizing "autonomy, isolation, evaluability" — agent orchestration engineered to production-ready maturity.</b></span></p>
+  </section>
+
+  <!-- 3 pipeline -->
+  <section class="slide">
+    <div class="kicker">Architecture</div>
+    <h2><span data-cn>端到端流水线（3 个人工 Gate）</span><span data-en>End-to-End Pipeline (3 human gates)</span></h2>
+    <div class="flow">
+      <span class="node">User Request</span><span class="arrow">→</span>
+      <span class="node">Triage</span><span class="arrow">→</span>
+      <span class="node">@analyst</span><span class="arrow">→</span>
+      <span class="node">@sw-architect</span><span class="arrow">→</span>
+      <span class="node">@product-owner<br><span class="muted" style="font-size:11px">Backlog+Gherkin</span></span>
+    </div>
+    <div class="flow" style="margin-top:6px">
+      <span class="pill" style="border-color:var(--warn);color:#fde047"><span data-cn>⏸ GATE 1 · 需求+架构+计划 组合评审</span><span data-en>⏸ GATE 1 · combined review: requirements + architecture + backlog</span></span>
+    </div>
+    <div class="flow" style="margin-top:12px">
+      <span class="node g">@developer</span>
+      <span class="muted">∥ <span data-cn>并行</span><span data-en>parallel</span></span>
+      <span class="node g">@test-designer<br><span class="muted" style="font-size:11px"><span data-cn>黑盒 FlaUI</span><span data-en>black-box FlaUI</span></span></span>
+      <span class="arrow">→</span>
+      <span class="pill" style="border-color:var(--warn);color:#fde047"><span data-cn>⏸ GATE 2 · 设计+测试设计评审</span><span data-en>⏸ GATE 2 · design + test-design review</span></span>
+    </div>
+    <div class="flow" style="margin-top:12px">
+      <span class="node">@dev-evaluator<br><span class="muted" style="font-size:11px"><span data-cn>跑全部测试·判质量</span><span data-en>run all tests · judge quality</span></span></span><span class="arrow">→</span>
+      <span class="node">@feature-demonstrator<br><span class="muted" style="font-size:11px"><span data-cn>演示+录屏</span><span data-en>demo + recording</span></span></span><span class="arrow">→</span>
+      <span class="pill" style="border-color:var(--warn);color:#fde047"><span data-cn>⏸ GATE 3 · 演示验收</span><span data-en>⏸ GATE 3 · demo approval</span></span><span class="arrow">→</span>
+      <span class="node g">Done</span>
+    </div>
+    <p class="muted" style="margin-top:16px"><span data-cn>失败重试上限 <b>3 次</b>（共享预算）；发现「定义缺陷」时回到最高变更层，级联向下，重走组合 Gate，且<b>不消耗重试预算</b>。</span><span data-en>Retry limit <b>3×</b> (shared budget); a "definition gap" re-enters at the highest changed layer, cascades down, re-runs the combined gate, and <b>does not consume the retry budget</b>.</span></p>
+  </section>
+
+  <!-- 4 agents -->
+  <section class="slide">
+    <div class="kicker">Agent Roster · 12</div>
+    <h2><span data-cn>角色化 Agent 阵容</span><span data-en>Role-based Agent Roster</span></h2>
+    <div class="grid g3">
+      <div class="card"><h3><span data-cn>编排</span><span data-en>Orchestration</span></h3><ul>
+        <li><b>orchestrator</b> <span data-cn>交通枢纽/门禁</span><span data-en>traffic controller/gates</span></li>
+        <li><b>orchestrator-parallel</b> <span data-cn>并发执行</span><span data-en>concurrent execution</span></li></ul></div>
+      <div class="card"><h3><span data-cn>定义</span><span data-en>Definition</span></h3><ul>
+        <li><b>analyst</b> <span data-cn>PRD/遥测→需求</span><span data-en>PRD/telemetry→requirements</span></li>
+        <li><b>sw-architect</b> <span data-cn>ADR/图/接口</span><span data-en>ADR/diagrams/interfaces</span></li>
+        <li><b>product-owner</b> <span data-cn>纵切 Backlog+Gherkin</span><span data-en>sliced backlog+Gherkin</span></li>
+        <li><b>product-owner-parallel</b> <span data-cn>+文件隔离元数据</span><span data-en>+file-isolation metadata</span></li></ul></div>
+      <div class="card"><h3><span data-cn>构建</span><span data-en>Build</span></h3><ul>
+        <li><b>developer</b> <span data-cn>BDD 由外向内</span><span data-en>BDD outside-in</span></li>
+        <li><b>test-designer</b> <span data-cn>黑盒 UI（只看规格）</span><span data-en>black-box UI (spec-only)</span></li></ul></div>
+      <div class="card"><h3><span data-cn>评估</span><span data-en>Evaluation</span></h3><ul>
+        <li><b>dev-evaluator</b> <span data-cn>跑全测·怀疑式质量门</span><span data-en>runs all tests · skeptical gate</span></li></ul></div>
+      <div class="card"><h3><span data-cn>演示</span><span data-en>Demo</span></h3><ul>
+        <li><b>feature-demonstrator</b> <span data-cn>叙述式演示+录屏</span><span data-en>narrated demo + recording</span></li></ul></div>
+      <div class="card"><h3><span data-cn>支撑</span><span data-en>Support</span></h3><ul>
+        <li><b>docs-lookup</b> <span data-cn>.NET API 检索</span><span data-en>.NET API lookup</span></li>
+        <li><b>explore</b> <span data-cn>只读代码问答</span><span data-en>read-only code Q&A</span></li></ul></div>
+    </div>
+    <p class="muted" style="margin-top:14px"><span data-cn>同一 developer/test-designer 每任务被 spawn <b>两次</b>（设计→实现），每次<b>全新上下文</b>。</span><span data-en>The same developer/test-designer is spawned <b>twice</b> per task (design → implementation), each with a <b>fresh context</b>.</span></p>
+  </section>
+
+  <!-- 5 skills -->
+  <section class="slide">
+    <div class="kicker">Skill Library · 14</div>
+    <h2><span data-cn>按需加载的技能库</span><span data-en>On-demand Skill Library</span></h2>
+    <div class="grid g2">
+      <div class="card"><h3>💻 <span data-cn>工程实现</span><span data-en>Engineering</span></h3><ul>
+        <li>ct-coding-standards · csharp-development · csharp-code-review</li>
+        <li>nunit-testing · reqnroll-bdd · gherkin-spec-writing</li>
+        <li>system-design (ADR/C4) · backlog-grooming (INVEST)</li></ul></div>
+      <div class="card"><h3>🖥️ <span data-cn>UI 自动化</span><span data-en>UI Automation</span></h3><ul>
+        <li>ui-automation (Page Object) · flaui-winappdriver</li>
+        <li>ux-design <span data-cn>（设计令牌/术语）</span><span data-en>(design tokens/terminology)</span></li></ul></div>
+      <div class="card"><h3>📋 <span data-cn>合规与文档</span><span data-en>Compliance & Docs</span></h3><ul>
+        <li>iec62304-compliance <span data-cn>（安全等级/追溯）</span><span data-en>(safety class/traceability)</span></li>
+        <li>qms-documentation <span data-cn>（QMS 活文档）</span><span data-en>(living QMS docs)</span></li>
+        <li>document-reader <span data-cn>（PRD/遥测 摄取）</span><span data-en>(PRD/telemetry ingestion)</span></li></ul></div>
+      <div class="card"><h3>⚙️ <span data-cn>支撑体系（非 skill 但关键）</span><span data-en>Support system (not skills, but key)</span></h3><ul>
+        <li><code>scripts/</code> Python <span data-cn>：QMS 骨架抽取·结构校验·md→docx 导出</span><span data-en>: QMS skeleton extraction · structure check · md→docx export</span></li>
+        <li><code>Build/</code> <span data-cn>批处理质量门（自动解析</span><span data-en>batch quality gates (auto-resolve</span> <code>*Impl.sln</code>)</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 6 core mechanism -->
+  <section class="slide">
+    <div class="kicker">Core Mechanism</div>
+    <h2><span data-cn>关键机制：上下文隔离 + 生成/评估分离</span><span data-en>Key Mechanism: context isolation + generation/evaluation separation</span></h2>
+    <div class="grid g3">
+      <div class="card"><h3 style="color:#4ade80">① <span data-cn>上下文隔离</span><span data-en>Context isolation</span></h3><p><span data-cn>每个 subagent 全新上下文。test-designer 从不看生产代码；evaluator/demonstrator 不共享 developer 记忆 → <b style="color:#fff">诚实、无偏评估</b>。</span><span data-en>Every subagent gets a fresh context. The test-designer never sees production code; evaluator/demonstrator don't share the developer's memory → <b style="color:#fff">honest, unbiased assessment</b>.</span></p></div>
+      <div class="card"><h3 style="color:#4ade80">② <span data-cn>生成 ≠ 评估</span><span data-en>Generation ≠ evaluation</span></h3><p><span data-cn>开发与评估物理分离；evaluator 只跑测试、判质量、验证已存输出，<b style="color:#fff">自己不写测试</b>。</span><span data-en>Development and evaluation are physically separated; the evaluator only runs tests, judges quality, verifies stored outputs — <b style="color:#fff">it authors no tests</b>.</span></p></div>
+      <div class="card"><h3 style="color:#4ade80">③ <span data-cn>结构化状态</span><span data-en>Structured state</span></h3><p><span data-cn><code>.harness/</code> 是跨会话共享记忆：backlogs(JSON schema)、ADR、specs、eval_feedback、tool_outputs、progress。</span><span data-en><code>.harness/</code> is cross-session shared memory: backlogs (JSON schema), ADRs, specs, eval_feedback, tool_outputs, progress.</span></p></div>
+      <div class="card"><h3 style="color:#4ade80">④ <span data-cn>单任务单会话</span><span data-en>One task per session</span></h3><p><span data-cn>一次只做一个任务，防止上下文耗尽；orchestrator 独占任务状态标记。</span><span data-en>One task at a time prevents context exhaustion; only the orchestrator marks task status.</span></p></div>
+      <div class="card"><h3 style="color:#4ade80">⑤ <span data-cn>先验证后构建</span><span data-en>Verify before building</span></h3><p><span data-cn>动新代码前先确认基线为绿（<code>Verify-Baseline.cmd</code>）。</span><span data-en>Confirm the baseline is green (<code>Verify-Baseline.cmd</code>) before touching new code.</span></p></div>
+      <div class="card"><h3 style="color:#4ade80">⑥ <span data-cn>定义变更只向下级联</span><span data-en>Definitions cascade down only</span></h3><p><span data-cn>Gate 驳回/中途定义缺陷 → 回最高变更层，冻结已批上游，重走组合 Gate。</span><span data-en>Gate rejection / mid-flight definition gap → return to the highest changed layer, freeze approved upstream, re-run the combined gate.</span></p></div>
+    </div>
+  </section>
+
+  <!-- 7 quality gates -->
+  <section class="slide">
+    <div class="kicker">Quality Gates</div>
+    <h2><span data-cn>多层质量门禁</span><span data-en>Multi-layer Quality Gates</span></h2>
+    <table>
+      <tr><th><span data-cn>门禁</span><span data-en>Gate</span></th><th><span data-cn>工具/角色</span><span data-en>Tool/Role</span></th><th><span data-cn>时机</span><span data-en>When</span></th><th><span data-cn>阻断</span><span data-en>Blocking</span></th></tr>
+      <tr><td><span data-cn>设计 & 测试设计评审</span><span data-en>Design & test-design review</span></td><td>developer + test-designer</td><td><span data-cn>实现前（每任务）</span><span data-en>before impl (per task)</span></td><td><span data-cn>是（人工）</span><span data-en>Yes (human)</span></td></tr>
+      <tr><td><span data-cn>构建 + 测试</span><span data-en>Build + tests</span></td><td><code>dotnet build/test</code></td><td><span data-cn>每次开发会话</span><span data-en>every dev session</span></td><td><span data-cn>是</span><span data-en>Yes</span></td></tr>
+      <tr><td><span data-cn>代码检查</span><span data-en>Code inspection</span></td><td>ReSharper <code>jb inspectcode</code></td><td><span data-cn>提交前</span><span data-en>pre-submit</span></td><td><span data-cn>是（0 error）</span><span data-en>Yes (0 errors)</span></td></tr>
+      <tr><td><span data-cn>黑盒验收测试</span><span data-en>Black-box acceptance</span></td><td>test-designer (FlaUI)</td><td><span data-cn>与开发并行</span><span data-en>parallel to dev</span></td><td><span data-cn>由 evaluator 运行</span><span data-en>run by evaluator</span></td></tr>
+      <tr><td><span data-cn>白盒复核 + 跑测试</span><span data-en>White-box review + test run</span></td><td>dev-evaluator</td><td><span data-cn>实现后</span><span data-en>after impl</span></td><td><span data-cn>是</span><span data-en>Yes</span></td></tr>
+      <tr><td><span data-cn>特性演示</span><span data-en>Feature demo</span></td><td>feature-demonstrator</td><td><span data-cn>evaluator PASS 后</span><span data-en>after evaluator PASS</span></td><td><span data-cn>是（人工）</span><span data-en>Yes (human)</span></td></tr>
+      <tr><td><span data-cn>编码规范 / 安全</span><span data-en>Coding standard / security</span></td><td>TICS(TQI≥8.0) / Coverity</td><td>CI</td><td><span data-cn>是</span><span data-en>Yes</span></td></tr>
+    </table>
+  </section>
+
+  <!-- 8 QMS state -->
+  <section class="slide">
+    <div class="kicker">State & QMS</div>
+    <h2><span data-cn>状态存储 + 活体 QMS 文档</span><span data-en>State Store + Living QMS Docs</span></h2>
+    <div class="grid g2">
+      <div class="card"><h3>🗂️ <code>.harness/</code> <span data-cn>状态存储</span><span data-en>state store</span></h3><ul>
+        <li data-cn>backlogs（JSON schema 校验）+ requirements（FR/NFR）</li>
+        <li data-en>backlogs (JSON-schema validated) + requirements (FR/NFR)</li>
+        <li data-cn>architecture/adr + diagrams（Mermaid）</li>
+        <li data-en>architecture/adr + diagrams (Mermaid)</li>
+        <li data-cn>specs（Gherkin）· eval_feedback · tool_outputs</li>
+        <li data-en>specs (Gherkin) · eval_feedback · tool_outputs</li>
+        <li data-cn>demo_evidence（录屏）· progress.md（追加式）</li>
+        <li data-en>demo_evidence (recordings) · progress.md (append-only)</li></ul></div>
+      <div class="card"><h3>📄 <code>docs/qms/</code> <span data-cn>IEC 62304 活文档</span><span data-en>IEC 62304 living docs</span></h3><ul>
+        <li>SwRS · SSDS · SDD · MVP · MVProcedure · MVReport</li>
+        <li>VerificationPlan · VerificationProcedure</li>
+        <li data-cn>Python 脚本：模板骨架抽取 + 结构校验 + <b>md→docx</b>（pandoc+mermaid+封面合并）</li>
+        <li data-en>Python scripts: template-skeleton extraction + structure check + <b>md→docx</b> (pandoc+mermaid+cover merge)</li></ul></div>
+    </div>
+    <p class="muted" style="margin-top:14px"><span data-cn>意义：<b style="color:#fff">QMS 文档不是事后补，而是随开发同步生长</b>，直接支撑医疗器械审计。</span><span data-en>Meaning: <b style="color:#fff">QMS docs aren't an afterthought — they grow in sync with development</b>, directly supporting medical-device audits.</span></p>
+  </section>
+
+  <!-- 9 pros -->
+  <section class="slide">
+    <div class="kicker">Strengths</div>
+    <h2><span class="tag t-pro">PRO</span>&nbsp;<span data-cn>强在哪里</span><span data-en>Where it's strong</span></h2>
+    <div class="grid g2">
+      <div class="card"><h3>🚀 <span data-cn>自主执行成熟度高</span><span data-en>Mature autonomous execution</span></h3><p><span data-cn>长时运行循环 + 3× 重试 + 定义缺陷级联，是真正「跑得起来」的自主流水线，而非线性脚手架。</span><span data-en>Long-running loop + 3× retry + definition-gap cascade — a truly "runnable" autonomous pipeline, not a linear scaffold.</span></p></div>
+      <div class="card"><h3>🔒 <span data-cn>诚实评估（隔离机制）</span><span data-en>Honest evaluation (isolation)</span></h3><p><span data-cn>生成/评估物理隔离 + 测试设计者盲测，从机制上避免「自证清白」。</span><span data-en>Physical generation/evaluation isolation + blind test authoring structurally prevents "self-certification".</span></p></div>
+      <div class="card"><h3>🧪 <span data-cn>端到端测试闭环</span><span data-en>End-to-end test loop</span></h3><p><span data-cn>BDD 由外向内（Reqnroll）+ 黑盒 UI 验收（FlaUI）+ 合并覆盖率，直达 UI 层验证。</span><span data-en>BDD outside-in (Reqnroll) + black-box UI acceptance (FlaUI) + combined coverage, validating down to the UI layer.</span></p></div>
+      <div class="card"><h3>📑 <span data-cn>QMS 与开发同步</span><span data-en>QMS synced with dev</span></h3><p><span data-cn>活体 QMS + md→docx 导出，合规文档随交付生成，审计就绪。</span><span data-en>Living QMS + md→docx export; compliance docs generated with delivery, audit-ready.</span></p></div>
+      <div class="card"><h3>⚡ <span data-cn>并行执行</span><span data-en>Parallel execution</span></h3><p><span data-cn>product-owner-parallel 产出文件隔离元数据 → orchestrator-parallel 并发跑独立任务。</span><span data-en>product-owner-parallel emits file-isolation metadata → orchestrator-parallel runs independent tasks concurrently.</span></p></div>
+      <div class="card"><h3>🎛️ <span data-cn>清晰 HITL</span><span data-en>Clear HITL</span></h3><p><span data-cn>3 个定义明确的人工 Gate，把「人该看什么」标准化。</span><span data-en>3 well-defined human gates standardize "what the human should review".</span></p></div>
+    </div>
+  </section>
+
+  <!-- 10 cons -->
+  <section class="slide">
+    <div class="kicker">Weaknesses / Gaps</div>
+    <h2><span class="tag t-con">CON</span>&nbsp;<span data-cn>不足与缺口</span><span data-en>Weaknesses & gaps</span></h2>
+    <div class="grid g2">
+      <div class="card"><h3>🧩 <span data-cn>领域/风险分析薄</span><span data-en>Thin on domain/risk analysis</span></h3><p><span data-cn>缺 DFMEA、IFU、产品缺陷分析、影响分析等风险与临床文档能力；iec62304 仅覆盖流程合规。</span><span data-en>Lacks DFMEA, IFU, product-defect and impact analysis; iec62304 covers only process compliance.</span></p></div>
+      <div class="card"><h3>🔧 <span data-cn>缺「修复型」质量技能</span><span data-en>No "remediation" quality skills</span></h3><p><span data-cn>只有 CI 端 TICS/Coverity <b>门禁</b>，缺 Agent 侧 <b>TICS/CodeScene 问题修复</b>技能与 Philips 规则集。</span><span data-en>Only CI-side TICS/Coverity <b>gates</b>; no agent-side <b>TICS/CodeScene fix</b> skills or Philips rule sets.</span></p></div>
+      <div class="card"><h3>🩺 <span data-cn>无 CT/DICOM/光谱知识</span><span data-en>No CT/DICOM/Spectral knowledge</span></h3><p><span data-cn>流程通用，但缺医疗影像专业知识库，难识别领域特有失效与安全红线。</span><span data-en>Process-generic but no medical-imaging knowledge base; hard to spot domain-specific failures and safety red lines.</span></p></div>
+      <div class="card"><h3>🏗️ <span data-cn>采纳成本高</span><span data-en>High adoption cost</span></h3><p><span data-cn>Build 脚本 + Python venv + PDLM 模板 + .harness 状态，落地需较重环境搭建。</span><span data-en>Build scripts + Python venv + PDLM templates + .harness state require heavier setup.</span></p></div>
+      <div class="card"><h3>🔗 <span data-cn>技术栈绑定强</span><span data-en>Strong stack coupling</span></h3><p><span data-cn>Reqnroll/FlaUI/ReSharper/dotCover 深度绑定，非该栈项目迁移成本高。</span><span data-en>Deeply coupled to Reqnroll/FlaUI/ReSharper/dotCover; costly to migrate off-stack.</span></p></div>
+      <div class="card"><h3>📊 <span data-cn>缺可视化报告</span><span data-en>Few visual reports</span></h3><p><span data-cn>无自包含 HTML 质量/风险报告，管理层「一页看懂」较弱。</span><span data-en>No self-contained HTML quality/risk reports; weak "one-page" management view.</span></p></div>
+    </div>
+  </section>
+
+  <!-- 11 strengthen -->
+  <section class="slide">
+    <div class="kicker">To Strengthen</div>
+    <h2><span data-cn>还需补充和加强的地方</span><span data-en>What to add & strengthen</span></h2>
+    <ul>
+      <li data-cn><b>注入领域与风险层</b>：引入 DFMEA / IFU / 影响分析 / 产品缺陷 / CT·DICOM·光谱知识库，让评估「懂医疗」。</li>
+      <li data-en><b>Inject a domain & risk layer</b>: DFMEA / IFU / impact / product-defect + CT·DICOM·Spectral knowledge so evaluation "understands medicine".</li>
+      <li data-cn><b>质量从「门禁」到「修复」</b>：补 tics-standard、codescene-health 类修复技能 + Philips 规则 instructions，Agent 能自愈而非只报错。</li>
+      <li data-en><b>Quality from "gate" to "fix"</b>: add tics-standard / codescene-health remediation + Philips-rule instructions so agents self-heal, not just report.</li>
+      <li data-cn><b>降低采纳门槛</b>：提供最小可用配置 + 一键初始化；把 Build/Python 依赖做成可选分层。</li>
+      <li data-en><b>Lower adoption cost</b>: a minimal viable config + one-click init; make Build/Python deps an optional layer.</li>
+      <li data-cn><b>技术栈解耦</b>：把 Reqnroll/FlaUI 抽象为「测试策略」接口，允许替换。</li>
+      <li data-en><b>Decouple the stack</b>: abstract Reqnroll/FlaUI behind a "test-strategy" interface to allow substitution.</li>
+      <li data-cn><b>补管理视角报告</b>：为 evaluator/QMS 增加自包含 HTML 汇总（雷达图/热力图/追溯矩阵）。</li>
+      <li data-en><b>Add management reports</b>: self-contained HTML summaries for evaluator/QMS (radar/heatmap/traceability matrix).</li>
+    </ul>
+  </section>
+
+  <!-- 12 opportunities -->
+  <section class="slide">
+    <div class="kicker">Landing Opportunities</div>
+    <h2><span class="tag t-opp">OPP</span>&nbsp;<span data-cn>落地机会</span><span data-en>Landing opportunities</span></h2>
+    <div class="grid g3">
+      <div class="card"><h3>🎯 <span data-cn>新项目绿地</span><span data-en>Greenfield projects</span></h3><p><span data-cn>C#/.NET + WPF 且需 IEC 62304 合规的新模块，是自主流水线的理想试验田。</span><span data-en>New C#/.NET + WPF modules needing IEC 62304 compliance are the ideal test bed.</span></p></div>
+      <div class="card"><h3>🧪 <span data-cn>UI 回归自动化</span><span data-en>UI regression automation</span></h3><p><span data-cn>FlaUI 黑盒验收可直接落到现有 WPF 应用的回归测试，快速见效。</span><span data-en>FlaUI black-box acceptance drops straight into existing WPF regression tests for quick wins.</span></p></div>
+      <div class="card"><h3>📄 <span data-cn>QMS 提效</span><span data-en>QMS efficiency</span></h3><p><span data-cn>md→docx 活文档可先在文档密集型交付中试点，减轻手工 QMS。</span><span data-en>md→docx living docs can pilot in doc-heavy deliveries to cut manual QMS effort.</span></p></div>
+      <div class="card"><h3>⚡ <span data-cn>并行大特性</span><span data-en>Parallel big features</span></h3><p><span data-cn>可拆分为文件隔离任务的大特性，用 parallel 编排显著提速。</span><span data-en>Large features splittable into file-isolated tasks accelerate markedly via parallel orchestration.</span></p></div>
+      <div class="card"><h3>🔗 <span data-cn>与现有 CI 对接</span><span data-en>Connect to CI</span></h3><p><span data-cn>Build 门禁脚本可挂到 Azure DevOps，形成 AI+CI 双保险。</span><span data-en>Build gate scripts hook into Azure DevOps for AI+CI double assurance.</span></p></div>
+      <div class="card"><h3>🤝 <span data-cn>与 Peng 资产互补</span><span data-en>Complement Peng's assets</span></h3><p><span data-cn>把执行引擎嫁接到 Peng 的领域/合规技能上（见 Deck 3）。</span><span data-en>Graft the execution engine onto Peng's domain/compliance skills (see Deck 3).</span></p></div>
+    </div>
+  </section>
+
+  <!-- 13 verdict -->
+  <section class="slide">
+    <div style="margin:auto 0">
+      <div class="kicker">Verdict</div>
+      <h2><span data-cn>一句话评价</span><span data-en>Verdict in one line</span></h2>
+      <p style="font-size:24px;line-height:1.5;color:#fff;max-width:1000px"><span data-cn>Kunal 的 Harness 是一台<b style="color:var(--accent)">成熟、诚实、可自主长跑的「执行引擎」</b>——强在自主编排、上下文隔离与端到端测试/QMS 闭环；<b style="color:var(--accent2)">弱在领域深度、风险分析与质量自愈</b>。</span><span data-en>Kunal's harness is a <b style="color:var(--accent)">mature, honest, autonomously long-running "execution engine"</b> — strong in orchestration, context isolation, and end-to-end test/QMS loops; <b style="color:var(--accent2)">weak in domain depth, risk analysis, and quality self-healing</b>.</span></p>
+      <p class="sub" style="margin-top:20px"><span data-cn>→ 它正好补上 Peng 方案「执行自动化」的短板；而 Peng 的领域/合规资产，正好补上它「懂医疗、能自愈」的短板。<b style="color:#fff">二者高度互补</b>（见 Deck 2 / Deck 3）。</span><span data-en>→ It fills the "execution automation" gap in Peng's approach; and Peng's domain/compliance assets fill its "understand medicine, self-heal" gap. <b style="color:#fff">Highly complementary</b> (see Deck 2 / Deck 3).</span></p>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span><span data-cn>Kunal · CT AI Dev Harness 预研分析</span><span data-en>Kunal · CT AI Dev Harness Pre-Research Analysis</span> · Deck 1 / 3</span>
+    <div class="dots" id="dots"></div>
+    <span id="pageno">1 / 13</span>
+  </div>
+</div>
+
+<div class="hint">← → · L</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const dots=document.getElementById('dots');
+  const pageno=document.getElementById('pageno');
+  let i=0;
+  slides.forEach((_,k)=>{const d=document.createElement('div');d.className='dot'+(k===0?' active':'');d.onclick=()=>go(k);dots.appendChild(d)});
+  const dotEls=[...dots.children];
+  function go(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('active',k===i));dotEls.forEach((d,k)=>d.classList.toggle('active',k===i));pageno.textContent=(i+1)+' / '+slides.length}
+  function setLang(l){document.body.dataset.lang=l;document.getElementById('lcn').classList.toggle('active',l==='cn');document.getElementById('len').classList.toggle('active',l==='en')}
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();go(i+1)}
+    else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(i-1)}
+    else if(e.key==='Home')go(0); else if(e.key==='End')go(slides.length-1);
+    else if(e.key.toLowerCase()==='l'){setLang(document.body.dataset.lang==='cn'?'en':'cn')}
+    else if(e.key.toLowerCase()==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+  });
+</script>
+</body>
+</html>

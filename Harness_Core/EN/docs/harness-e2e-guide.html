@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Dev Harness — E2E 设计与门控指南 / Design & Gates Guide</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a2029; --panel2:#222b36; --ink:#e6edf3; --muted:#9aa7b4;
+    --line:#2d3742; --accent:#4aa3ff; --green:#3fb950; --amber:#d29922; --red:#f85149; --chip:#132b40;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI",Roboto,"Microsoft YaHei",system-ui,sans-serif;line-height:1.62;font-size:15px}
+  .wrap{max-width:1100px;margin:0 auto;padding:32px 24px 80px}
+  header.hero{background:linear-gradient(135deg,#12233b,#0f1419);border:1px solid var(--line);
+    border-radius:14px;padding:28px 32px;margin-bottom:26px}
+  h1{margin:0 0 6px;font-size:25px}
+  h2{margin:40px 0 14px;font-size:20px;border-left:4px solid var(--accent);padding-left:12px}
+  h3{margin:22px 0 10px;font-size:15.5px;color:#cdd9e5}
+  .sub{color:var(--muted);font-size:14px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .chip{background:var(--chip);border:1px solid var(--line);color:#bcd;padding:3px 10px;border-radius:20px;font-size:12.5px}
+  .lead{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin:18px 0}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;background:var(--panel);
+    border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--panel2);color:#cdd9e5;font-weight:600}
+  tr:last-child td{border-bottom:none}
+  code{background:#0b0f14;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12.5px;color:#e3b341}
+  .pass{color:var(--green);font-weight:600}.warn{color:var(--amber);font-weight:600}.fail{color:var(--red);font-weight:600}
+  .flow{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;
+    font-family:Consolas,"Cascadia Code",monospace;font-size:13px;color:#bcd;overflow-x:auto;white-space:pre;line-height:1.5}
+  .gate{background:#101a26;border:1px solid #244; border-left:4px solid var(--accent);border-radius:10px;padding:12px 16px;margin:10px 0}
+  .gate .gt{font-weight:700;color:#fff}
+  .gate.auto{border-left-color:var(--amber)}
+  .iso{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+  .isobox{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .isobox .t{font-weight:700;color:#fff;font-size:14px}
+  .isobox .d{color:var(--muted);font-size:12.5px;margin-top:4px}
+  .callout{background:#1a1210;border:1px solid #5a2d22;border-radius:10px;padding:14px 18px;margin:16px 0}
+  .callout.good{background:#0f1c12;border-color:#27502f}
+  footer{margin-top:46px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+  a{color:var(--accent)}
+  .langbar{position:fixed;top:16px;right:18px;z-index:50;display:flex;background:var(--panel2);
+    border:1px solid var(--line);border-radius:22px;padding:3px;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+  .langbtn{border:0;background:transparent;color:var(--muted);font-size:13px;font-weight:600;
+    padding:5px 14px;border-radius:20px;cursor:pointer;transition:.15s}
+  .langbtn.active{background:var(--accent);color:#04121f}
+  .langbtn:hover:not(.active){color:var(--ink)}
+  [hidden]{display:none !important}
+  ol,ul{margin:8px 0;padding-left:22px}li{margin:3px 0}
+</style>
+</head>
+<body>
+
+<div class="langbar" role="group" aria-label="Language switch">
+  <button id="btn-zh" class="langbtn active" type="button">中文</button>
+  <button id="btn-en" class="langbtn" type="button">EN</button>
+</div>
+
+<!-- ==================== 中文 ==================== -->
+<div class="wrap" id="doc-zh">
+  <header class="hero">
+    <h1>AI Dev Harness — 端到端设计与门控指南</h1>
+    <div class="sub">面向学习：讲清这个基于 <code>@orchestrator</code> 的自主流水线的<strong>设计、原理、门控</strong>，并以刚完成的 WW/WC-Reset 运行为实例。</div>
+    <div class="meta">
+      <span class="chip">Generator + Evaluator</span>
+      <span class="chip">上下文隔离</span>
+      <span class="chip">3 道人工门控</span>
+      <span class="chip">IEC 62304</span>
+      <span class="chip">CT 医疗软件</span>
+    </div>
+  </header>
+
+  <div class="lead">
+    <strong>一段话：</strong>你只对 <code>@orchestrator</code> 提一个需求，它就驱动一条长时运行、基本自主的流水线
+    <em>分析 → 规划 → 实现 → 独立评判 → 演示</em>，只在<strong>三道人工门控</strong>处暂停。
+    它的核心是<strong>上下文隔离</strong>——评判工作的 agent（test-designer / evaluator / demonstrator）在
+    <strong>全新、独立的上下文</strong>中运行，看不到代码是怎么写的，所以判决可信。执行引擎之上叠加了
+    <strong>领域与合规层</strong>（CT/DICOM 知识、IEC 62304、DFMEA/IFU、TICS/CodeScene 自愈），提供"何为安全/正确/合规"。
+  </div>
+
+  <h2>1. 核心原则（可信性的来源）</h2>
+  <table>
+    <thead><tr><th>#</th><th>原则</th><th>为什么重要</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>上下文隔离是核心机制</strong></td><td>见过实现的 agent 无法客观测试/评判它；隔离才让判决可信。</td></tr>
+      <tr><td>2</td><td><strong>生成与评估分离</strong></td><td>作者与评判者永不为同一 agent/上下文。</td></tr>
+      <tr><td>3</td><td><strong>一次一任务；orchestrator 掌管状态</strong></td><td>只有它能标记任务完成，且须在门控 + CI 全过之后。</td></tr>
+      <tr><td>4</td><td><strong>动手前先验证基线</strong></td><td>改代码前确认 <code>Build\Verify-Baseline.cmd</code> 全绿。</td></tr>
+      <tr><td>5</td><td><strong>遵循 ADR；只碰新增/改动代码</strong></td><td>架构决策具约束力；规范只作用于新/改代码，不改造遗留。</td></tr>
+      <tr><td>6</td><td><strong>安全第一</strong></td><td>记录 IEC 62304 等级(A/B/C)+ 依据；患者数据路径或 Class C 一律升级。</td></tr>
+      <tr><td>7</td><td><strong>定义变更向下级联，绝不向上</strong></td><td>中途发现的缺口回到"最高被改层"，冻结已批准的上游，重新组合评审；定义缺口<strong>不消耗</strong>重试预算。</td></tr>
+      <tr><td>8</td><td><strong>双轨文档</strong></td><td>审计轨=活文档 QMS(md→docx)；管理轨=自包含 HTML 报告。</td></tr>
+    </tbody>
+  </table>
+  <div class="sub">其他规则：每任务<strong>重试预算 max 3× 且共享</strong>；<strong>不编造 ID</strong>（RMM/需求 ID 保持 <code>TBD</code>/<code>N/A</code>）；<strong>被抑制/跳过的质量门 = 失败</strong>。</div>
+
+  <h2>2. 团队 — 18 个 agent（谁能看生产代码）</h2>
+  <h3>执行角色（驱动自主环）</h3>
+  <table>
+    <thead><tr><th>Agent</th><th>职责</th><th>能看生产代码?</th></tr></thead>
+    <tbody>
+      <tr><td><code>@orchestrator</code></td><td>总控；派生子代理、掌管门控与重试预算</td><td>仅编排</td></tr>
+      <tr><td><code>@analyst</code></td><td>PRD/遥测 → 结构化 <strong>FR/NFR</strong></td><td>n/a</td></tr>
+      <tr><td><code>@sw-architect</code></td><td>ADR、组件图、接口契约</td><td>读</td></tr>
+      <tr><td><code>@product-owner</code></td><td>纵切 backlog + <strong>Gherkin</strong> 规格</td><td>读</td></tr>
+      <tr><td><code>@developer</code></td><td>BDD 由外而内实现（Reqnroll），在 ADR 边界内</td><td><strong>写</strong></td></tr>
+      <tr><td><code>@test-designer</code></td><td>仅凭<strong>规格</strong>编写黑盒 FlaUI 验收测试</td><td class="fail"><strong>永不</strong>（隔离）</td></tr>
+      <tr><td><code>@dev-evaluator</code></td><td>隔离质量门：跑全部测试、评判质量、核验存档产物</td><td>读以评判，<strong>与开发者上下文隔离</strong></td></tr>
+      <tr><td><code>@feature-demonstrator</code></td><td>叙述式功能演示 + 视频/截图证据</td><td>隔离</td></tr>
+      <tr><td><code>@docs-lookup</code> / <code>@explore</code></td><td>API 文档查询；只读代码库问答</td><td>只读</td></tr>
+    </tbody>
+  </table>
+  <h3>领域与合规专家（按需注入深度）</h3>
+  <div class="sub"><code>@requirements-analyst</code>（评审/追溯/安全等级）· <code>@architect</code>（影响分析）· <code>@reviewer</code>（8 维评审 + TICS/CodeScene 自愈）· <code>@tester</code>（单测/手工）· <code>@doc-writer</code>（SDS/DFMEA/IFU）· <code>@cicd</code>（本地构建/流水线）。背后：<strong>31 skills · 12 prompts · 5 always-on 指令</strong>（如每个 <code>*.cs</code> 触发 tics-csharp / codescene-csharp）。</div>
+
+  <h2>3. 端到端流水线（13 阶段，3 门控）</h2>
+  <div class="flow">1 Analyse → 2 Req.评审+安全等级 → 3 架构(ADR) → 4 影响分析 → 5 规划(Backlog+Gherkin)
+        │
+     ⏸ GATE 1   需求 + 架构 + Backlog + 风险（组合评审）
+        │
+  6 Develop(BDD) ═╗
+                 ╠══ 并行 · 隔离
+  7 Test-design ═╝  （黑盒，只凭规格）
+        │
+     ⏸ GATE 2   设计 + 测试设计 评审（逐任务）
+        │
+  8 Evaluate(隔离) → 9 质量自愈 → 10 风险合规 → 11 文档 → 12 Demonstrate
+        │
+     ⏸ GATE 3   功能演示（用户即裁判）
+        │
+      Done       13 Build & CI：TICS TQI≥8.0 · Coverity 0 new-High</div>
+
+  <h2>4. 门控详解（门控）</h2>
+  <div class="sub">三道<strong>人工门控</strong> + 一道<strong>自动质量门</strong>。人工门控是<em>你</em>做决定；自动门是<em>隔离的评估者</em>做决定。</div>
+  <div class="gate"><div class="gt">⏸ GATE 1 — 组合评审（定义 what + how + plan）</div>
+    时机：规划后、写码前。审查：需求(FR/NFR+安全等级)·架构(ADR)·backlog+Gherkin·风险。决策：<code>Approve</code>/<code>Reject: 层</code>——拒绝某层会<strong>向下级联</strong>（冻结已批准上游，重跑被改层及其下游，重新组合评审）。目的：花力气实现之前锁定<strong>定义</strong>。</div>
+  <div class="gate"><div class="gt">⏸ GATE 2 — 设计 + 测试设计 评审（逐任务）</div>
+    时机：<code>@developer</code>(DESIGN 模式) 与 <code>@test-designer</code>(TEST-DESIGN 模式)<strong>并行</strong>产出方案后、实现前。审查：实现设计说明(ADR 边界内) + 黑盒测试设计。目的：在写码前拦住错误方向，确认 test-designer 隔离完好。</div>
+  <div class="gate auto"><div class="gt">🤖 自动质量门 — <code>@dev-evaluator</code>（隔离）</div>
+    <strong>非人工门</strong>——全新上下文里的怀疑型评估者。做：跑<strong>全部</strong>测试(开发者单测/BDD + test-designer 黑盒)、评判测试<em>质量</em>(覆盖 + 断言强度)、核验开发者<strong>存档产物</strong>(存疑才重跑)、审查代码质量/架构遵从/功能完整/可演示性。判决：<code>PASS</code>/<code>FAIL</code>；FAIL 退回开发者并<strong>消耗一次共享重试</strong>。</div>
+  <div class="gate"><div class="gt">⏸ GATE 3 — 功能演示（用户即裁判）</div>
+    时机：<code>@feature-demonstrator</code> 启动应用、叙述功能并附视频/截图后。决策：<strong>用户</strong>批准/要求修改/拒绝；agent <strong>不给</strong>通过/失败判决——人是裁判。目的：抓测试抓不到的——真实 UI 行为、工作流手感、集成实况。</div>
+  <div class="sub"><strong>重试预算：</strong>每任务 <strong>max 3× 且共享</strong>。<strong>定义缺口 ≠ 重试：</strong>若属定义问题(缺/错的需求、ADR、规格)，回到最高被改层且<strong>不消耗</strong>重试预算。<strong>orchestrator 掌管状态：</strong>只有它标记完成，且须门控 + CI 全过。</div>
+
+  <h2>5. 为什么隔离是全部要点</h2>
+  <div class="iso">
+    <div class="isobox"><div class="t">@developer · 上下文 A</div><div class="d">在 ADR 边界内实现；<strong>写</strong>生产代码。</div></div>
+    <div class="isobox"><div class="t">@test-designer · 上下文 B</div><div class="d">仅凭 feature 文件 + UI 契约编写黑盒测试；<strong>永不读生产代码</strong>——测试编码的是<em>规格</em>而非<em>实现</em>。</div></div>
+    <div class="isobox"><div class="t">@dev-evaluator · 上下文 C</div><div class="d">全新上下文中评判；不受开发者自辩影响；<em>信任但核验</em>存档产物。</div></div>
+  </div>
+  <div class="sub">领域/合规 skill 作为<strong>只读评判标准</strong>注入，<strong>不得破坏隔离</strong>（例如绝不把生产代码喂给 test-designer）。本次运行中，隔离的 test-designer 甚至产出了一个能自动拦截 demo bug 的回归测试。</div>
+
+  <h2>6. 状态存储 — <code>.harness/</code>（单一事实来源）</h2>
+  <table>
+    <thead><tr><th>路径</th><th>内容</th><th>写入者</th></tr></thead>
+    <tbody>
+      <tr><td><code>.harness/progress.md</code></td><td><strong>只追加</strong>的阶段/门控日志——单一事实来源</td><td><strong>每个</strong> agent</td></tr>
+      <tr><td><code>.harness/requirements/</code></td><td>FR/NFR（ID 稳定）</td><td>@analyst</td></tr>
+      <tr><td><code>.harness/architecture/adr/</code></td><td>ADR（Accepted 后具约束力）+ 图</td><td>@sw-architect</td></tr>
+      <tr><td><code>.harness/backlogs/*.json</code></td><td>任务；仅 <code>status</code> 迁移 pending→in_progress→complete</td><td>orchestrator</td></tr>
+      <tr><td><code>.harness/specs/{slug}/*.feature</code></td><td>Gherkin（既是规格也是验收测试）</td><td>@product-owner</td></tr>
+      <tr><td><code>.harness/eval_feedback/</code></td><td>评估者判决 JSON</td><td>@dev-evaluator</td></tr>
+      <tr><td><code>.harness/tool_outputs/</code></td><td>build.log / tests.trx / coverage / resharper（信任但核验）</td><td>developer / test-designer</td></tr>
+      <tr><td><code>.harness/demo_evidence/</code></td><td>视频/截图 + demo 日志（无判决）</td><td>@feature-demonstrator</td></tr>
+      <tr><td><code>Src/VerificationTests/</code></td><td>正式 FlaUI 测试工程（<strong>不</strong>放在 .harness/）</td><td>@test-designer</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7. 质量门禁与 CI（客观标准）</h2>
+  <table>
+    <thead><tr><th>脚本 / 门</th><th>作用</th></tr></thead>
+    <tbody>
+      <tr><td><code>Build\Verify-Baseline.cmd</code></td><td>build + test，基线须全绿</td></tr>
+      <tr><td><code>Build\Run-QualityGate.cmd</code></td><td>build + 插桩测试(trx,覆盖率) + ReSharper</td></tr>
+      <tr><td><code>Build\Run-CombinedCoverage.cmd</code></td><td>开发 + 验证 组合覆盖率</td></tr>
+      <tr><td>覆盖率阈值</td><td>单测 80% · 模块(BDD) 70% · 集成 60% · <strong>组合 80%</strong></td></tr>
+      <tr><td>CI 阻断门</td><td><strong>TICS</strong> TQI≥8.0 · <strong>Coverity</strong> 0 new-High · ReSharper(仅参考)</td></tr>
+    </tbody>
+  </table>
+  <div class="sub"><strong>双轨文档：</strong>审计轨=<code>docs/qms/</code> 活文档(md→docx)；管理轨=自包含 HTML 报告(DFMEA/IFU/代码质量/本报告)。</div>
+
+  <h2>8. 实战样例 — WW/WC-Reset 运行</h2>
+  <table>
+    <thead><tr><th>阶段</th><th>发生了什么</th><th>结果</th></tr></thead>
+    <tbody>
+      <tr><td>Orientation</td><td>跑 orient → harness 为空、无 Src/、基线无法运行</td><td>诚实"无任务"</td></tr>
+      <tr><td>规划</td><td>analyst→architect→product-owner 产出 FR-01–07/NFR、ADR-001(7 决策)、4 任务 backlog、17 场景</td><td>—</td></tr>
+      <tr><td><strong>GATE 1</strong></td><td>用户批准；定 OQ-01=Class B、OQ-02=per-viewport</td><td class="pass">✅</td></tr>
+      <tr><td>T01–T04</td><td>全新 ExtInf/Src + 测试，WPF-clean MVVM</td><td>85 单测 + 17 模块</td></tr>
+      <tr><td><strong>质量门</strong></td><td><code>@dev-evaluator</code> <strong>T01 FAIL 一次</strong>(缺 DICOM 引用)、<strong>T04 FAIL 一次</strong>(3 findings) → 修复 → <strong>PASS</strong></td><td class="pass">✅</td></tr>
+      <tr><td>Demo</td><td>建 WPF 宿主，<code>@feature-demonstrator</code> 跑 3 场景</td><td class="pass">✅</td></tr>
+      <tr><td><strong>GATE 3</strong></td><td>用户审阅证据后批准</td><td class="pass">✅</td></tr>
+      <tr><td>加固</td><td><code>@test-designer</code> 补 <strong>12 个 FlaUI 验收</strong>(隔离)；装 dotCover/ReSharper；覆盖 <strong>90.6%</strong></td><td class="pass">✅ 共 114 测试</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><strong>三个门控抓到的缺陷（关键收获）：</strong>
+    <ol style="margin:6px 0 0">
+      <li><strong>Gate2/T01</strong> — <code>DicomDisplayTags</code> 缺 DICOM PS3.3 引用（测试不覆盖的合规规则）。</li>
+      <li><strong>Gate2/T04</strong> — <code>IsSeriesLoaded</code> 由 <code>HasValidDefaultWindowLevel</code> 派生，无标签序列被误判"未加载"而禁用复位（<strong>所有测试全绿</strong>，被隔离评估者读码抓到）。</li>
+      <li><strong>Gate3/现场演示</strong> — 复位后 <strong>Undo 按钮不激活</strong>（自定义 <code>DelegateCommand</code> 挂不上 WPF requery；单测/BDD 直接调 <code>CanExecute()</code> 故全绿）。<strong>只有人工现场演示才暴露。</strong></li>
+    </ol>
+  </div>
+
+  <h2>9. 规范设计 vs 本次试点（诚实对照）</h2>
+  <table>
+    <thead><tr><th>规范设计</th><th>试点实际</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>逐任务 <strong>DESIGN/TEST-DESIGN 模式 → GATE 2</strong> 在实现前</td><td>直接进入实现；用评估者当质量门</td><td>Gate 2 设计评审被压缩</td></tr>
+      <tr><td><code>@test-designer</code> 与 <code>@developer</code><strong>并行</strong>、在 Gate 2 前</td><td>FlaUI 测试在交付<strong>后</strong>补(加固阶段)</td><td>所以 UI bug 漏到 demo——第 1 改进点</td></tr>
+      <tr><td>修复回抛 <code>@developer</code> → 重跑 <code>@dev-evaluator</code></td><td>orchestrator 直接改后自验</td><td>务实，略稀释生成/评估纯粹性</td></tr>
+      <tr><td>领域专家按需调用</td><td>主要用核心执行角色</td><td>领域层为咨询深度</td></tr>
+    </tbody>
+  </table>
+  <div class="callout good"><strong>教学要点：</strong>最大的质量泄漏（Undo 按钮）直接源于压缩了"并行隔离的 test-design + Gate 2"。把 test-design 并行前移并纳入 Gate 2，本可在 demo 前拦截。</div>
+
+  <h2>10. 怎么自己跑</h2>
+  <ol>
+    <li>VS Code + Copilot 打开仓库；确认基线全绿(<code>Build\Verify-Baseline.cmd</code>)。</li>
+    <li>Copilot Chat 里用 <strong><code>@orchestrator</code></strong> 提出 feature/bug/改进需求。</li>
+    <li>在<strong>三道人工门控</strong>处答复(approve / reject-带理由)；拒绝会级联到最高被改层。</li>
+    <li>让它自主 实现 → 隔离评估 → 演示；仅当任务失败 <strong>3×</strong> 才需你介入。</li>
+    <li>一次性任务用 slash：<code>/full-pipeline</code>、<code>/dfmea-analysis</code>、<code>/code-quality</code>、<code>/tics-preflight</code>…</li>
+  </ol>
+  <div class="callout"><strong>记忆模型：</strong>生成者 ≠ 评估者，且都在隔离上下文 → 判决可信。三道人工门控框住全程：<em>定义</em>(G1) → <em>设计</em>(G2) → <em>演示</em>(G3)，中间夹一道<em>隔离评估</em>客观门。<code>.harness/</code> + <code>progress.md</code> 是持久大脑；<code>Build/</code> + TICS/Coverity 是客观标尺。<strong>定义向下级联，绝不向上；orchestrator 掌管"完成"。</strong></div>
+
+  <footer>AI Dev Harness 学习指南　·　同目录含 Markdown 版 <code>docs/harness/harness-e2e-guide.md</code>（含 3 张 Mermaid 图）。</footer>
+</div>
+
+<!-- ==================== English ==================== -->
+<div class="wrap" id="doc-en" hidden>
+  <header class="hero">
+    <h1>AI Dev Harness — End-to-End Design &amp; Gates Guide</h1>
+    <div class="sub">A learning primer for the <code>@orchestrator</code>-driven autonomous pipeline: its <strong>design, principles, and gates</strong>, with the just-completed WW/WC-Reset run as a worked example.</div>
+    <div class="meta">
+      <span class="chip">Generator + Evaluator</span>
+      <span class="chip">Context isolation</span>
+      <span class="chip">3 human gates</span>
+      <span class="chip">IEC 62304</span>
+      <span class="chip">CT medical software</span>
+    </div>
+  </header>
+
+  <div class="lead">
+    <strong>In one paragraph:</strong> you give <code>@orchestrator</code> one request and it drives a long-running,
+    mostly-autonomous pipeline — <em>analyse → plan → build → independently judge → demonstrate</em> — pausing only
+    at <strong>three human gates</strong>. Its defining idea is <strong>context isolation</strong>: the agents that
+    <em>judge</em> work (test-designer / evaluator / demonstrator) run in <strong>fresh, separate contexts</strong> and
+    cannot see how the code was written, so their verdicts are honest. A <strong>domain &amp; compliance layer</strong>
+    (CT/DICOM knowledge, IEC 62304, DFMEA/IFU, TICS/CodeScene self-heal) supplies what "safe, correct, compliant" means.
+  </div>
+
+  <h2>1. Core principles (why it's trustworthy)</h2>
+  <table>
+    <thead><tr><th>#</th><th>Principle</th><th>Why it matters</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>Context isolation is THE mechanism</strong></td><td>An agent that saw the implementation can't objectively test/judge it; isolation makes the verdict trustworthy.</td></tr>
+      <tr><td>2</td><td><strong>Separate generation from evaluation</strong></td><td>Author and judge are never the same agent/context.</td></tr>
+      <tr><td>3</td><td><strong>One task per session; orchestrator owns status</strong></td><td>Only it marks a task complete, and only after gates + CI pass.</td></tr>
+      <tr><td>4</td><td><strong>Verify baseline before building</strong></td><td>Confirm <code>Build\Verify-Baseline.cmd</code> is green before changing code.</td></tr>
+      <tr><td>5</td><td><strong>Follow the ADR; new/changed code only</strong></td><td>Architecture decisions are binding; conventions apply to new/changed code, not legacy retrofits.</td></tr>
+      <tr><td>6</td><td><strong>Safety first</strong></td><td>Record IEC 62304 class (A/B/C) + justification; patient-data path or Class C always escalates.</td></tr>
+      <tr><td>7</td><td><strong>Definitions cascade down, never up</strong></td><td>A mid-flight gap re-enters at the highest changed layer, freezes approved upstream; a definition gap does <strong>not</strong> consume the retry budget.</td></tr>
+      <tr><td>8</td><td><strong>Dual-track documentation</strong></td><td>Audit track = living QMS (md→docx); management track = self-contained HTML reports.</td></tr>
+    </tbody>
+  </table>
+  <div class="sub">Also: <strong>retry budget max 3×, shared</strong> per task; <strong>no fabricated IDs</strong> (<code>TBD</code>/<code>N/A</code> until assigned); a <strong>suppressed/skipped quality gate = failure</strong>.</div>
+
+  <h2>2. The team — 18 agents (who sees production code)</h2>
+  <h3>Execution roles (drive the loop)</h3>
+  <table>
+    <thead><tr><th>Agent</th><th>Role</th><th>Sees prod code?</th></tr></thead>
+    <tbody>
+      <tr><td><code>@orchestrator</code></td><td>Traffic controller; spawns subagents, owns gates + retry budget</td><td>orchestration only</td></tr>
+      <tr><td><code>@analyst</code></td><td>PRD/telemetry → structured <strong>FR/NFR</strong></td><td>n/a</td></tr>
+      <tr><td><code>@sw-architect</code></td><td>ADRs, component diagrams, interface contracts</td><td>reads</td></tr>
+      <tr><td><code>@product-owner</code></td><td>Vertically-sliced backlog + <strong>Gherkin</strong></td><td>reads</td></tr>
+      <tr><td><code>@developer</code></td><td>BDD outside-in implementation (Reqnroll) within the ADR</td><td><strong>writes</strong></td></tr>
+      <tr><td><code>@test-designer</code></td><td>Black-box FlaUI acceptance tests from the <strong>spec ALONE</strong></td><td class="fail"><strong>NEVER</strong> (isolation)</td></tr>
+      <tr><td><code>@dev-evaluator</code></td><td>Isolated quality gate: runs ALL tests, judges quality, verifies stored outputs</td><td>reads to judge, <strong>isolated from dev context</strong></td></tr>
+      <tr><td><code>@feature-demonstrator</code></td><td>Narrated showcase + video/screenshot evidence</td><td>isolated</td></tr>
+      <tr><td><code>@docs-lookup</code> / <code>@explore</code></td><td>API-doc lookup; read-only codebase Q&amp;A</td><td>read-only</td></tr>
+    </tbody>
+  </table>
+  <h3>Domain &amp; compliance specialists (advisory depth)</h3>
+  <div class="sub"><code>@requirements-analyst</code> (review/traceability/safety class) · <code>@architect</code> (impact analysis) · <code>@reviewer</code> (8-dim + TICS/CodeScene self-heal) · <code>@tester</code> (unit/manual) · <code>@doc-writer</code> (SDS/DFMEA/IFU) · <code>@cicd</code>. Backing: <strong>31 skills · 12 prompts · 5 always-on instructions</strong> (e.g. tics-csharp / codescene-csharp on every <code>*.cs</code>).</div>
+
+  <h2>3. End-to-end pipeline (13 stages, 3 gates)</h2>
+  <div class="flow">1 Analyse → 2 Req.review+Safety → 3 Architecture(ADR) → 4 Impact → 5 Plan(Backlog+Gherkin)
+        |
+     [ GATE 1 ]   requirements + architecture + backlog + risk (combined review)
+        |
+  6 Develop(BDD) =+
+                  += parallel & isolated
+  7 Test-design =+   (black-box, spec only)
+        |
+     [ GATE 2 ]   design + test-design review (per task)
+        |
+  8 Evaluate(ISOLATED) → 9 Self-heal → 10 Risk/Compliance → 11 Docs → 12 Demonstrate
+        |
+     [ GATE 3 ]   feature demo (user is the gate)
+        |
+      Done         13 Build & CI: TICS TQI>=8.0 & Coverity 0 new-High</div>
+
+  <h2>4. The gates in depth</h2>
+  <div class="sub">Three <strong>human gates</strong> + one <strong>automated quality gate</strong>. Human gates are where <em>you</em> decide; the automated gate is where an <em>isolated evaluator</em> decides.</div>
+  <div class="gate"><div class="gt">GATE 1 — Combined review (define what + how + plan)</div>
+    When: after planning, before any code. Reviews: requirements (FR/NFR + safety class) · architecture (ADR) · backlog + Gherkin · risk. Decision: <code>Approve</code> / <code>Reject: &lt;layer&gt;</code> — rejecting a layer <strong>cascades down</strong> (freeze approved upstream, re-run the changed layer + below, re-present the combined gate). Purpose: lock the <strong>definition</strong> before building.</div>
+  <div class="gate"><div class="gt">GATE 2 — Design + test-design review (per task)</div>
+    When: after <code>@developer</code> (DESIGN mode) and <code>@test-designer</code> (TEST-DESIGN mode) produce plans <strong>in parallel</strong>, before implementation. Reviews: the design note (within the ADR) and the black-box test design. Purpose: catch a wrong approach before code is written; confirm the test-designer's isolation.</div>
+  <div class="gate auto"><div class="gt">🤖 Automated Quality Gate — <code>@dev-evaluator</code> (isolated)</div>
+    <strong>Not a human gate</strong> — a skeptical evaluator in a fresh context. Does: runs <strong>ALL</strong> tests (dev unit/BDD + test-designer black-box), judges test <em>quality</em> (coverage + assert strength), verifies the developer's <strong>stored tool outputs</strong> (re-running only when in doubt), reviews code quality / architecture / completeness / demo readiness. Verdict: <code>PASS</code>/<code>FAIL</code>; a FAIL routes rework to the developer and <strong>consumes one shared retry</strong>.</div>
+  <div class="gate"><div class="gt">GATE 3 — Feature demonstration (user is the gate)</div>
+    When: after <code>@feature-demonstrator</code> launches the app and narrates it with video/screenshots. Decision: the <strong>user</strong> approves / requests changes / rejects — the agent gives <strong>no</strong> pass/fail. Purpose: catch what tests can't — real UI behavior, workflow feel, integration reality.</div>
+  <div class="sub"><strong>Retry budget:</strong> max 3×, shared per task. <strong>Definition gap ≠ retry:</strong> a definition problem re-enters at the highest changed layer and does <strong>not</strong> consume the budget. <strong>Orchestrator owns status:</strong> only it marks complete, only after gates + CI pass.</div>
+
+  <h2>5. Why isolation is the whole point</h2>
+  <div class="iso">
+    <div class="isobox"><div class="t">@developer · context A</div><div class="d">Implements within the ADR; <strong>writes</strong> production code.</div></div>
+    <div class="isobox"><div class="t">@test-designer · context B</div><div class="d">Authors black-box tests from feature files + UI contract only; <strong>never reads prod code</strong> — tests encode the <em>spec</em>, not the <em>implementation</em>.</div></div>
+    <div class="isobox"><div class="t">@dev-evaluator · context C</div><div class="d">Judges in a fresh context; can't be biased by the developer's rationalisations; <em>trusts-but-verifies</em> stored outputs.</div></div>
+  </div>
+  <div class="sub">Domain/compliance skills are injected as <strong>read-only judgment criteria</strong> and must <strong>not</strong> break isolation (never feed prod code to the test-designer). In our run, the isolated test-designer even produced a regression test that would auto-catch the demo bug.</div>
+
+  <h2>6. State store — <code>.harness/</code> (single source of truth)</h2>
+  <table>
+    <thead><tr><th>Path</th><th>Contents</th><th>Written by</th></tr></thead>
+    <tbody>
+      <tr><td><code>.harness/progress.md</code></td><td><strong>Append-only</strong> phase/gate log — single source of truth</td><td><strong>every</strong> agent</td></tr>
+      <tr><td><code>.harness/requirements/</code></td><td>FR/NFR (stable IDs)</td><td>@analyst</td></tr>
+      <tr><td><code>.harness/architecture/adr/</code></td><td>ADRs (binding once Accepted) + diagrams</td><td>@sw-architect</td></tr>
+      <tr><td><code>.harness/backlogs/*.json</code></td><td>tasks; only <code>status</code> transitions</td><td>orchestrator</td></tr>
+      <tr><td><code>.harness/specs/{slug}/*.feature</code></td><td>Gherkin (spec AND acceptance test)</td><td>@product-owner</td></tr>
+      <tr><td><code>.harness/eval_feedback/</code></td><td>evaluator verdict JSON</td><td>@dev-evaluator</td></tr>
+      <tr><td><code>.harness/tool_outputs/</code></td><td>build.log / tests.trx / coverage / resharper (trust-but-verify)</td><td>developer / test-designer</td></tr>
+      <tr><td><code>.harness/demo_evidence/</code></td><td>video/screenshots + demo log (no verdict)</td><td>@feature-demonstrator</td></tr>
+      <tr><td><code>Src/VerificationTests/</code></td><td>formal FlaUI test projects (<strong>not</strong> under .harness/)</td><td>@test-designer</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7. Quality gates & CI (the objective bar)</h2>
+  <table>
+    <thead><tr><th>Script / gate</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>Build\Verify-Baseline.cmd</code></td><td>build + test; baseline must be green</td></tr>
+      <tr><td><code>Build\Run-QualityGate.cmd</code></td><td>build + instrumented tests (trx, coverage) + ReSharper</td></tr>
+      <tr><td><code>Build\Run-CombinedCoverage.cmd</code></td><td>dev + verification combined coverage</td></tr>
+      <tr><td>Coverage thresholds</td><td>Unit 80% · Module 70% · Integration 60% · <strong>Combined 80%</strong></td></tr>
+      <tr><td>CI blocking gates</td><td><strong>TICS</strong> TQI≥8.0 · <strong>Coverity</strong> 0 new-High · ReSharper (informational)</td></tr>
+    </tbody>
+  </table>
+  <div class="sub"><strong>Dual-track docs:</strong> audit = <code>docs/qms/</code> living docs (md→docx); management = self-contained HTML reports (DFMEA/IFU/code-quality/this report).</div>
+
+  <h2>8. Worked example — WW/WC-Reset run</h2>
+  <table>
+    <thead><tr><th>Phase</th><th>What happened</th><th>Outcome</th></tr></thead>
+    <tbody>
+      <tr><td>Orientation</td><td>ran orient → harness empty, no Src/, baseline couldn't run</td><td>honest "no task"</td></tr>
+      <tr><td>Plan</td><td>analyst→architect→product-owner: FR-01–07/NFR, ADR-001 (7), 4-task backlog, 17 scenarios</td><td>—</td></tr>
+      <tr><td><strong>GATE 1</strong></td><td>user approved; OQ-01=Class B, OQ-02=per-viewport</td><td class="pass">✅</td></tr>
+      <tr><td>T01–T04</td><td>greenfield ExtInf/Src + tests, WPF-clean MVVM</td><td>85 unit + 17 module</td></tr>
+      <tr><td><strong>Quality gate</strong></td><td><code>@dev-evaluator</code> <strong>FAILed T01 once</strong> (missing DICOM refs) and <strong>T04 once</strong> (3 findings) → fixed → <strong>PASS</strong></td><td class="pass">✅</td></tr>
+      <tr><td>Demo</td><td>built a WPF host; <code>@feature-demonstrator</code> ran 3 scenarios</td><td class="pass">✅</td></tr>
+      <tr><td><strong>GATE 3</strong></td><td>user approved after evidence</td><td class="pass">✅</td></tr>
+      <tr><td>Hardening</td><td><code>@test-designer</code> added <strong>12 FlaUI tests</strong> (isolated); dotCover/ReSharper installed; coverage <strong>90.6%</strong></td><td class="pass">✅ 114 total</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><strong>Three defects the gates caught (the payoff):</strong>
+    <ol style="margin:6px 0 0">
+      <li><strong>Gate2/T01</strong> — <code>DicomDisplayTags</code> lacked the DICOM PS3.3 reference (a compliance rule tests don't cover).</li>
+      <li><strong>Gate2/T04</strong> — <code>IsSeriesLoaded</code> derived from <code>HasValidDefaultWindowLevel</code>, so a tag-less series was wrongly "not loaded" and disabled Reset (<strong>all tests green</strong>, caught by the isolated evaluator reading code).</li>
+      <li><strong>Gate3/live demo</strong> — after reset the <strong>Undo button stayed disabled</strong> (custom <code>DelegateCommand</code> can't hook WPF requery; unit/BDD passed because they call <code>CanExecute()</code> directly). <strong>Only the human live demo exposed it.</strong></li>
+    </ol>
+  </div>
+
+  <h2>9. Canonical design vs. our pilot (honest mapping)</h2>
+  <table>
+    <thead><tr><th>Canonical design</th><th>What the pilot did</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Per-task <strong>DESIGN/TEST-DESIGN → GATE 2</strong> before implementation</td><td>went straight to implementation; used the evaluator as the quality gate</td><td>GATE 2 design review was collapsed</td></tr>
+      <tr><td><code>@test-designer</code> runs <strong>in parallel</strong> with <code>@developer</code>, before Gate 2</td><td>FlaUI tests added <strong>after</strong> delivery (hardening)</td><td>so a UI bug leaked to the demo — improvement #1</td></tr>
+      <tr><td>Fixes routed back to <code>@developer</code> → re-run <code>@dev-evaluator</code></td><td>orchestrator applied fixes directly, then re-verified</td><td>pragmatic, slightly dilutes purity</td></tr>
+      <tr><td>Domain specialists invoked as needed</td><td>mostly used core execution roles</td><td>domain layer is advisory depth</td></tr>
+    </tbody>
+  </table>
+  <div class="callout good"><strong>Lesson:</strong> the biggest quality leak (the Undo button) traces directly to collapsing the parallel isolated test-design + Gate 2. Running test-design in parallel and folding it into Gate 2 would have caught it before the demo.</div>
+
+  <h2>10. How to run it yourself</h2>
+  <ol>
+    <li>Open the repo in VS Code with Copilot; ensure the baseline is green (<code>Build\Verify-Baseline.cmd</code>).</li>
+    <li>In Copilot Chat, invoke <strong><code>@orchestrator</code></strong> with a feature/bug/improvement request.</li>
+    <li>Answer the <strong>3 human gates</strong> (approve / reject-with-reason); rejections cascade to the highest changed layer.</li>
+    <li>Let it implement → evaluate (isolated) → demonstrate autonomously; re-intervene only if a task fails <strong>3×</strong>.</li>
+    <li>For one-offs use slash prompts: <code>/full-pipeline</code>, <code>/dfmea-analysis</code>, <code>/code-quality</code>, <code>/tics-preflight</code>…</li>
+  </ol>
+  <div class="callout"><strong>Mental model:</strong> generator ≠ evaluator, both isolated → honest verdicts. Three human gates frame the run: <em>define</em> (G1) → <em>design</em> (G2) → <em>demonstrate</em> (G3), with an <em>isolated evaluator</em> as the objective gate between. <code>.harness/</code> + <code>progress.md</code> is the durable brain; <code>Build/</code> + TICS/Coverity is the objective bar. <strong>Definitions cascade down, never up; the orchestrator owns "done."</strong></div>
+
+  <footer>AI Dev Harness learning guide　·　a Markdown version with 3 Mermaid diagrams is at <code>docs/harness/harness-e2e-guide.md</code>.</footer>
+</div>
+
+<script>
+  (function(){
+    var zh=document.getElementById('doc-zh'), en=document.getElementById('doc-en');
+    var bz=document.getElementById('btn-zh'), be=document.getElementById('btn-en');
+    function setLang(l){
+      var isEn=(l==='en');
+      zh.hidden=isEn; en.hidden=!isEn;
+      bz.classList.toggle('active', !isEn);
+      be.classList.toggle('active', isEn);
+      document.documentElement.lang = isEn ? 'en' : 'zh-CN';
+      try{ localStorage.setItem('harness-guide-lang', l); }catch(e){}
+    }
+    bz.addEventListener('click', function(){ setLang('zh'); });
+    be.addEventListener('click', function(){ setLang('en'); });
+    var saved; try{ saved=localStorage.getItem('harness-guide-lang'); }catch(e){}
+    setLang(saved==='en' ? 'en' : 'zh');
+  })();
+</script>
+</body>
+</html>
